@@ -32,4 +32,6 @@ class CaptureArea(ft.UserControl):
                 GameScreen(self.camera, camera_id=self.camera_id),
             ],
             spacing=10,
+            alignment=ft.alignment.top_left,
+            horizontal_alignment=ft.alignment.top_left,
         )

@@ -11,7 +11,8 @@ VERSION = "v0.1.0"
 
 def main(page: ft.Page):
     page.title = f"{NAME} {VERSION}"
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.START
+    page.horizontal_alignment = ft.CrossAxisAlignment.START
 
     def theme_clicked(e):
         if page.theme_mode == ft.ThemeMode.DARK:
@@ -42,7 +43,9 @@ def main(page: ft.Page):
         ],
     )
 
-    camera = Camera()
+    capture_size = (1280, 720)
+
+    camera = Camera(capture_size=capture_size)
     page.add(
         CaptureArea(camera=camera, camera_id=0),
     )

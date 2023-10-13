@@ -49,10 +49,10 @@ class CropAx:
 
 
 class Camera:
-    def __init__(self):
+    def __init__(self, capture_size: tuple[int, int]):
         self.current_frame: cv2.typing.MatLike | None = None
         self.camera: cv2.VideoCapture | None = None
-        self.capture_size = (1280, 720)
+        self.capture_size = capture_size
 
         self.__logger = get_app_logger(__name__)
 
