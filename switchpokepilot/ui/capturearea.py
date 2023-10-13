@@ -10,6 +10,8 @@ class CaptureArea(ft.UserControl):
                  camera: Camera,
                  camera_id: int):
         super().__init__()
+        self.contents: ft.Control | None = None
+
         self.camera = camera
         self.camera_id = camera_id
 
@@ -23,15 +25,18 @@ class CaptureArea(ft.UserControl):
             print(index)
             dropdown.update()
 
-        return ft.Column(
-            controls=[
-                Dropdown(label="Camera",
-                         value=camera_name,
-                         on_change=on_camera_changed,
-                         options=cameras),
-                GameScreen(self.camera, camera_id=self.camera_id),
-            ],
-            spacing=10,
-            alignment=ft.alignment.top_left,
-            horizontal_alignment=ft.alignment.top_left,
+        self.contents = ft.Container(
+            content=ft.Column(
+                controls=[
+                    Dropdown(label="Camera",
+                             value=camera_name,
+                             on_change=on_camera_changed,
+                             options=cameras),
+                    GameScreen(self.camera, camera_id=self.camera_id),
+                ],
+                spacing=10,
+                alignment=ft.alignment.top_left,
+                horizontal_alignment=ft.alignment.top_left,
+            ),
         )
+        return self.contents

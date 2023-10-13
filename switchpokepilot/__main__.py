@@ -2,6 +2,7 @@ import flet as ft
 
 from switchpokepilot.camera import Camera
 from switchpokepilot.ui.capturearea import CaptureArea
+from switchpokepilot.ui.commandarea import CommandArea
 from switchpokepilot.utils.assets import get_assets_dir
 from switchpokepilot.utils.env import is_packed
 
@@ -46,8 +47,23 @@ def main(page: ft.Page):
     capture_size = (1280, 720)
 
     camera = Camera(capture_size=capture_size)
+
+    capture_area = CaptureArea(camera=camera, camera_id=0)
+
+    command_options = ["自動リーグ周回"]
+
+    def on_command_changed(ca: CommandArea, e, index):
+        ca.update()
+
+    command_area = CommandArea(options=command_options, on_command_changed=on_command_changed)
+
     page.add(
-        CaptureArea(camera=camera, camera_id=0),
+        ft.Column(
+            controls=[
+                capture_area,
+                command_area,
+            ],
+        ),
     )
 
 
@@ -55,5 +71,5 @@ if __name__ == '__main__':
     packed = is_packed()
     ft.app(
         target=main,
-        assets_dir=get_assets_dir(packed)
+        assets_dir=get_assets_dir(packed),
     )
