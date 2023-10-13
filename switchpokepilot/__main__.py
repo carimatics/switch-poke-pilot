@@ -1,6 +1,6 @@
 import flet as ft
 
-from switchpokepilot.app.switchpokepilot import SwitchPokePilotApp
+from switchpokepilot.camera import Camera
 from switchpokepilot.ui.gamescreen import GameScreen
 from switchpokepilot.utils.assets import get_assets_dir
 from switchpokepilot.utils.env import is_packed
@@ -13,8 +13,8 @@ def main(page: ft.Page):
     page.title = f"{NAME} {VERSION}"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
-    app = SwitchPokePilotApp()
-    page.add(GameScreen(app.camera, camera_id=0))
+    camera = Camera()
+    page.add(GameScreen(camera, camera_id=0))
 
 
 if __name__ == '__main__':
