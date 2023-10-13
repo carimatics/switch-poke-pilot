@@ -43,8 +43,6 @@ class GameScreen(ft.UserControl):
     def build(self):
         self.screen = ft.Image(
             src=DISABLED_IMAGE,
-            width=1280,
-            height=720,
             fit=ft.ImageFit.CONTAIN,
         )
         return self.screen
