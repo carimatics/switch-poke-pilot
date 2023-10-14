@@ -41,12 +41,18 @@ class SwitchPokePilotApp(AppStateObserver):
 
         command_options = ["自動リーグ周回"]
 
-        self.content = ft.Column(
-            controls=[
-                CaptureArea(app_state=self.state),
-                CommandArea(options=command_options,
-                            on_command_changed=self.on_command_change),
-            ],
+        self.content = ft.Container(
+            content=ft.Row(
+                controls=[
+                    ft.Column(
+                        controls=[
+                            CaptureArea(app_state=self.state),
+                            CommandArea(options=command_options,
+                                        on_command_changed=self.on_command_change),
+                        ],
+                    ),
+                ],
+            )
         )
         page.add(self.content)
 

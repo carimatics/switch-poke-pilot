@@ -33,10 +33,16 @@ class CaptureArea(ft.UserControl):
         self.contents = ft.Container(
             content=ft.Column(
                 controls=[
-                    Dropdown(label="Camera",
-                             value=self.active_camera.name,
-                             on_change=self.__on_camera_change,
-                             options=self.__camera_options),
+                    ft.Row(
+                        controls=[
+                            Dropdown(label="Camera",
+                                     value=self.active_camera.name,
+                                     on_change=self.__on_camera_change,
+                                     options=self.__camera_options,
+                                     width=800),
+                        ],
+                        width=1720,
+                    ),
                     GameScreen(app_state=self.app_state),
                 ],
                 spacing=10,

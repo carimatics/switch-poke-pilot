@@ -57,7 +57,8 @@ class CommandArea(ft.UserControl):
                              value=self.options[0],
                              on_change=lambda e: self.on_command_changed(self,
                                                                          e,
-                                                                         self.options.index(e.data))),
+                                                                         self.options.index(e.data)),
+                             width=200),
                     ft.Row(
                         controls=[
                             self.reload_button,

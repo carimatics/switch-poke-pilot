@@ -8,7 +8,8 @@ class Dropdown(ft.UserControl):
                  label: str,
                  value: str,
                  on_change: Callable[[Self, ft.ControlEvent, int], None],
-                 options: [str]):
+                 options: [str],
+                 width: int):
         super().__init__()
         self.dropdown: ft.Dropdown | None = None
 
@@ -16,6 +17,7 @@ class Dropdown(ft.UserControl):
         self.value = value
         self.on_change = on_change
         self.options = options
+        self.width = width
 
     @property
     def label(self) -> str:
@@ -57,5 +59,6 @@ class Dropdown(ft.UserControl):
                                                e,
                                                self.options.index(e.data)),
             options=[ft.dropdown.Option(o) for o in self.options],
+            width=self.width,
         )
         return self.dropdown
