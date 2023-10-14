@@ -1,38 +1,43 @@
 import flet as ft
 
 from switchpokepilot.camera import Camera
+from switchpokepilot.state import AppState
 from switchpokepilot.ui.dropdown import Dropdown
 from switchpokepilot.ui.gamescreen import GameScreen
+from switchpokepilot.utils.device import get_devices
 
 
 class CaptureArea(ft.UserControl):
     def __init__(self,
-                 camera: Camera,
-                 camera_id: int):
+                 app_state: AppState):
         super().__init__()
+        self.app_state = app_state
+
         self.contents: ft.Control | None = None
 
-        self.camera = camera
-        self.camera_id = camera_id
+        self.active_camera: Camera | None = self.app_state.camera
+        self.devices = get_devices()
+
+    @property
+    def __camera_options(self):
+        return [device['name'] for device in self.devices]
+
+    def __on_camera_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
+        camera = Camera(capture_size=(1280, 720))
+        camera.name = self.devices[index]['name']
+        camera.id = self.devices[index]['id']
+        self.app_state.camera = camera
+        self.update()
 
     def build(self):
-        # FIXME
-        cameras = ["A", "B", "C"]
-        camera_name = cameras[0]
-
-        def on_camera_changed(dropdown: Dropdown, e: ft.ControlEvent, index: int):
-            print(e.data)
-            print(index)
-            dropdown.update()
-
         self.contents = ft.Container(
             content=ft.Column(
                 controls=[
                     Dropdown(label="Camera",
-                             value=camera_name,
-                             on_change=on_camera_changed,
-                             options=cameras),
-                    GameScreen(self.camera, camera_id=self.camera_id),
+                             value=self.active_camera.name,
+                             on_change=self.__on_camera_change,
+                             options=self.__camera_options),
+                    GameScreen(app_state=self.app_state),
                 ],
                 spacing=10,
                 alignment=ft.alignment.top_left,

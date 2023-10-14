@@ -17,6 +17,38 @@ class Dropdown(ft.UserControl):
         self.on_change = on_change
         self.options = options
 
+    @property
+    def label(self) -> str:
+        return self._get_attr("label")
+
+    @label.setter
+    def label(self, new_value, dirty=True):
+        self._set_attr("label", new_value, dirty)
+
+    @property
+    def value(self):
+        return self._get_attr("value")
+
+    @value.setter
+    def value(self, new_value, dirty=True):
+        self._set_attr("value", new_value, dirty)
+
+    @property
+    def on_change(self):
+        return self._get_attr("on_change")
+
+    @on_change.setter
+    def on_change(self, new_value, dirty=True):
+        self._set_attr("on_change", new_value, dirty)
+
+    @property
+    def options(self):
+        return self._get_attr("options")
+
+    @options.setter
+    def options(self, new_value, dirty=True):
+        self._set_attr("options", new_value, dirty)
+
     def build(self):
         self.dropdown = ft.Dropdown(
             label=self.label,

@@ -50,16 +50,35 @@ class CropAx:
 
 class Camera:
     def __init__(self, capture_size: tuple[int, int]):
+        self.__id: int = 0
+        self.__name: str = "Default"
+
         self.current_frame: cv2.typing.MatLike | None = None
         self.camera: cv2.VideoCapture | None = None
         self.capture_size = capture_size
 
         self.__logger = get_app_logger(__name__)
 
+    @property
+    def id(self) -> int:
+        return self.__id
+
+    @id.setter
+    def id(self, new_value: int):
+        self.__id = new_value
+
+    @property
+    def name(self) -> str:
+        return self.__name
+
+    @name.setter
+    def name(self, new_value: str):
+        self.__name = new_value
+
     def is_opened(self):
         return self.camera is not None and self.camera.isOpened()
 
-    def open(self, camera_id: str | int):
+    def open(self):
         if not is_packed():
             self.__logger.debug("Application is not packed. Skipped open camera.")
             return
@@ -69,12 +88,12 @@ class Camera:
             self.destroy()
 
         if is_windows():
-            self.camera = cv2.VideoCapture(camera_id, cv2.CAP_DSHOW)
+            self.camera = cv2.VideoCapture(self.id, cv2.CAP_DSHOW)
         else:
-            self.camera = cv2.VideoCapture(camera_id)
+            self.camera = cv2.VideoCapture(self.id)
 
         if not self.is_opened():
-            print(f"Camera {camera_id} can't open.")
+            print(f"Camera {self.id} can't open.")
             return
 
         self.resize()

@@ -3,29 +3,46 @@ import threading
 import flet as ft
 
 from switchpokepilot.camera import Camera
+from switchpokepilot.state import AppState, AppStateObserver
 
 DISABLED_IMAGE = "/images/disabled.png"
 
 
-class GameScreen(ft.UserControl):
-    def __init__(self, camera: Camera, camera_id: int):
+class GameScreen(ft.UserControl, AppStateObserver):
+    def __init__(self, app_state: AppState):
         super().__init__()
+        self.app_state = app_state
+
+        # for camera
+        self.camera = self.app_state.camera
 
         # for loop
         self.th: threading.Thread | None = None
 
-        # for camera
-        self.camera: Camera = camera
-        self.camera_id: int = camera_id
-
         self.screen: ft.Image | None = None
 
+    @property
+    def camera(self) -> Camera | None:
+        return self._get_attr("camera")
+
+    @camera.setter
+    def camera(self, new_value: Camera, dirty=True):
+        self._set_attr("camera", new_value, dirty)
+
     def did_mount(self):
-        self.camera.open(self.camera_id)
+        self.app_state.add_observer(self)
+        self.prepare_camera()
+
+    def will_unmount(self):
+        self.app_state.delete_observer(self)
+        self.release_camera()
+
+    def prepare_camera(self):
+        self.camera.open()
         self.th = threading.Thread(target=self.update_screen, args=(), daemon=True)
         self.th.start()
 
-    def will_unmount(self):
+    def release_camera(self):
         self.camera.destroy()
 
     def update_screen(self):
@@ -48,3 +65,10 @@ class GameScreen(ft.UserControl):
             height=self.camera.capture_size[1],
         )
         return self.screen
+
+    def on_app_state_update(self, subject: AppState) -> None:
+        if self.camera != subject.camera:
+            self.camera = subject.camera
+            self.release_camera()
+            self.prepare_camera()
+        self.update()
