@@ -5,6 +5,8 @@ from switchpokepilot.state import AppState, AppStateObserver
 from switchpokepilot.ui.appbar import AppBar
 from switchpokepilot.ui.capturearea import CaptureArea
 from switchpokepilot.ui.commandarea import CommandArea
+from switchpokepilot.ui.dropdown import Dropdown
+from switchpokepilot.ui.logarea import LogArea
 from switchpokepilot.utils.device import get_devices
 
 NAME = "SwitchPokePilot"
@@ -17,7 +19,7 @@ class SwitchPokePilotApp(AppStateObserver):
         self.page: ft.Page | None = None
         self.content: ft.Control | None = None
 
-    def on_command_change(self, command_area: CommandArea, e: ft.ControlEvent, index: int):
+    def on_command_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
         pass
 
     def create_default_camera(self):
@@ -39,7 +41,7 @@ class SwitchPokePilotApp(AppStateObserver):
 
         self.page.appbar = AppBar(page=page)
 
-        command_options = ["自動リーグ周回"]
+        command_options = ["自動リーグ周回", "無限きのみ"]
 
         self.content = ft.Container(
             content=ft.Row(
@@ -47,14 +49,18 @@ class SwitchPokePilotApp(AppStateObserver):
                     ft.Column(
                         controls=[
                             CaptureArea(app_state=self.state),
-                            CommandArea(options=command_options,
+                            CommandArea(app_state=self.state,
+                                        options=command_options,
                                         on_command_changed=self.on_command_change),
                         ],
+                        width=1280,
                     ),
+                    LogArea(self.state.logger),
                 ],
-            )
+            ),
+            alignment=ft.alignment.top_left,
         )
         page.add(self.content)
 
-    def on_app_state_update(self, subject) -> None:
-        pass
+    def on_app_state_update(self, subject: AppState) -> None:
+        self.state.logger.debug("SwitchPokePilotApp: on_app_state_update")

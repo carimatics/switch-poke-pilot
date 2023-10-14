@@ -1,15 +1,20 @@
-from typing import Callable, Self
+from typing import Callable
 
 import flet as ft
 
+from switchpokepilot.state import AppState
 from switchpokepilot.ui.button import Button
 from switchpokepilot.ui.dropdown import Dropdown
 
 
 class CommandArea(ft.UserControl):
-    def __init__(self, options: [str], on_command_changed: Callable[[Self, ft.ControlEvent, int], None]):
+    def __init__(self,
+                 app_state: AppState,
+                 options: [str],
+                 on_command_changed: Callable[[Dropdown, ft.ControlEvent, int], None]):
         super().__init__()
         self.contents: ft.Control | None = None
+        self.app_state = app_state
 
         self.options = options
         self.on_command_changed = on_command_changed
@@ -55,9 +60,7 @@ class CommandArea(ft.UserControl):
                     Dropdown(label="Command",
                              options=self.options,
                              value=self.options[0],
-                             on_change=lambda e: self.on_command_changed(self,
-                                                                         e,
-                                                                         self.options.index(e.data)),
+                             on_change=self.on_command_changed,
                              width=200),
                     ft.Row(
                         controls=[
