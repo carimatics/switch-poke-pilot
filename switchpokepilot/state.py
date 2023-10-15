@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from switchpokepilot.camera import Camera
-from switchpokepilot.logger import Logger
+from switchpokepilot.logger import AppLogger
 
 
 class AppStateObserver(metaclass=ABCMeta):
@@ -15,7 +15,7 @@ class AppState:
         self.__camera: Camera | None = None
         self.__capture_size: tuple[int, int] = (1280, 720)
         self.__observers: list[AppStateObserver] = []
-        self.__logger: Logger = Logger()
+        self.__logger: AppLogger = AppLogger()
 
     @property
     def camera(self) -> Camera:

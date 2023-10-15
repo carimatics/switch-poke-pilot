@@ -7,7 +7,25 @@ class LoggerObserver(metaclass=ABCMeta):
         raise NotImplementedError
 
 
-class Logger:
+class Logger(metaclass=ABCMeta):
+    @abstractmethod
+    def debug(self, message):
+        raise NotImplementedError
+
+    @abstractmethod
+    def info(self, message):
+        raise NotImplementedError
+
+    @abstractmethod
+    def warn(self, message):
+        raise NotImplementedError
+
+    @abstractmethod
+    def error(self, message):
+        raise NotImplementedError
+
+
+class AppLogger(Logger):
     def __init__(self):
         self.__observers: list[LoggerObserver] = []
         self.disabled: bool = False

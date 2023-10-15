@@ -2,11 +2,11 @@ import datetime
 
 import flet as ft
 
-from switchpokepilot.logger import Logger, LoggerObserver
+from switchpokepilot.logger import AppLogger, LoggerObserver
 
 
 class LogArea(ft.Container, LoggerObserver):
-    def __init__(self, logger: Logger):
+    def __init__(self, logger: AppLogger):
         self.text = ft.Text(f"Start: {datetime.datetime.now()}")
         super().__init__(
             width=600,
