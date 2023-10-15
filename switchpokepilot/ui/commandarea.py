@@ -2,6 +2,7 @@ from typing import Callable
 
 import flet as ft
 
+from switchpokepilot.commands.masha import MashA
 from switchpokepilot.state import AppState
 from switchpokepilot.ui.button import Button
 from switchpokepilot.ui.dropdown import Dropdown
@@ -24,32 +25,33 @@ class CommandArea(ft.UserControl):
         self.start_button: Button | None = None
         self.reload_button: Button | None = None
 
+    def did_mount(self):
+        super().did_mount()
+        self.app_state.controller.open("B001B8QO")
+        self.app_state.command = MashA(controller=self.app_state.controller)
+
     def __update_button(self):
         self.stop_button.visible = not self.is_stop
         self.start_button.visible = self.is_stop
         self.reload_button.disabled = not self.is_stop
         self.update()
 
-    def __start(self):
+    def __start(self, button, e):
         self.is_stop = False
+        self.app_state.command.start()
         self.__update_button()
 
-    def __stop(self):
+    def __stop(self, button, e):
         self.is_stop = True
+        self.app_state.command.end()
         self.__update_button()
 
     def build(self):
-        def on_stop_clicked(button, e):
-            self.__stop()
-
-        def on_start_clicked(button, e):
-            self.__start()
-
         self.stop_button = Button("Stop",
-                                  on_click=on_stop_clicked,
+                                  on_click=self.__stop,
                                   visible=not self.is_stop)
         self.start_button = Button("Start",
-                                   on_click=on_start_clicked,
+                                   on_click=self.__start,
                                    visible=self.is_stop)
         self.reload_button = Button("Reload",
                                     disabled=not self.is_stop)

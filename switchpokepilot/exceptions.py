@@ -1,0 +1,2 @@
+class NotSupportedOS(Exception):
+    pass
