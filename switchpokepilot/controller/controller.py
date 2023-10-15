@@ -97,15 +97,15 @@ class StickDisplacement:
 
 
 STICK_DISPLACEMENT = {
-    'CENTER': StickDisplacement(angle=0, magnification=0.0),
-    'UP_LEFT': StickDisplacement(angle=135),
-    'UP': StickDisplacement(angle=90),
-    'UP_RIGHT': StickDisplacement(angle=45),
-    'RIGHT': StickDisplacement(angle=0),
-    'DOWN_RIGHT': StickDisplacement(angle=-45),
-    'DOWN': StickDisplacement(angle=-90),
-    'DOWN_LEFT': StickDisplacement(angle=-135),
-    'LEFT': StickDisplacement(angle=-180),
+    'center': StickDisplacement(angle=0, magnification=0.0),
+    'up_left': StickDisplacement(angle=135),
+    'up': StickDisplacement(angle=90),
+    'up_right': StickDisplacement(angle=45),
+    'right': StickDisplacement(angle=0),
+    'down_right': StickDisplacement(angle=-45),
+    'down': StickDisplacement(angle=-90),
+    'down_left': StickDisplacement(angle=-135),
+    'left': StickDisplacement(angle=-180),
 }
 
 
