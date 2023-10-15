@@ -268,6 +268,9 @@ class Controller:
     def open(self, port: str):
         self.__serial.open(port=port)
 
+    def close(self):
+        self.__serial.close()
+
     def set(self,
             buttons: list[Button] | None = None,
             l_displacement: StickDisplacement | None = None,
