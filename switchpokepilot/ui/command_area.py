@@ -28,22 +28,19 @@ class CommandArea(ft.UserControl):
 
     @property
     def is_running(self):
-        if self.command_runner.command is None:
-            return False
-        return self.command_runner.command.is_running
+        return self.command_runner.is_running
 
     def did_mount(self):
         super().did_mount()
         self.app_state.controller.open("B001B8QO")
-        self.app_state.command = MashA(controller=self.app_state.controller)
+        self.app_state.command = MashA(controller=self.app_state.controller,
+                                       logger=self.app_state.logger)
 
     def __update_button(self):
         self.stop_button.visible = self.is_running
         self.start_button.visible = not self.is_running
         self.reload_button.disabled = self.is_running
-        self.stop_button.update()
-        self.start_button.update()
-        self.reload_button.update()
+        self.update()
 
     def __start(self, button, e):
         self.command_runner.command = self.app_state.command
