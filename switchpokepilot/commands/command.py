@@ -1,17 +1,16 @@
-from abc import ABCMeta, abstractmethod
-
 from switchpokepilot.controller.controller import Controller
 
 
-class Command(metaclass=ABCMeta):
+class Command:
     def __init__(self, controller: Controller):
         self.is_running = False
         self.controller = controller
 
-    @abstractmethod
-    def start(self, postprocess=None):
+    def preprocess(self):
+        self.is_running = True
+
+    def process(self):
         raise NotImplementedError
 
-    @abstractmethod
-    def end(self):
-        raise NotImplementedError
+    def postprocess(self):
+        self.is_running = False

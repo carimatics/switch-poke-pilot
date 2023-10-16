@@ -57,13 +57,13 @@ STICK_DISPLACEMENT_RANGE = {
 
 class StickDisplacement:
     def __init__(self, angle: float, magnification: float = 1.0):
-        self.magnification = StickDisplacement.__clamp_magnification(magnification)
+        self.magnification = self.__clamp_magnification(magnification)
         if magnification == 0.0:
             center = STICK_DISPLACEMENT_RANGE["center"]
             self.x, self.y = center, center
         else:
-            self.x, self.y = StickDisplacement.__calculate_xy(angle, magnification)
-        self.tilts = StickDisplacement.__calculate_tilts(self.x, self.y)
+            self.x, self.y = self.__calculate_xy(angle, magnification)
+        self.tilts = self.__calculate_tilts(self.x, self.y)
 
     @staticmethod
     def __clamp_magnification(magnification: float):
@@ -82,7 +82,7 @@ class StickDisplacement:
         return x, y
 
     @staticmethod
-    def __calculate_tilts(x, y) -> list[StickTilt]:
+    def __calculate_tilts(x: int, y: int) -> list[StickTilt]:
         center = STICK_DISPLACEMENT_RANGE["center"]
         tilts = []
         if x < center:
@@ -96,17 +96,16 @@ class StickDisplacement:
         return tilts
 
 
-STICK_DISPLACEMENT = {
-    'center': StickDisplacement(angle=0, magnification=0.0),
-    'up_left': StickDisplacement(angle=135),
-    'up': StickDisplacement(angle=90),
-    'up_right': StickDisplacement(angle=45),
-    'right': StickDisplacement(angle=0),
-    'down_right': StickDisplacement(angle=-45),
-    'down': StickDisplacement(angle=-90),
-    'down_left': StickDisplacement(angle=-135),
-    'left': StickDisplacement(angle=-180),
-}
+class StickDisplacementPreset:
+    CENTER = StickDisplacement(angle=0, magnification=0.0)
+    UP_LEFT = StickDisplacement(angle=135)
+    UP = StickDisplacement(angle=90)
+    UP_RIGHT = StickDisplacement(angle=45)
+    RIGHT = StickDisplacement(angle=0)
+    DOWN_LIGHT = StickDisplacement(angle=-45)
+    DOWN = StickDisplacement(angle=-90)
+    DOWN_LEFT = StickDisplacement(angle=-135)
+    LEFT = StickDisplacement(angle=-180)
 
 
 class Stick:
@@ -141,11 +140,11 @@ class Stick:
         center = STICK_DISPLACEMENT_RANGE["center"]
         if StickTilt.UP in tilts or StickTilt.DOWN in tilts:
             self.y = center
-            self.x = Stick.__extreme_tilt(self.x)
+            self.x = self.__extreme_tilt(self.x)
             self.changed = True
         if StickTilt.LEFT in tilts or StickTilt.RIGHT in tilts:
             self.x = center
-            self.y = Stick.__extreme_tilt(self.y)
+            self.y = self.__extreme_tilt(self.y)
             self.changed = True
 
     @staticmethod
@@ -281,28 +280,67 @@ class Controller:
                          r_displacement=r_displacement,
                          hat=hat)
 
-    def neutral(self):
+    def reset(self):
+        self.__state.reset()
+
+    def send(self):
+        state_line = ControllerStateSerializer.serialize(self.__state)
+        self.__serial.write_line(state_line)
+
+    def neutral_stick(self):
         self.__state.reset_stick_displacement()
 
-    def one_shot_buttons(self, buttons: list[Button], duration=0.1):
-        self.hold_buttons(buttons)
+    def send_hold(self,
+                  buttons: list[Button] | None = None,
+                  l_displacement: StickDisplacement | None = None,
+                  r_displacement: StickDisplacement | None = None,
+                  hat: Hat | None = None):
+        self.set(buttons=buttons,
+                 l_displacement=l_displacement,
+                 r_displacement=r_displacement,
+                 hat=hat)
+        self.send()
+
+    def send_reset(self):
+        self.reset()
+        self.send()
+
+    def send_one_shot(self,
+                      buttons: list[Button] | None = None,
+                      l_displacement: StickDisplacement | None = None,
+                      r_displacement: StickDisplacement | None = None,
+                      hat: Hat | None = None,
+                      duration=0.1):
+        self.send_hold(buttons=buttons,
+                       l_displacement=l_displacement,
+                       r_displacement=r_displacement,
+                       hat=hat)
         self.wait(duration)
-        self.release_buttons(buttons)
+        self.send_reset()
 
-    def hold_buttons(self, buttons: list[Button]):
-        self.__state.set(buttons=buttons)
-        self.send_state()
+    def send_repeat(self,
+                    count: int = 1,
+                    buttons: list[Button] | None = None,
+                    l_displacement: StickDisplacement | None = None,
+                    r_displacement: StickDisplacement | None = None,
+                    hat: Hat | None = None,
+                    duration: float = 0.1,
+                    interval: float = 0.1,
+                    skip_last_interval: bool = True):
+        if count < 1:
+            return
 
-    def release_buttons(self, buttons: list[Button]):
-        self.__state.unset(buttons=buttons)
-        self.send_state()
-
-    def send_state(self):
-        state = ControllerStateSerializer.serialize(self.__state)
-        self.__serial.write_line(state)
+        for i in range(count):
+            self.send_one_shot(buttons=buttons,
+                               l_displacement=l_displacement,
+                               r_displacement=r_displacement,
+                               hat=hat,
+                               duration=duration)
+            if skip_last_interval and i + 1 < count:
+                self.wait(interval)
 
     @staticmethod
-    def wait(wait):
+    def wait(wait: float):
         if float(wait) > 0.1:
             sleep(wait)
         else:

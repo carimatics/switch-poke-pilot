@@ -3,10 +3,10 @@ import flet as ft
 from switchpokepilot.camera import Camera
 from switchpokepilot.state import AppState, AppStateObserver
 from switchpokepilot.ui.appbar import AppBar
-from switchpokepilot.ui.capturearea import CaptureArea
-from switchpokepilot.ui.commandarea import CommandArea
+from switchpokepilot.ui.capture_area import CaptureArea
+from switchpokepilot.ui.command_area import CommandArea
 from switchpokepilot.ui.dropdown import Dropdown
-from switchpokepilot.ui.logarea import LogArea
+from switchpokepilot.ui.log_area import LogArea
 from switchpokepilot.utils.device import get_devices
 
 NAME = "SwitchPokePilot"

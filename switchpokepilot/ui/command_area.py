@@ -2,7 +2,8 @@ from typing import Callable
 
 import flet as ft
 
-from switchpokepilot.commands.masha import MashA
+from switchpokepilot.commands.implementations.mash_a import MashA
+from switchpokepilot.commands.runner import CommandRunner
 from switchpokepilot.state import AppState
 from switchpokepilot.ui.button import Button
 from switchpokepilot.ui.dropdown import Dropdown
@@ -16,14 +17,20 @@ class CommandArea(ft.UserControl):
         super().__init__()
         self.contents: ft.Control | None = None
         self.app_state = app_state
+        self.command_runner = CommandRunner()
 
         self.options = options
         self.on_command_changed = on_command_changed
 
-        self.is_stop = True
         self.stop_button: Button | None = None
         self.start_button: Button | None = None
         self.reload_button: Button | None = None
+
+    @property
+    def is_running(self):
+        if self.command_runner.command is None:
+            return False
+        return self.command_runner.command.is_running
 
     def did_mount(self):
         super().did_mount()
@@ -31,30 +38,32 @@ class CommandArea(ft.UserControl):
         self.app_state.command = MashA(controller=self.app_state.controller)
 
     def __update_button(self):
-        self.stop_button.visible = not self.is_stop
-        self.start_button.visible = self.is_stop
-        self.reload_button.disabled = not self.is_stop
-        self.update()
+        self.stop_button.visible = self.is_running
+        self.start_button.visible = not self.is_running
+        self.reload_button.disabled = self.is_running
+        self.stop_button.update()
+        self.start_button.update()
+        self.reload_button.update()
 
     def __start(self, button, e):
-        self.is_stop = False
-        self.app_state.command.start()
+        self.command_runner.command = self.app_state.command
+        self.command_runner.start()
         self.__update_button()
 
     def __stop(self, button, e):
-        self.is_stop = True
-        self.app_state.command.end()
+        self.command_runner.stop()
+        self.command_runner.command = None
         self.__update_button()
 
     def build(self):
         self.stop_button = Button("Stop",
                                   on_click=self.__stop,
-                                  visible=not self.is_stop)
+                                  visible=self.is_running)
         self.start_button = Button("Start",
                                    on_click=self.__start,
-                                   visible=self.is_stop)
+                                   visible=not self.is_running)
         self.reload_button = Button("Reload",
-                                    disabled=not self.is_stop)
+                                    disabled=self.is_running)
 
         self.contents = ft.Container(
             ft.Column(
