@@ -1,6 +1,6 @@
 import flet as ft
 
-from switchpokepilot.app.switchpokepilot import SwitchPokePilotApp
+from switchpokepilot.app.switch_poke_pilot import SwitchPokePilotApp
 from switchpokepilot.utils.assets import get_assets_dir
 from switchpokepilot.utils.env import is_packed
 
