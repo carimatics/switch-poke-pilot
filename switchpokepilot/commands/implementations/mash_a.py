@@ -13,5 +13,5 @@ class MashA(Command):
         while self.should_running:
             self.__controller.send_one_shot(buttons=[Button.A])
             self.__controller.wait(0.5)
-            self.__logger.debug("MashA: is running...")
-        self.__logger.debug("MashA: is stopping...")
+            self.__logger.debug(f"{self.name}: running...")
+        self.__logger.debug(f"{self.name}: stopping...")
