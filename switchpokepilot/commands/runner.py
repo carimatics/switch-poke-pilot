@@ -12,7 +12,7 @@ class CommandRunner:
     def is_running(self):
         if self.__thread is None:
             return False
-        return not self.__thread.is_alive()
+        return self.__thread.is_alive()
 
     def start(self):
         self.command.preprocess()
