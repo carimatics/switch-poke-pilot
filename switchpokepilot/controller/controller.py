@@ -336,8 +336,11 @@ class Controller:
                                r_displacement=r_displacement,
                                hat=hat,
                                duration=duration)
-            if skip_last_interval and i + 1 < count:
-                self.wait(interval)
+
+            if skip_last_interval and i >= count - 1:
+                break
+
+            self.wait(interval)
 
     @staticmethod
     def wait(wait: float):
