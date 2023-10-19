@@ -1,7 +1,21 @@
-class Command:
-    def __init__(self, name: str):
+from dataclasses import dataclass
+
+from switchpokepilot.controller.controller import Controller
+from switchpokepilot.logger import Logger
+
+
+@dataclass
+class CommandInitParams:
+    controller: Controller
+    logger: Logger
+
+
+class BaseCommand:
+    def __init__(self, params: CommandInitParams):
         self.should_running: bool = False
-        self.name: str = name
+        self.name: str = 'Command'
+        self.controller = params.controller
+        self.logger = params.logger
 
     def preprocess(self):
         self.should_running = True

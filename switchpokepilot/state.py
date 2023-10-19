@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from switchpokepilot.camera import Camera
-from switchpokepilot.commands.command import Command
+from switchpokepilot.commands.command import BaseCommand
 from switchpokepilot.controller.controller import Controller
 from switchpokepilot.logger import AppLogger
 
@@ -19,7 +19,7 @@ class AppState:
         self._observers: list[AppStateObserver] = []
         self._logger: AppLogger = AppLogger()
         self._controller: Controller = Controller(logger=self._logger)
-        self._command: Command | None = None
+        self._command: BaseCommand | None = None
 
     @property
     def camera(self) -> Camera:
