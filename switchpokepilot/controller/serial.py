@@ -9,55 +9,55 @@ from switchpokepilot.utils.os import is_macos, is_windows, is_linux
 
 class Serial:
     def __init__(self, logger: Logger):
-        self.__logger = logger
-        self.__serial: serial.Serial | None = None
+        self._logger = logger
+        self._serial: serial.Serial | None = None
 
-        self.__content_last_wrote: str | None = None
-        self.__time_before_write: float | None = None
-        self.__time_after_write: float | None = None
+        self._content_last_wrote: str | None = None
+        self._time_before_write: float | None = None
+        self._time_after_write: float | None = None
 
     def open(self, port: str, name: str = "", baud_rate: int = 9600):
         try:
             if name is None or name == "":
-                name = self.__determine_name(port)
+                name = self._determine_name(port)
 
-            self.__logger.debug(f"connecting to {name}")
-            self.__serial = serial.Serial(name, baud_rate)
+            self._logger.debug(f"connecting to {name}")
+            self._serial = serial.Serial(name, baud_rate)
             return True
         except NotSupportedOS as e:
-            self.__logger.error("COM Port: not supported OS.")
-            self.__logger.error(f"{e}")
+            self._logger.error("COM Port: not supported OS.")
+            self._logger.error(f"{e}")
             return False
         except IOError as e:
-            self.__logger.error("COM Port: can't be established.")
-            self.__logger.error(f"{e}")
+            self._logger.error("COM Port: can't be established.")
+            self._logger.error(f"{e}")
             return False
 
     def close(self):
-        self.__logger.debug("Closing the serial communication.")
-        self.__serial.close()
-        self.__serial = None
+        self._logger.debug("Closing the serial communication.")
+        self._serial.close()
+        self._serial = None
 
     def is_open(self):
-        return self.__serial is not None and self.__serial.isOpen()
+        return self._serial is not None and self._serial.isOpen()
 
     def write_line(self, line: str):
         try:
-            self.__serial.write(f"{line}\r\n".encode("utf-8"))
+            self._serial.write(f"{line}\r\n".encode("utf-8"))
         except serial.SerialException as e:
-            self.__logger.error(f"{e}")
+            self._logger.error(f"{e}")
         except AttributeError as e:
-            self.__logger.error("Maybe using a port that is not open.")
-            self.__logger.error(f"{e}")
+            self._logger.error("Maybe using a port that is not open.")
+            self._logger.error(f"{e}")
 
     def write_line_with_perf_counter(self, line: str):
-        self.__time_before_write = time.perf_counter()
+        self._time_before_write = time.perf_counter()
         self.write_line(line)
-        self.__time_after_write = time.perf_counter()
-        self.__content_last_wrote = line
+        self._time_after_write = time.perf_counter()
+        self._content_last_wrote = line
 
     @staticmethod
-    def __determine_name(port: str) -> str:
+    def _determine_name(port: str) -> str:
         if is_windows():
             return f"COM{port}"
         elif is_macos():

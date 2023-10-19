@@ -22,13 +22,13 @@ class LogArea(ft.Container, LoggerObserver):
             border=ft.border.all(2),
             alignment=ft.alignment.top_left,
         )
-        self.__logger = logger
+        self._logger = logger
 
     def did_mount(self):
-        self.__logger.add_observer(self)
+        self._logger.add_observer(self)
 
     def will_unmount(self):
-        self.__logger.delete_observer(self)
+        self._logger.delete_observer(self)
 
     def add_log(self, message):
         self.text.value = f"{self.text.value}\n{message}"

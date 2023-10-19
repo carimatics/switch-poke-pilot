@@ -50,41 +50,41 @@ class CropAx:
 
 class Camera:
     def __init__(self, capture_size: tuple[int, int]):
-        self.__id: int = 0
-        self.__name: str = "Default"
+        self._id: int = 0
+        self._name: str = "Default"
 
         self.current_frame: cv2.typing.MatLike | None = None
         self.camera: cv2.VideoCapture | None = None
         self.capture_size = capture_size
 
-        self.__logger = get_app_logger(__name__)
+        self._logger = get_app_logger(__name__)
 
     @property
     def id(self) -> int:
-        return self.__id
+        return self._id
 
     @id.setter
     def id(self, new_value: int):
-        self.__id = new_value
+        self._id = new_value
 
     @property
     def name(self) -> str:
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, new_value: str):
-        self.__name = new_value
+        self._name = new_value
 
     def is_opened(self):
         return self.camera is not None and self.camera.isOpened()
 
     def open(self):
         if not is_packed():
-            self.__logger.debug("Application is not packed. Skipped open camera.")
+            self._logger.debug("Application is not packed. Skipped open camera.")
             return
 
         if self.is_opened():
-            self.__logger.debug("Camera is already opened.")
+            self._logger.debug("Camera is already opened.")
             self.destroy()
 
         if is_windows():
@@ -153,16 +153,16 @@ class Camera:
         save_dir = os.path.dirname(save_path)
         if not os.path.exists(save_dir) or not os.path.isdir(save_dir):
             os.makedirs(save_dir)
-            self.__logger.debug("Capture directory created.")
+            self._logger.debug("Capture directory created.")
 
         try:
             write_image(save_path, image)
-            self.__logger.debug(f"Capture succeeded: {save_path}")
+            self._logger.debug(f"Capture succeeded: {save_path}")
         except cv2.error as e:
-            self.__logger.error(f"Capture failed: {e}")
+            self._logger.error(f"Capture failed: {e}")
 
     def destroy(self):
         if self.is_opened():
             self.camera.release()
             self.camera = None
-            self.__logger.debug("Camera destroyed.")
+            self._logger.debug("Camera destroyed.")

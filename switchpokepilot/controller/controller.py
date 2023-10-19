@@ -57,16 +57,16 @@ STICK_DISPLACEMENT_RANGE = {
 
 class StickDisplacement:
     def __init__(self, angle: float, magnification: float = 1.0):
-        self.magnification = self.__clamp_magnification(magnification)
+        self.magnification = self._clamp_magnification(magnification)
         if magnification == 0.0:
             center = STICK_DISPLACEMENT_RANGE["center"]
             self.x, self.y = center, center
         else:
-            self.x, self.y = self.__calculate_xy(angle, magnification)
-        self.tilts = self.__calculate_tilts(self.x, self.y)
+            self.x, self.y = self._calculate_xy(angle, magnification)
+        self.tilts = self._calculate_tilts(self.x, self.y)
 
     @staticmethod
-    def __clamp_magnification(magnification: float):
+    def _clamp_magnification(magnification: float):
         if magnification < 0.0:
             return 0.0
         elif magnification > 1.0:
@@ -75,14 +75,14 @@ class StickDisplacement:
             return magnification
 
     @staticmethod
-    def __calculate_xy(angle: float, magnification: float) -> tuple[int, int]:
+    def _calculate_xy(angle: float, magnification: float) -> tuple[int, int]:
         rad = math.radians(angle)
         x = math.ceil(127.5 * math.cos(rad) * magnification + 127.5)
         y = math.floor(127.5 * math.sin(rad) * magnification + 127.5)
         return x, y
 
     @staticmethod
-    def __calculate_tilts(x: int, y: int) -> list[StickTilt]:
+    def _calculate_tilts(x: int, y: int) -> list[StickTilt]:
         center = STICK_DISPLACEMENT_RANGE["center"]
         tilts = []
         if x < center:
@@ -140,15 +140,15 @@ class Stick:
         center = STICK_DISPLACEMENT_RANGE["center"]
         if StickTilt.UP in tilts or StickTilt.DOWN in tilts:
             self.y = center
-            self.x = self.__extreme_tilt(self.x)
+            self.x = self._extreme_tilt(self.x)
             self.changed = True
         if StickTilt.LEFT in tilts or StickTilt.RIGHT in tilts:
             self.x = center
-            self.y = self.__extreme_tilt(self.y)
+            self.y = self._extreme_tilt(self.y)
             self.changed = True
 
     @staticmethod
-    def __extreme_tilt(displacement: int) -> int:
+    def _extreme_tilt(displacement: int) -> int:
         center = STICK_DISPLACEMENT_RANGE["center"]
         if displacement > center:
             return STICK_DISPLACEMENT_RANGE["max"]
@@ -260,35 +260,35 @@ class ControllerStateSerializer:
 
 class Controller:
     def __init__(self, logger: Logger):
-        self.__logger = logger
-        self.__state = ControllerState()
-        self.__serial = Serial(logger=logger)
+        self._logger = logger
+        self._state = ControllerState()
+        self._serial = Serial(logger=logger)
 
     def open(self, port: str):
-        self.__serial.open(port=port)
+        self._serial.open(port=port)
 
     def close(self):
-        self.__serial.close()
+        self._serial.close()
 
     def set(self,
             buttons: list[Button] | None = None,
             l_displacement: StickDisplacement | None = None,
             r_displacement: StickDisplacement | None = None,
             hat: Hat | None = None):
-        self.__state.set(buttons=buttons,
-                         l_displacement=l_displacement,
-                         r_displacement=r_displacement,
-                         hat=hat)
+        self._state.set(buttons=buttons,
+                        l_displacement=l_displacement,
+                        r_displacement=r_displacement,
+                        hat=hat)
 
     def reset(self):
-        self.__state.reset()
+        self._state.reset()
 
     def send(self):
-        state_line = ControllerStateSerializer.serialize(self.__state)
-        self.__serial.write_line(state_line)
+        state_line = ControllerStateSerializer.serialize(self._state)
+        self._serial.write_line(state_line)
 
     def neutral_stick(self):
-        self.__state.reset_stick_displacement()
+        self._state.reset_stick_displacement()
 
     def send_hold(self,
                   buttons: list[Button] | None = None,

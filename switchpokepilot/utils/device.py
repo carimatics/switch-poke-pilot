@@ -4,7 +4,7 @@ import subprocess
 from switchpokepilot.utils.os import is_macos
 
 
-def __get_devices_macos():
+def _get_devices_macos():
     command = 'system_profiler SPCameraDataType -json'
     res = subprocess.run(command, stdout=subprocess.PIPE, shell=True)
     res_json = res.stdout.decode('utf-8')
@@ -14,6 +14,6 @@ def __get_devices_macos():
 
 def get_devices() -> list[dict[str, str | int]]:
     if is_macos():
-        return __get_devices_macos()
+        return _get_devices_macos()
     else:
         return []

@@ -18,7 +18,7 @@ class GameScreen(ft.UserControl, AppStateObserver):
         self.camera = self.app_state.camera
 
         # for loop
-        self.__thread: threading.Thread | None = None
+        self._thread: threading.Thread | None = None
 
     @property
     def camera(self) -> Camera | None:
@@ -30,25 +30,25 @@ class GameScreen(ft.UserControl, AppStateObserver):
 
     def did_mount(self):
         self.app_state.add_observer(self)
-        self.__prepare_camera()
+        self._prepare_camera()
 
     def will_unmount(self):
         self.app_state.delete_observer(self)
-        self.__release_camera()
+        self._release_camera()
 
-    def __prepare_camera(self):
+    def _prepare_camera(self):
         self.camera.open()
-        self.__thread = threading.Thread(target=self.__loop_update_screen,
-                                         name=f"{GameScreen.__name__}:{self.__loop_update_screen.__name__}",
-                                         daemon=True)
-        self.__thread.start()
+        self._thread = threading.Thread(target=self._loop_update_screen,
+                                        name=f"{GameScreen.__name__}:{self._loop_update_screen.__name__}",
+                                        daemon=True)
+        self._thread.start()
 
-    def __release_camera(self):
+    def _release_camera(self):
         self.camera.destroy()
-        self.__thread.join()
-        self.__thread = None
+        self._thread.join()
+        self._thread = None
 
-    def __loop_update_screen(self):
+    def _loop_update_screen(self):
         while self.camera.is_opened():
             self.camera.read_frame()
             encoded = self.camera.encoded_current_frame_base64()
@@ -72,6 +72,6 @@ class GameScreen(ft.UserControl, AppStateObserver):
     def on_app_state_update(self, subject: AppState) -> None:
         if self.camera != subject.camera:
             self.camera = subject.camera
-            self.__release_camera()
-            self.__prepare_camera()
+            self._release_camera()
+            self._prepare_camera()
         self.update()
