@@ -2,7 +2,7 @@ from switchpokepilot.core.command.base import BaseCommand, CommandInitParams
 from switchpokepilot.core.controller.controller import Button
 
 
-class Command(BaseCommand):
+class MashA(BaseCommand):
     def __init__(self, params: CommandInitParams):
         super().__init__(params=params)
         self.name = "A連打"

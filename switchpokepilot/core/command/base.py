@@ -13,7 +13,8 @@ class CommandInitParams:
 class BaseCommand:
     def __init__(self, params: CommandInitParams):
         self.should_keep_running: bool = False
-        self.name: str = 'Command'
+        self.name: str = "Command"
+        self.generation: str = "General"
         self.controller = params.controller
         self.logger = params.logger
 

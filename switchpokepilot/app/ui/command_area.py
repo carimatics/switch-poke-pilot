@@ -3,7 +3,7 @@ import flet as ft
 from switchpokepilot.app.ui.button import Button
 from switchpokepilot.app.ui.dropdown import Dropdown
 from switchpokepilot.core.command.base import BaseCommand, CommandInitParams
-from switchpokepilot.core.command.loader import CommandLoader
+from switchpokepilot.core.command.implementations import command_classes
 from switchpokepilot.core.command.runner import CommandRunner
 from switchpokepilot.core.state import AppState
 
@@ -50,9 +50,8 @@ class CommandArea(ft.UserControl):
         self.update()
 
     def _reload_commands(self):
-        command_dir = "./switchpokepilot/core/command/implementations"
         params = CommandInitParams(controller=self.app_state.controller, logger=self.app_state.logger)
-        self._commands = [Command(params=params) for Command in CommandLoader(command_dir).load()]
+        self._commands = [Command(params=params) for Command in command_classes]
 
     def _on_command_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
         self.app_state.command = self._commands[index]
