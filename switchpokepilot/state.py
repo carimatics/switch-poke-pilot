@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from switchpokepilot.camera import Camera
-from switchpokepilot.commands.command import BaseCommand
+from switchpokepilot.commands.base import BaseCommand
 from switchpokepilot.controller.controller import Controller
 from switchpokepilot.logger import AppLogger
 

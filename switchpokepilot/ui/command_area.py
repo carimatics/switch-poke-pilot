@@ -1,6 +1,6 @@
 import flet as ft
 
-from switchpokepilot.commands.command import BaseCommand, CommandInitParams
+from switchpokepilot.commands.base import BaseCommand, CommandInitParams
 from switchpokepilot.commands.loader import CommandLoader
 from switchpokepilot.commands.runner import CommandRunner
 from switchpokepilot.state import AppState
