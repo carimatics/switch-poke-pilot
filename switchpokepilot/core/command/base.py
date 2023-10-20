@@ -12,16 +12,16 @@ class CommandInitParams:
 
 class BaseCommand:
     def __init__(self, params: CommandInitParams):
-        self.should_running: bool = False
+        self.should_keep_running: bool = False
         self.name: str = 'Command'
         self.controller = params.controller
         self.logger = params.logger
 
     def preprocess(self):
-        self.should_running = True
+        self.should_keep_running = True
 
     def process(self):
         raise NotImplementedError
 
     def postprocess(self):
-        self.should_running = False
+        self.should_keep_running = False

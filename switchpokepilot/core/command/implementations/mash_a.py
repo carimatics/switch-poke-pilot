@@ -8,7 +8,7 @@ class Command(BaseCommand):
         self.name = "A連打"
 
     def process(self):
-        while self.should_running:
+        while self.should_keep_running:
             self.controller.send_one_shot(buttons=[Button.A])
             self.controller.wait(0.5)
             self.logger.debug(f"{self.name}: running...")
