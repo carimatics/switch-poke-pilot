@@ -22,7 +22,10 @@ class CropRegion:
 
 
 class Camera:
-    def __init__(self, capture_size: tuple[int, int], logger: Logger):
+    def __init__(self,
+                 capture_size: tuple[int, int],
+                 image_processor: ImageProcessor,
+                 logger: Logger):
         self._id: int = 0
         self._name: str = "Default"
 
@@ -31,7 +34,7 @@ class Camera:
         self.capture_size = capture_size
 
         self._logger = logger
-        self._image_processor = ImageProcessor(logger=self._logger)
+        self._image_processor = image_processor
 
     @property
     def id(self) -> int:

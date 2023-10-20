@@ -23,7 +23,9 @@ class CaptureArea(ft.UserControl):
         return [device['name'] for device in self.devices]
 
     def _on_camera_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
-        camera = Camera(capture_size=(1280, 720), logger=self.app_state.logger)
+        camera = Camera(capture_size=(1280, 720),
+                        image_processor=self.app_state.image_processor,
+                        logger=self.app_state.logger)
         camera.name = self.devices[index]['name']
         camera.id = self.devices[index]['id']
         self.app_state.camera = camera

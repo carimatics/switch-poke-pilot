@@ -20,6 +20,7 @@ class SwitchPokePilotApp(AppStateObserver):
 
     def create_default_camera(self):
         camera = Camera(capture_size=self.state.capture_size,
+                        image_processor=self.state.image_processor,
                         logger=self.state.logger)
         camera_info = get_devices()[0]
         camera.id = camera_info['id']

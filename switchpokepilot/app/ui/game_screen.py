@@ -33,7 +33,7 @@ class GameScreen(ft.UserControl, AppStateObserver):
         self._prepare_camera()
 
     def will_unmount(self):
-        self.app_state.delete_observer(self)
+        self.app_state.remove_observer(self)
         self._release_camera()
 
     def _prepare_camera(self):
