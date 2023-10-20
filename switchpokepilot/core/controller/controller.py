@@ -3,8 +3,8 @@ import time
 from enum import Enum, IntEnum, IntFlag, auto
 from time import sleep
 
-from switchpokepilot.controller.serial import Serial
-from switchpokepilot.logger import Logger
+from switchpokepilot.core.controller.serial import Serial
+from switchpokepilot.core.logger import Logger
 
 
 class Button(IntFlag):

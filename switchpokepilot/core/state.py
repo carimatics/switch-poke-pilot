@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractmethod
 
-from switchpokepilot.camera import Camera
-from switchpokepilot.command.base import BaseCommand
-from switchpokepilot.controller.controller import Controller
-from switchpokepilot.logger import AppLogger
+from switchpokepilot.core.camera import Camera
+from switchpokepilot.core.command.base import BaseCommand
+from switchpokepilot.core.controller.controller import Controller
+from switchpokepilot.core.logger import AppLogger
 
 
 class AppStateObserver(metaclass=ABCMeta):

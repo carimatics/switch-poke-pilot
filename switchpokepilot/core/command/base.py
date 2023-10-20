@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from switchpokepilot.controller.controller import Controller
-from switchpokepilot.logger import Logger
+from switchpokepilot.core.controller.controller import Controller
+from switchpokepilot.core.logger import Logger
 
 
 @dataclass

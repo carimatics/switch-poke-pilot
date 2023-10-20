@@ -1,6 +1,6 @@
 import threading
 
-from switchpokepilot.command.base import BaseCommand
+from switchpokepilot.core.command.base import BaseCommand
 
 
 class CommandRunner:

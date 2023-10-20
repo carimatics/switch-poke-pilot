@@ -4,9 +4,9 @@ import os.path
 
 import cv2
 
-from switchpokepilot.utils.env import is_packed
-from switchpokepilot.utils.logger import get_app_logger
-from switchpokepilot.utils.os import is_windows
+from switchpokepilot.core.utils.env import is_packed
+from switchpokepilot.core.utils.logger import get_app_logger
+from switchpokepilot.core.utils.os import is_windows
 
 CAPTURE_DIR = "./Captures/"
 

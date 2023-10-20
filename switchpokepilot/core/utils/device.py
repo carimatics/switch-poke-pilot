@@ -1,7 +1,7 @@
 import json
 import subprocess
 
-from switchpokepilot.utils.os import is_macos
+from switchpokepilot.core.utils.os import is_macos
 
 
 def _get_devices_macos():

@@ -2,8 +2,8 @@ import threading
 
 import flet as ft
 
-from switchpokepilot.camera import Camera
-from switchpokepilot.state import AppState, AppStateObserver
+from switchpokepilot.core.camera import Camera
+from switchpokepilot.core.state import AppState, AppStateObserver
 
 DISABLED_IMAGE = "/images/disabled.png"
 

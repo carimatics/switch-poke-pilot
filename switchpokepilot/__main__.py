@@ -1,8 +1,8 @@
 import flet as ft
 
 from switchpokepilot.app.switch_poke_pilot import SwitchPokePilotApp
-from switchpokepilot.utils.assets import get_assets_dir
-from switchpokepilot.utils.env import is_packed
+from switchpokepilot.core.utils.assets import get_assets_dir
+from switchpokepilot.core.utils.env import is_packed
 
 if __name__ == '__main__':
     packed = is_packed()

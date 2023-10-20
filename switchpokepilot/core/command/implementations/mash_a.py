@@ -1,5 +1,5 @@
-from switchpokepilot.command.base import BaseCommand, CommandInitParams
-from switchpokepilot.controller.controller import Button
+from switchpokepilot.core.command.base import BaseCommand, CommandInitParams
+from switchpokepilot.core.controller.controller import Button
 
 
 class Command(BaseCommand):

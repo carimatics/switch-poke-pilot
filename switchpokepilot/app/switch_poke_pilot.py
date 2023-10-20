@@ -1,12 +1,12 @@
 import flet as ft
 
-from switchpokepilot.camera import Camera
-from switchpokepilot.state import AppState, AppStateObserver
-from switchpokepilot.ui.appbar import AppBar
-from switchpokepilot.ui.capture_area import CaptureArea
-from switchpokepilot.ui.command_area import CommandArea
-from switchpokepilot.ui.log_area import LogArea
-from switchpokepilot.utils.device import get_devices
+from switchpokepilot.app.ui.appbar import AppBar
+from switchpokepilot.app.ui.capture_area import CaptureArea
+from switchpokepilot.app.ui.command_area import CommandArea
+from switchpokepilot.app.ui.log_area import LogArea
+from switchpokepilot.core.camera import Camera
+from switchpokepilot.core.state import AppState, AppStateObserver
+from switchpokepilot.core.utils.device import get_devices
 
 NAME = "SwitchPokePilot"
 VERSION = "v0.1.0"

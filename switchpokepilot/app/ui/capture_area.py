@@ -1,10 +1,10 @@
 import flet as ft
 
-from switchpokepilot.camera import Camera
-from switchpokepilot.state import AppState
-from switchpokepilot.ui.dropdown import Dropdown
-from switchpokepilot.ui.game_screen import GameScreen
-from switchpokepilot.utils.device import get_devices
+from switchpokepilot.app.ui.dropdown import Dropdown
+from switchpokepilot.app.ui.game_screen import GameScreen
+from switchpokepilot.core.camera import Camera
+from switchpokepilot.core.state import AppState
+from switchpokepilot.core.utils.device import get_devices
 
 
 class CaptureArea(ft.UserControl):

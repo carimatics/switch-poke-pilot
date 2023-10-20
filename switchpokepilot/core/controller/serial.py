@@ -2,9 +2,9 @@ import time
 
 import serial
 
-from switchpokepilot.exceptions import NotSupportedOS
-from switchpokepilot.logger import Logger
-from switchpokepilot.utils.os import is_macos, is_windows, is_linux
+from switchpokepilot.core.exceptions import NotSupportedOS
+from switchpokepilot.core.logger import Logger
+from switchpokepilot.core.utils.os import is_macos, is_windows, is_linux
 
 
 class Serial:
