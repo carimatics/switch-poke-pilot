@@ -17,7 +17,7 @@ class CommandLoader:
         return os.listdir(os.path.abspath(self.dir_name))
 
     def _get_class(self, name: str) -> Type[BaseCommand]:
-        spec = importlib.util.spec_from_file_location(name, f"{self.dir_name}/{name}/command.py")
+        spec = importlib.util.spec_from_file_location(name, f"{self.dir_name}/{name}")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module.Command
