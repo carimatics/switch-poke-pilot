@@ -19,7 +19,8 @@ class SwitchPokePilotApp(AppStateObserver):
         self.content: ft.Control | None = None
 
     def create_default_camera(self):
-        camera = Camera(capture_size=self.state.capture_size)
+        camera = Camera(capture_size=self.state.capture_size,
+                        logger=self.state.logger)
         camera_info = get_devices()[0]
         camera.id = camera_info['id']
         camera.name = camera_info['name']

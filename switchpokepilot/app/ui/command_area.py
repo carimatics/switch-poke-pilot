@@ -44,7 +44,9 @@ class CommandArea(ft.UserControl):
         self._update_button()
 
     def _initialize_commands(self):
-        params = CommandInitParams(controller=self.app_state.controller, logger=self.app_state.logger)
+        params = CommandInitParams(controller=self.app_state.controller,
+                                   logger=self.app_state.logger,
+                                   camera=self.app_state.camera)
         self._commands = [Command(params=params) for Command in command_classes]
         self.app_state.command = self._commands[0]
 

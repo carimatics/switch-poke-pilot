@@ -19,11 +19,11 @@ class CaptureArea(ft.UserControl):
         self.devices = get_devices()
 
     @property
-    def __camera_options(self):
+    def _camera_options(self):
         return [device['name'] for device in self.devices]
 
-    def __on_camera_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
-        camera = Camera(capture_size=(1280, 720))
+    def _on_camera_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
+        camera = Camera(capture_size=(1280, 720), logger=self.app_state.logger)
         camera.name = self.devices[index]['name']
         camera.id = self.devices[index]['id']
         self.app_state.camera = camera
@@ -37,8 +37,8 @@ class CaptureArea(ft.UserControl):
                         controls=[
                             Dropdown(label="Camera",
                                      value=self.active_camera.name,
-                                     on_change=self.__on_camera_change,
-                                     options=self.__camera_options,
+                                     on_change=self._on_camera_change,
+                                     options=self._camera_options,
                                      width=800),
                         ],
                         width=1720,
