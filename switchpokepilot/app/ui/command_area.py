@@ -18,7 +18,6 @@ class CommandArea(ft.UserControl):
 
         self.stop_button: Button | None = None
         self.start_button: Button | None = None
-        self.reload_button: Button | None = None
         self._commands: list[BaseCommand] = []
 
     @property
@@ -32,7 +31,6 @@ class CommandArea(ft.UserControl):
     def _update_button(self):
         self.stop_button.visible = self.is_running
         self.start_button.visible = not self.is_running
-        self.reload_button.disabled = self.is_running
         self.update()
 
     def _start(self, button, e):
@@ -45,45 +43,33 @@ class CommandArea(ft.UserControl):
         self.command_runner.command = None
         self._update_button()
 
-    def _reload(self, button, e):
-        self._reload_commands()
-        self.update()
-
-    def _reload_commands(self):
+    def _initialize_commands(self):
         params = CommandInitParams(controller=self.app_state.controller, logger=self.app_state.logger)
         self._commands = [Command(params=params) for Command in command_classes]
+        self.app_state.command = self._commands[0]
 
     def _on_command_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
         self.app_state.command = self._commands[index]
 
-    def _command(self, index: int):
-        if index >= len(self._commands):
-            return ""
-        return self._commands[index]
-
     def build(self):
-        self._reload_commands()
+        self._initialize_commands()
         self.stop_button = Button("Stop",
                                   on_click=self._stop,
                                   visible=self.is_running)
         self.start_button = Button("Start",
                                    on_click=self._start,
                                    visible=not self.is_running)
-        self.reload_button = Button("Reload",
-                                    on_click=self._reload,
-                                    disabled=self.is_running)
 
         self.contents = ft.Container(
             ft.Column(
                 controls=[
                     Dropdown(label="Command",
                              options=[command.name for command in self._commands],
-                             value=self._command(0).name,
+                             value=self.app_state.command.name,
                              on_change=self._on_command_change,
                              width=200),
                     ft.Row(
                         controls=[
-                            self.reload_button,
                             self.start_button,
                             self.stop_button,
                         ],
