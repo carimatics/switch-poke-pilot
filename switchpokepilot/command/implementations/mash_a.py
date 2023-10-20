@@ -1,4 +1,4 @@
-from switchpokepilot.commands.base import BaseCommand, CommandInitParams
+from switchpokepilot.command.base import BaseCommand, CommandInitParams
 from switchpokepilot.controller.controller import Button
 
 

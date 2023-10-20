@@ -2,7 +2,7 @@ import importlib.util
 import os
 from typing import Type
 
-from switchpokepilot.commands.base import BaseCommand
+from switchpokepilot.command.base import BaseCommand
 
 
 class CommandLoader:
