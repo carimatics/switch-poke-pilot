@@ -17,7 +17,7 @@ class CommandRunner:
     def start(self):
         self.command.preprocess()
 
-        thread_name = f"{CommandRunner.__name__}:${self.command.process.__name__}:${self.command.name}"
+        thread_name = f"{CommandRunner.__name__}:${self.command.process.__name__}:${self.command.NAME}"
         self._thread = threading.Thread(target=self.command.process,
                                         name=thread_name,
                                         daemon=True)
