@@ -2,7 +2,7 @@ import flet as ft
 
 from switchpokepilot.app.ui.button import Button
 from switchpokepilot.app.ui.dropdown import Dropdown
-from switchpokepilot.core.command.base import CommandInitParams
+from switchpokepilot.core.command.base import CommandInitParams, BaseCommand
 from switchpokepilot.core.command.implementations import command_classes
 from switchpokepilot.core.state import AppState
 
@@ -20,8 +20,20 @@ class CommandArea(ft.UserControl):
         self.start_button: Button | None = None
 
     @property
+    def runner(self):
+        return self.app_state.command_runner
+
+    @property
     def is_running(self):
-        return self.app_state.command_runner.is_running
+        return self.runner.is_running
+
+    @property
+    def command(self):
+        return self.runner.command
+
+    @command.setter
+    def command(self, new_value: BaseCommand):
+        self.runner.command = new_value
 
     def did_mount(self):
         super().did_mount()
@@ -33,20 +45,23 @@ class CommandArea(ft.UserControl):
         self.update()
 
     def _start(self, button, e):
-        params = CommandInitParams(controller=self.app_state.controller,
-                                   logger=self.app_state.logger,
-                                   camera=self.app_state.camera)
-        self.app_state.command_runner.command = command_classes[self._selected_command_index](params=params)
-        self.app_state.command_runner.start()
+        self.command = self._create_selected_command()
+        self.runner.start()
         self._update_button()
 
     def _stop(self, button, e):
-        self.app_state.command_runner.stop()
-        self.app_state.command_runner.command = None
+        self.runner.stop()
+        self.command = None
         self._update_button()
 
     def _on_command_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
         self._selected_command_index = index
+
+    def _create_selected_command(self):
+        params = CommandInitParams(controller=self.app_state.controller,
+                                   logger=self.app_state.logger,
+                                   camera=self.app_state.camera)
+        return command_classes[self._selected_command_index](params=params)
 
     def build(self):
         self.stop_button = Button("Stop",
