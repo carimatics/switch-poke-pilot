@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import flet as ft
 
 from switchpokepilot.app.ui.appbar import AppBar
@@ -9,11 +11,28 @@ from switchpokepilot.core.state import AppState, AppStateObserver
 from switchpokepilot.core.utils.device import get_devices
 
 NAME = "SwitchPokePilot"
-VERSION = "v0.1.0"
+VERSION = {
+    "major": 0,
+    "minor": 1,
+    "patch": 0,
+}
+
+
+@dataclass
+class Version:
+    major: int
+    minor: int
+    patch: int
+
+    def __str__(self):
+        return f"v{self.major}.{self.minor}.{self.patch}"
 
 
 class SwitchPokePilotApp(AppStateObserver):
     def __init__(self):
+        self.version = Version(major=VERSION["major"],
+                               minor=VERSION["minor"],
+                               patch=VERSION["patch"])
         self.state = AppState()
         self.page: ft.Page | None = None
         self.content: ft.Control | None = None
@@ -33,7 +52,7 @@ class SwitchPokePilotApp(AppStateObserver):
 
         self.page = page
 
-        self.page.title = f"{NAME} {VERSION}"
+        self.page.title = f"{NAME} {self.version}"
         self.page.vertical_alignment = ft.MainAxisAlignment.START
         self.page.horizontal_alignment = ft.CrossAxisAlignment.START
 
