@@ -11,3 +11,4 @@ class MashA(Command):
             self.controller.wait(0.5)
             self.logger.debug(f"{MashA.NAME}: running...")
         self.logger.debug(f"{MashA.NAME}: stopping...")
+        self.finish()

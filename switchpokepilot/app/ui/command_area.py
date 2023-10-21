@@ -16,16 +16,12 @@ class CommandArea(ft.UserControl):
 
         # for command
         self._selected_command_index = 0
-        self.stop_button: Button | None = None
-        self.start_button: Button | None = None
+        self._start_button: Button | None = None
+        self._stop_button: Button | None = None
 
     @property
     def runner(self):
         return self.app_state.command_runner
-
-    @property
-    def is_running(self):
-        return self.runner.is_running
 
     @property
     def command(self):
@@ -39,20 +35,23 @@ class CommandArea(ft.UserControl):
         super().did_mount()
         self.app_state.controller.open("B001B8QO")
 
-    def _update_button(self):
-        self.stop_button.visible = self.is_running
-        self.start_button.visible = not self.is_running
+    def _update_buttons(self):
+        self._start_button.visible = not self.runner.is_running
+        self._stop_button.visible = self.runner.is_running
         self.update()
 
-    def _start(self, button, e):
-        self.command = self._create_selected_command()
-        self.runner.start()
-        self._update_button()
+    def _on_command_finish(self):
+        self._update_buttons()
 
-    def _stop(self, button, e):
+    def _on_start_click(self, button, e):
         self.runner.stop()
-        self.command = None
-        self._update_button()
+        self.command = self._create_selected_command()
+        self.runner.start(on_finish=self._on_command_finish)
+        self._update_buttons()
+
+    def _on_stop_click(self, button, e):
+        self.runner.stop()
+        self._update_buttons()
 
     def _on_command_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
         self._selected_command_index = index
@@ -64,12 +63,12 @@ class CommandArea(ft.UserControl):
         return command_classes[self._selected_command_index](params=params)
 
     def build(self):
-        self.stop_button = Button("Stop",
-                                  on_click=self._stop,
-                                  visible=self.is_running)
-        self.start_button = Button("Start",
-                                   on_click=self._start,
-                                   visible=not self.is_running)
+        self._start_button = Button("Start",
+                                    on_click=self._on_start_click,
+                                    visible=True)
+        self._stop_button = Button("Stop",
+                                   on_click=self._on_stop_click,
+                                   visible=False)
 
         self.contents = ft.Container(
             ft.Column(
@@ -81,8 +80,8 @@ class CommandArea(ft.UserControl):
                              width=200),
                     ft.Row(
                         controls=[
-                            self.start_button,
-                            self.stop_button,
+                            self._start_button,
+                            self._stop_button,
                         ],
                     ),
                 ]
