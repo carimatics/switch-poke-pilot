@@ -1,11 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+added_data = [
+    ('assets', 'assets'),
+    ('config.ini', '.'),
+]
 
 a = Analysis(
     ['switchpokepilot/__main__.py'],
     pathex=[],
     binaries=[],
-    datas=[('assets', 'assets')],
+    datas=added_data,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

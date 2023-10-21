@@ -2,7 +2,7 @@ install:
 	pip install -r requirements.txt
 
 run:
-	SWITCH_POKE_PILOT_PACKED=false python -m switchpokepilot
+	python -m switchpokepilot
 
 regenerate-pyinstaller-spec:
 	flet pack switchpokepilot/__main__.py \

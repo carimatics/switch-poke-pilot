@@ -5,7 +5,7 @@ import typing
 import cv2
 
 from switchpokepilot.core.logger import Logger
-from switchpokepilot.core.utils.directories import get_captures_dir, get_templates_dir, get_masks_dir
+from switchpokepilot.core.utils.directories import get_dir, DirectoryKind
 
 
 def _normalize_file_name(file_name: str | None = None) -> str:
@@ -23,7 +23,7 @@ def _get_capture_file_path(file_name: str,
         return file_name
 
     if dir_name is None:
-        dir_name = get_captures_dir()
+        dir_name = get_dir(DirectoryKind.CAPTURES)
 
     return os.path.join(dir_name, file_name)
 
@@ -34,7 +34,7 @@ def _get_template_file_path(file_name: str,
         return file_name
 
     if dir_name is None:
-        dir_name = get_templates_dir()
+        dir_name = get_dir(DirectoryKind.TEMPLATES)
 
     return os.path.join(dir_name, file_name)
 
@@ -45,7 +45,7 @@ def _get_mask_file_path(file_name: str,
         return file_name
 
     if dir_name is None:
-        dir_name = get_masks_dir()
+        dir_name = get_dir(DirectoryKind.MASKS)
 
     return os.path.join(dir_name, file_name)
 

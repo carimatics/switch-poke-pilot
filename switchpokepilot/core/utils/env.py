@@ -1,6 +1,7 @@
-import os
+import sys
 
 
 def is_packed() -> bool:
-    packed = os.environ.get("SWITCH_POKE_PILOT_PACKED", "true")
-    return packed == "true"
+    # PyInstaller Run-time Information
+    # See https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
+    return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')

@@ -99,9 +99,10 @@ class Camera:
                                   region: CropRegion | None = None):
         current_frame = self.current_frame
         if current_frame is None:
+            self._logger.debug("current_frame is None")
             return None
 
-        if crop is None:
+        if crop is None or region is None:
             return current_frame
 
         if crop == 1 or crop == "1":
@@ -116,7 +117,7 @@ class Camera:
                    region.start.x:region.start.x + region.end.x,
                    ]
 
-        return self.current_frame
+        return current_frame
 
     def save_capture(self,
                      file_name: str | None = None,
