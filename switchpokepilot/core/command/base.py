@@ -12,7 +12,7 @@ class CommandInitParams:
     camera: Camera
 
 
-class BaseCommand:
+class Command:
     NAME = "Command"
 
     def __init__(self, params: CommandInitParams):

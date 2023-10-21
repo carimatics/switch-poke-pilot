@@ -1,11 +1,11 @@
 import threading
 
-from switchpokepilot.core.command.base import BaseCommand
+from switchpokepilot.core.command.base import Command
 
 
 class CommandRunner:
-    def __init__(self, command: BaseCommand | None = None):
-        self.command: BaseCommand | None = command
+    def __init__(self, command: Command | None = None):
+        self.command: Command | None = command
         self._thread: threading.Thread | None = None
 
     @property

@@ -2,7 +2,7 @@ import flet as ft
 
 from switchpokepilot.app.ui.button import Button
 from switchpokepilot.app.ui.dropdown import Dropdown
-from switchpokepilot.core.command.base import CommandInitParams, BaseCommand
+from switchpokepilot.core.command.base import CommandInitParams, Command
 from switchpokepilot.core.command.implementations import command_classes
 from switchpokepilot.core.state import AppState
 
@@ -32,7 +32,7 @@ class CommandArea(ft.UserControl):
         return self.runner.command
 
     @command.setter
-    def command(self, new_value: BaseCommand):
+    def command(self, new_value: Command):
         self.runner.command = new_value
 
     def did_mount(self):

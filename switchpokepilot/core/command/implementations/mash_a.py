@@ -1,8 +1,8 @@
-from switchpokepilot.core.command.base import BaseCommand
+from switchpokepilot.core.command.base import Command
 from switchpokepilot.core.controller.controller import Button
 
 
-class MashA(BaseCommand):
+class MashA(Command):
     NAME = "A連打"
 
     def process(self):
