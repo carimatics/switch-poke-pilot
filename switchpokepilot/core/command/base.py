@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from switchpokepilot import reload_config
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.controller.controller import Controller
 from switchpokepilot.core.logger import Logger
@@ -28,6 +29,7 @@ class Command:
         self.camera = params.camera
 
     def preprocess(self):
+        reload_config()
         self.should_keep_running = True
         self.is_alive = True
 
