@@ -16,7 +16,6 @@ class CommandUtils:
         self.attempts = 0
 
         self.timer = Timer()
-        self.timer.start()
 
     @property
     def should_exit(self):
@@ -32,6 +31,12 @@ class CommandUtils:
 
     def increment_attempts(self):
         self.attempts += 1
+
+    def start_timer(self):
+        self.timer.start()
+
+    def stop_timer(self):
+        self.timer.stop()
 
     def get_recognition(self, buttons: list[Button]):
         self.controller.send_repeat(buttons=buttons,
