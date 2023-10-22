@@ -1,5 +1,13 @@
 import time
+from dataclasses import dataclass
 from typing import Optional
+
+
+@dataclass
+class ElapsedTime:
+    hours: int
+    minutes: int
+    seconds: int
 
 
 class Timer:
@@ -13,7 +21,7 @@ class Timer:
     def stop(self):
         self._stop_time = self._get_current_time()
 
-    def calculate_elapsed_time(self) -> Optional[(int, int, int)]:
+    def calculate_elapsed_time(self) -> Optional[ElapsedTime]:
         start_time = self._start_time
         stop_time = self._stop_time
 
@@ -27,11 +35,13 @@ class Timer:
 
         elapsed_time_in_seconds = end_time - start_time
 
-        hours = elapsed_time_in_seconds / (60 * 60)
-        minutes = (elapsed_time_in_seconds / 60) % 60
-        seconds = elapsed_time_in_seconds % 60
+        hours = int(elapsed_time_in_seconds / (60 * 60))
+        minutes = int((elapsed_time_in_seconds / 60) % 60)
+        seconds = int(elapsed_time_in_seconds % 60)
 
-        return hours, minutes, seconds
+        return ElapsedTime(hours=hours,
+                           minutes=minutes,
+                           seconds=seconds)
 
     @staticmethod
     def _get_current_time():
