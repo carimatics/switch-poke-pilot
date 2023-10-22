@@ -5,6 +5,7 @@ from os import path
 from switchpokepilot.core.utils.env import is_packed
 
 FILE_NAME = "config.ini"
+USER_CONFIG_PATH = f"~/Documents/SwitchPokePilot/{FILE_NAME}"
 
 
 def _get_runtime_root():
@@ -16,6 +17,8 @@ def _get_runtime_root():
 
 def _init_config():
     config = ConfigParser()
-    file_path = path.abspath(path.join(_get_runtime_root(), FILE_NAME))
-    config.read(file_path)
+    default_config = path.abspath(path.join(_get_runtime_root(), FILE_NAME))
+    user_config = path.expanduser(USER_CONFIG_PATH)
+    # Extend default config by user config if exists
+    config.read([default_config, user_config])
     return config
