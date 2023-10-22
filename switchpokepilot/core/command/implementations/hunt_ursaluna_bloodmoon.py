@@ -148,6 +148,7 @@ class HuntUrsalunaBloodmoon(Command):
             self.controller.wait(1.05)
 
     def _goto_status_screen(self):
+        self.controller.send_one_shot(l_displacement=Displacement.DOWN)
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(1)
         self.controller.send_one_shot(l_displacement=Displacement.RIGHT)
