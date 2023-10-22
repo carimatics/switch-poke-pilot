@@ -1,3 +1,4 @@
+from switchpokepilot import reload_config
 from switchpokepilot.core.command.base import Command
 from switchpokepilot.core.controller.controller import (
     Controller,
@@ -24,6 +25,10 @@ class CommandUtils:
     @property
     def elapsed_time(self):
         return self.timer.calculate_elapsed_time()
+
+    @staticmethod
+    def reload_config():
+        reload_config()
 
     def increment_attempts(self):
         self.attempts += 1
