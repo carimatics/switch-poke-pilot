@@ -1,5 +1,4 @@
 import base64
-from dataclasses import dataclass
 
 import cv2
 
@@ -9,16 +8,16 @@ from switchpokepilot.core.utils.env import is_packed
 from switchpokepilot.core.utils.os import is_windows
 
 
-@dataclass
-class Point:
-    x: int
-    y: int
+class InvalidRegionError(Exception):
+    pass
 
 
 class CropRegion:
-    def __init__(self, start: Point, end: Point):
-        self.start = start
-        self.end = end
+    def __init__(self, x: tuple[int, int], y: tuple[int, int]):
+        if x[0] >= x[1] or y[0] >= y[1]:
+            raise InvalidRegionError
+        self.x = x
+        self.y = y
 
 
 class Camera:
@@ -95,35 +94,27 @@ class Camera:
         return base64.b64encode(encoded).decode("ascii")
 
     def get_cropped_current_frame(self,
-                                  crop: str | int | None = None,
                                   region: CropRegion | None = None):
         current_frame = self.current_frame
         if current_frame is None:
             self._logger.debug("current_frame is None")
             return None
 
-        if crop is None or region is None:
-            return current_frame
-
-        if crop == 1 or crop == "1":
+        height, width, _ = current_frame.shape
+        self._logger.debug(f"width: {width}")
+        self._logger.debug(f"height: {height}")
+        if region is not None:
             return current_frame[
-                   region.start.y:region.end.y,
-                   region.start.x:region.end.x,
-                   ]
-
-        if crop == 2 or crop == "2":
-            return current_frame[
-                   region.start.y:region.start.y + region.end.y,
-                   region.start.x:region.start.x + region.end.x,
+                   region.y[0]:region.y[1],
+                   region.x[0]:region.x[1],
                    ]
 
         return current_frame
 
     def save_capture(self,
                      file_name: str | None = None,
-                     crop: str | int | None = None,
                      crop_region: CropRegion | None = None):
-        image = self.get_cropped_current_frame(crop=crop, region=crop_region)
+        image = self.get_cropped_current_frame(region=crop_region)
         if image is None:
             self._logger.info(f"Capture skipped: image is None")
             return

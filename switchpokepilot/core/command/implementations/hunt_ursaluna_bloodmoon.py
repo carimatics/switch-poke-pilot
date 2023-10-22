@@ -4,9 +4,9 @@ from dataclasses import dataclass
 from distutils.util import strtobool
 
 from switchpokepilot import config
-from switchpokepilot.core.camera import CropRegion, Point
+from switchpokepilot.core.camera import CropRegion
 from switchpokepilot.core.command.base import Command, CommandInitParams
-from switchpokepilot.core.command.utils import CommandUtils
+from switchpokepilot.core.command.utils import CommandUtils, CropRegionUtils, CropRegionPreset
 from switchpokepilot.core.controller.controller import Button, StickDisplacementPreset as Displacement
 from switchpokepilot.core.logger import Logger
 
@@ -108,10 +108,9 @@ class HuntUrsalunaBloodmoon(Command):
                                                       threshold=self.config.template_matching.command_appeared)
 
     def _detect_ursaluna_preemptive_attack(self) -> bool:
-        capture_region = CropRegion(start=Point(185, 530),
-                                    end=Point(495, 562))
-        image = self.camera.get_cropped_current_frame(crop=1,
-                                                      region=capture_region)
+        capture_region = CropRegion(x=(185, 495),
+                                    y=(530, 562))
+        image = self.camera.get_cropped_current_frame(region=capture_region)
         # TODO: あとで消す
         self.image_processor.save_image(image)
 
@@ -159,30 +158,22 @@ class HuntUrsalunaBloodmoon(Command):
                 self._check_ursaluna_attack_individual_value())
 
     def _check_ursaluna_attack_actual_value(self) -> bool:
-        capture_region = CropRegion(
-            start=Point(1088, 248),
-            end=Point(1139, 272),
-        )
-        image = self.camera.get_cropped_current_frame(crop=1,
-                                                      region=capture_region)
-        # TODO: あとで消す
-        self.image_processor.save_image(image=image)
-
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegionUtils.calc_region(key=CropRegionPreset.STATUS_A,
+                                                     height=height,
+                                                     width=width)
+        image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
         return self.image_processor.contains_template(image=image,
                                                       template_path="103.png",
                                                       threshold=threshold)
 
     def _check_ursaluna_speed_actual_value(self) -> bool:
-        capture_region = CropRegion(
-            start=Point(957, 449),
-            end=Point(991, 472),
-        )
-        image = self.camera.get_cropped_current_frame(crop=1,
-                                                      region=capture_region)
-        # TODO: あとで消す
-        self.image_processor.save_image(image=image)
-
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegionUtils.calc_region(key=CropRegionPreset.STATUS_S,
+                                                     height=height,
+                                                     width=width)
+        image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
         if self.config.status.speed_individual_value == 0:
             template_path = "77.png"

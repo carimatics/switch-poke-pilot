@@ -1,10 +1,96 @@
+import math
+from enum import Enum, auto
+
 from switchpokepilot import reload_config
+from switchpokepilot.core.camera import CropRegion
 from switchpokepilot.core.command.base import Command
 from switchpokepilot.core.controller.controller import (
     Button,
     StickDisplacementPreset as Displacement,
 )
 from switchpokepilot.core.timer import Timer
+
+
+class CropRegionPreset(Enum):
+    STATUS_H = auto()
+    STATUS_A = auto()
+    STATUS_B = auto()
+    STATUS_C = auto()
+    STATUS_D = auto()
+    STATUS_S = auto()
+
+
+class CropRegionUtils:
+    COEFFICIENTS = {
+        CropRegionPreset.STATUS_H: {
+            "x": {
+                "start": 7.1 / 10,
+                "end": 1 - (1.9 / 10.0)
+            },
+            "y": {
+                "start": 1.7 / 10.0,
+                "end": 1 - (7.25 / 10.0)
+            },
+        },
+        CropRegionPreset.STATUS_A: {
+            "x": {
+                "start": 8.32 / 10,
+                "end": 1 - (0.85 / 10.0)
+            },
+            "y": {
+                "start": 3.0 / 10.0,
+                "end": 1 - (6.2 / 10.0)
+            },
+        },
+        CropRegionPreset.STATUS_B: {
+            "x": {
+                "start": 8.32 / 10,
+                "end": 1 - (0.85 / 10.0)
+            },
+            "y": {
+                "start": 4.8 / 10.0,
+                "end": 1 - (4.4 / 10.0)
+            },
+        },
+        CropRegionPreset.STATUS_C: {
+            "x": {
+                "start": 6.1 / 10,
+                "end": 1 - (3.1 / 10.0)
+            },
+            "y": {
+                "start": 3.0 / 10.0,
+                "end": 1 - (6.2 / 10.0)
+            },
+        },
+        CropRegionPreset.STATUS_D: {
+            "x": {
+                "start": 6.1 / 10,
+                "end": 1 - (3.1 / 10.0)
+            },
+            "y": {
+                "start": 4.8 / 10.0,
+                "end": 1 - (4.4 / 10.0)
+            },
+        },
+        CropRegionPreset.STATUS_S: {
+            "x": {
+                "start": 7.2 / 10,
+                "end": 1 - (2.0 / 10.0)
+            },
+            "y": {
+                "start": 5.6 / 10.0,
+                "end": 1 - (3.4 / 10.0)
+            },
+        },
+    }
+
+    @staticmethod
+    def calc_region(key: CropRegionPreset, height: int, width: int) -> CropRegion:
+        coefficients = CropRegionUtils.COEFFICIENTS[key]
+        return CropRegion(
+            x=(math.ceil(width * coefficients["x"]["start"]), math.ceil(width * coefficients["x"]["end"])),
+            y=(math.ceil(height * coefficients["y"]["start"]), math.ceil(height * coefficients["y"]["end"]))
+        )
 
 
 class CommandUtils:
