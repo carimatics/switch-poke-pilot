@@ -101,8 +101,6 @@ class Camera:
             return None
 
         height, width, _ = current_frame.shape
-        self._logger.debug(f"width: {width}")
-        self._logger.debug(f"height: {height}")
         if region is not None:
             return current_frame[
                    region.y[0]:region.y[1],

@@ -1,4 +1,5 @@
 import datetime
+import math
 from configparser import ConfigParser
 from dataclasses import dataclass
 from distutils.util import strtobool
@@ -98,7 +99,13 @@ class HuntUrsalunaBloodmoon(Command):
         self.controller.wait(16.5)
 
     def _detect_battle_started(self) -> bool:
-        return self.image_processor.contains_template(image=self.camera.current_frame,
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegion(
+            x=(math.ceil(width * (2.8 / 10.0)), width - math.ceil(width * (5.5 / 10.0))),
+            y=(math.ceil(height * (7.6 / 10.0)), height - math.ceil(height * (1.8 / 10.0))),
+        )
+        image = self.camera.get_cropped_current_frame(region=capture_region)
+        return self.image_processor.contains_template(image=image,
                                                       template_path=self._template_path("voice.png"),
                                                       threshold=self.config.template_matching.battle_started)
 
@@ -108,12 +115,12 @@ class HuntUrsalunaBloodmoon(Command):
                                                       threshold=self.config.template_matching.command_appeared)
 
     def _detect_ursaluna_preemptive_attack(self) -> bool:
-        capture_region = CropRegion(x=(185, 495),
-                                    y=(530, 562))
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegion(
+            x=(math.ceil(width * (1.5 / 10.0)), width - math.ceil(width * (6.6 / 10.0))),
+            y=(math.ceil(height * (7.2 / 10.0)), height - math.ceil(height * (2.1 / 10.0))),
+        )
         image = self.camera.get_cropped_current_frame(region=capture_region)
-        # TODO: あとで消す
-        self.image_processor.save_image(image)
-
         threshold = self.config.template_matching.ursaluna_attacked_preemptive
         return self.image_processor.contains_template(image=image,
                                                       template_path="ursaluna_attack.png",
@@ -225,8 +232,8 @@ class HuntUrsalunaBloodmoonConfig:
         )
 
     def validate(self, logger: Logger) -> bool:
-        if self.ball_index_seek_direction not in ["Right", "Light"]:
-            logger.error("Invalid BallIndexSeeKDirection: required Right or Left")
+        if self.ball_index_seek_direction not in ["Right", "Left"]:
+            logger.error("Invalid BallIndexSeekDirection: required Right or Left")
             return False
 
         if self.ball_index < 0:
