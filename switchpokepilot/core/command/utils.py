@@ -6,9 +6,14 @@ from switchpokepilot.core.controller.controller import (
 )
 
 
-class ControllerUtils:
-    def __init__(self, controller: Controller):
+class CommandUtils:
+    def __init__(self, command: Command, controller: Controller):
+        self.command = command
         self.controller = controller
+
+    @property
+    def should_exit(self):
+        return not self.command.should_keep_running
 
     def get_recognition(self, buttons: list[Button]):
         self.controller.send_repeat(buttons=buttons,
@@ -18,7 +23,6 @@ class ControllerUtils:
                                     skip_last_interval=False)
 
     def time_leap(self,
-                  command: Command,
                   years: int = 0,
                   months: int = 0,
                   days: int = 0,
@@ -30,7 +34,7 @@ class ControllerUtils:
         self.controller.send_one_shot(buttons=[Button.HOME])
         self.controller.wait(1)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         # Goto System Settings
@@ -40,7 +44,7 @@ class ControllerUtils:
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(1.5)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         # Goto System
@@ -50,7 +54,7 @@ class ControllerUtils:
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(0.2)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         # Goto Date and Time
@@ -60,7 +64,7 @@ class ControllerUtils:
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(0.2)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         if with_reset:
@@ -69,7 +73,7 @@ class ControllerUtils:
             self.controller.send_one_shot(buttons=[Button.A])
             self.controller.wait(0.2)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         # Toggle auto clock
@@ -77,7 +81,7 @@ class ControllerUtils:
             self.controller.send_one_shot(buttons=[Button.A])
             self.controller.wait(0.2)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         # Goto Current Date and Time
@@ -86,7 +90,7 @@ class ControllerUtils:
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(0.2)
 
-        if not command.should_keep_running:
+        if self.should_exit:
             return
 
         def change(diff: int):
