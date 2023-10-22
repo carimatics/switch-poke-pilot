@@ -11,7 +11,7 @@ from switchpokepilot.core.utils.directories import get_dir, DirectoryKind
 def _normalize_file_name(file_name: str | None = None) -> str:
     if file_name is None or file_name == "":
         now = datetime.datetime.now()
-        return f"{now.strftime("%Y-%m-%d_%H-%M-%S")}.png"
+        return f"{now.strftime("%Y-%m-%d_%H-%M-%S-%f")}.png"
 
     if not file_name.endswith(".png"):
         return f"{file_name}.png"
