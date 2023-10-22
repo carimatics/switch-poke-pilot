@@ -4,6 +4,7 @@ from switchpokepilot.core.controller.controller import (
     Button,
     StickDisplacementPreset as Displacement,
 )
+from switchpokepilot.core.timer import Timer
 
 
 class CommandUtils:
@@ -11,9 +12,21 @@ class CommandUtils:
         self.command = command
         self.controller = controller
 
+        self.attempts = 0
+
+        self.timer = Timer()
+        self.timer.start()
+
     @property
     def should_exit(self):
         return not self.command.should_keep_running
+
+    @property
+    def elapsed_time(self):
+        return self.timer.calculate_elapsed_time()
+
+    def increment_attempts(self):
+        self.attempts += 1
 
     def get_recognition(self, buttons: list[Button]):
         self.controller.send_repeat(buttons=buttons,
@@ -102,12 +115,12 @@ class CommandUtils:
                                             count=diff)
             self.controller.send_one_shot(l_displacement=Displacement.RIGHT)
 
-        # change datetime
+        # Change datetime
         change(years)
         change(months)
         change(days)
         change(hours)
         change(minutes)
 
-        # confirm datetime
+        # Confirm datetime changes
         self.controller.send_one_shot(buttons=[Button.A])
