@@ -1,7 +1,6 @@
 from switchpokepilot import reload_config
 from switchpokepilot.core.command.base import Command
 from switchpokepilot.core.controller.controller import (
-    Controller,
     Button,
     StickDisplacementPreset as Displacement,
 )
@@ -9,13 +8,22 @@ from switchpokepilot.core.timer import Timer
 
 
 class CommandUtils:
-    def __init__(self, command: Command, controller: Controller):
+    def __init__(self, command: Command):
         self.command = command
-        self.controller = controller
-
         self.attempts = 0
-
         self.timer = Timer()
+
+    @property
+    def controller(self):
+        return self.command.controller
+
+    @property
+    def camera(self):
+        return self.command.camera
+
+    @property
+    def image_processor(self):
+        return self.command.image_processor
 
     @property
     def should_exit(self):
@@ -45,6 +53,63 @@ class CommandUtils:
                                     interval=0.8,
                                     skip_last_interval=False)
 
+    def goto_home(self):
+        self.controller.send_one_shot(buttons=[Button.HOME])
+        self.controller.wait(1)
+
+    def restart_sv(self) -> bool:
+        self.goto_home()
+
+        while True:
+            # Shutdown Soft
+            self.controller.send_one_shot(buttons=[Button.X],
+                                          duration=0.05)
+            self.controller.wait(0.5)
+            self.controller.send_one_shot(buttons=[Button.A],
+                                          duration=0.05)
+            self.controller.wait(3.0)
+
+            # Restart
+            self.controller.send_repeat(buttons=[Button.A],
+                                        count=5,
+                                        duration=0.05,
+                                        interval=0.5)
+
+            while not self.detect_game_freak_logo():
+                self.controller.wait(0.1)
+
+            # 検出したら7秒待機してAボタン
+            self.controller.wait(7)
+            self.controller.send_repeat(buttons=[Button.A],
+                                        count=5,
+                                        duration=0.05,
+                                        interval=0.5)
+
+            # フィールドで動けるようになるまで待機
+            self.controller.wait(18)
+
+            if self.detect_error():
+                self.controller.send_one_shot(buttons=[Button.A],
+                                              duration=0.05)
+                self.controller.wait(3.0)
+            else:
+                return not self.detect_error_required_switch_reboot()
+
+    def detect_game_freak_logo(self):
+        return self.image_processor.contains_template(image=self.camera.current_frame,
+                                                      template_path="game_freak_logo.png",
+                                                      threshold=0.8)
+
+    def detect_error(self) -> bool:
+        return self.image_processor.contains_template(image=self.camera.current_frame,
+                                                      template_path="error.png",
+                                                      threshold=0.8)
+
+    def detect_error_required_switch_reboot(self) -> bool:
+        return self.image_processor.contains_template(image=self.camera.current_frame,
+                                                      template_path="error_required_switch_reboot.png",
+                                                      threshold=0.8)
+
     def time_leap(self,
                   years: int = 0,
                   months: int = 0,
@@ -53,9 +118,7 @@ class CommandUtils:
                   minutes: int = 0,
                   toggle_auto=False,
                   with_reset=False):
-        # Goto Home
-        self.controller.send_one_shot(buttons=[Button.HOME])
-        self.controller.wait(1)
+        self.goto_home()
 
         if self.should_exit:
             return

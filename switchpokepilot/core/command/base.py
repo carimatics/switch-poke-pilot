@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.controller.controller import Controller
+from switchpokepilot.core.image.processor import ImageProcessor
 from switchpokepilot.core.logger import Logger
 
 
@@ -10,6 +11,7 @@ class CommandInitParams:
     controller: Controller
     logger: Logger
     camera: Camera
+    image_processor: ImageProcessor
 
 
 class Command:
@@ -26,6 +28,7 @@ class Command:
         self.controller = params.controller
         self.logger = params.logger
         self.camera = params.camera
+        self.image_processor = params.image_processor
 
     def preprocess(self):
         self.should_keep_running = True

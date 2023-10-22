@@ -108,7 +108,7 @@ class Camera:
         if crop == 1 or crop == "1":
             return current_frame[
                    region.start.y:region.end.y,
-                   region.start.x:region.start.y
+                   region.start.x:region.end.x,
                    ]
 
         if crop == 2 or crop == "2":

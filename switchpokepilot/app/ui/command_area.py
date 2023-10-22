@@ -59,7 +59,8 @@ class CommandArea(ft.UserControl):
     def _create_selected_command(self):
         params = CommandInitParams(controller=self.app_state.controller,
                                    logger=self.app_state.logger,
-                                   camera=self.app_state.camera)
+                                   camera=self.app_state.camera,
+                                   image_processor=self.app_state.image_processor)
         return command_classes[self._selected_command_index](params=params)
 
     def build(self):
