@@ -32,7 +32,10 @@ class LogArea(ft.Container, LoggerObserver):
         self._logger.delete_observer(self)
 
     def add_log(self, message):
-        self.text.value = f"{self.text.value}\n{message}"
+        if len(self.text.value) > 50000:
+            self.text.value = f"{self.text.value[-10000:]}\n{message}"
+        else:
+            self.text.value = f"{self.text.value}\n{message}"
         self.update()
 
     def on_log(self, message):
