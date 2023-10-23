@@ -58,14 +58,15 @@ class HuntUrsalunaBloodmoon(Command):
 
                 # Check status
                 self._goto_status_screen()
-                return
-                # achieved = self._check_ursaluna_status()
-                # if achieved:
-                #     return
+                achieved = self._check_ursaluna_status()
+                if achieved:
+                    self.logger.info(f"{self.NAME} finished.")
+                    self._log_command_status()
+                    return
 
-                # restart_succeeded = self.utils.restart_sv()
-                # if not restart_succeeded:
-                #     return
+                restart_succeeded = self.utils.restart_sv()
+                if not restart_succeeded:
+                    return
 
         finally:
             self.utils.stop_timer()
@@ -184,8 +185,10 @@ class HuntUrsalunaBloodmoon(Command):
             self.camera.save_capture()
 
     def _check_ursaluna_status(self) -> bool:
-        return (self._check_ursaluna_attack_actual_value() and
-                self._check_ursaluna_speed_actual_value() and
+        # return (self._check_ursaluna_attack_actual_value() and
+        #         self._check_ursaluna_speed_actual_value() and
+        #         self._check_ursaluna_attack_individual_value())
+        return (self._check_ursaluna_speed_actual_value() and
                 self._check_ursaluna_attack_individual_value())
 
     def _check_ursaluna_attack_actual_value(self) -> bool:
@@ -206,14 +209,21 @@ class HuntUrsalunaBloodmoon(Command):
                                                      width=width)
         image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
-        if self.config.status.speed_individual_value == 0:
-            template_file = "77.png"
-        else:
-            template_file = "78.png"
+
+        template_file = "77.png"
         template_path = self._template_path(template_file)
-        return self.image_processor.contains_template(image=image,
-                                                      template_path=template_path,
-                                                      threshold=threshold)
+        contains_77 = self.image_processor.contains_template(image=image,
+                                                             template_path=template_path,
+                                                             threshold=threshold)
+        if self.config.status.speed_individual_value == 0:
+            return contains_77
+
+        template_file = "78.png"
+        template_path = self._template_path(template_file)
+        contains_78 = self.image_processor.contains_template(image=image,
+                                                             template_path=template_path,
+                                                             threshold=threshold)
+        return contains_77 or contains_78
 
     def _check_ursaluna_attack_individual_value(self) -> bool:
         # TODO: ちゃんと実装する
