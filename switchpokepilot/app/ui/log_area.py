@@ -18,6 +18,7 @@ class LogArea(ft.Container, LoggerObserver):
                 controls=[
                     self.text,
                 ],
+                auto_scroll=True,
             ),
             border=ft.border.all(2),
             alignment=ft.alignment.top_left,
