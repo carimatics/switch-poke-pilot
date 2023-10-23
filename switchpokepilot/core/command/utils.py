@@ -24,62 +24,62 @@ class CropRegionUtils:
     COEFFICIENTS = {
         CropRegionPreset.STATUS_H: {
             "x": {
-                "start": 7.1 / 10,
-                "end": 1 - (1.9 / 10.0)
+                "start": 7.1 / 10.0,
+                "end": 1.0 - (1.9 / 10.0)
             },
             "y": {
                 "start": 1.7 / 10.0,
-                "end": 1 - (7.25 / 10.0)
+                "end": 1.0 - (7.25 / 10.0)
             },
         },
         CropRegionPreset.STATUS_A: {
             "x": {
-                "start": 8.32 / 10,
-                "end": 1 - (0.85 / 10.0)
+                "start": 8.32 / 10.0,
+                "end": 1.0 - (0.85 / 10.0)
             },
             "y": {
                 "start": 3.0 / 10.0,
-                "end": 1 - (6.2 / 10.0)
+                "end": 1.0 - (6.2 / 10.0)
             },
         },
         CropRegionPreset.STATUS_B: {
             "x": {
-                "start": 8.32 / 10,
-                "end": 1 - (0.85 / 10.0)
+                "start": 8.32 / 10.0,
+                "end": 1.0 - (0.85 / 10.0)
             },
             "y": {
                 "start": 4.8 / 10.0,
-                "end": 1 - (4.4 / 10.0)
+                "end": 1.0 - (4.4 / 10.0)
             },
         },
         CropRegionPreset.STATUS_C: {
             "x": {
-                "start": 6.1 / 10,
-                "end": 1 - (3.1 / 10.0)
+                "start": 6.1 / 10.0,
+                "end": 1.0 - (3.1 / 10.0)
             },
             "y": {
                 "start": 3.0 / 10.0,
-                "end": 1 - (6.2 / 10.0)
+                "end": 1.0 - (6.2 / 10.0)
             },
         },
         CropRegionPreset.STATUS_D: {
             "x": {
-                "start": 6.1 / 10,
-                "end": 1 - (3.1 / 10.0)
+                "start": 6.1 / 10.0,
+                "end": 1.0 - (3.1 / 10.0)
             },
             "y": {
                 "start": 4.8 / 10.0,
-                "end": 1 - (4.4 / 10.0)
+                "end": 1.0 - (4.4 / 10.0)
             },
         },
         CropRegionPreset.STATUS_S: {
             "x": {
-                "start": 7.2 / 10,
-                "end": 1 - (2.0 / 10.0)
+                "start": 7.2 / 10.0,
+                "end": 1.0 - (2.0 / 10.0)
             },
             "y": {
                 "start": 5.6 / 10.0,
-                "end": 1 - (3.4 / 10.0)
+                "end": 1.0 - (3.4 / 10.0)
             },
         },
     }
@@ -182,7 +182,13 @@ class CommandUtils:
                 return not self.detect_error_required_switch_reboot()
 
     def detect_game_freak_logo(self):
-        return self.image_processor.contains_template(image=self.camera.current_frame,
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegion(
+            x=(math.ceil(width * (1.8 / 10.0)), math.ceil(width * (1.0 - (7.7 / 10.0)))),
+            y=(math.ceil(height * (4.4 / 10.0)), math.ceil(height * (1.0 - (4.2 / 10.0)))),
+        )
+        image = self.camera.get_cropped_current_frame(region=capture_region)
+        return self.image_processor.contains_template(image=image,
                                                       template_path="game_freak_logo.png",
                                                       threshold=0.8)
 

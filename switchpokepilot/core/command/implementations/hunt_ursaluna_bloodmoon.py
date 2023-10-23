@@ -40,9 +40,15 @@ class HuntUrsalunaBloodmoon(Command):
                 self.utils.increment_attempts()
                 self._log_command_status()
 
+                self.logger.debug("before _send_repeat_a_until_battle_start")
                 self._send_repeat_a_until_battle_start()
+                self.logger.debug("after _send_repeat_a_until_battle_start")
+                self.logger.debug("before _wait_for_command_appear")
                 self._wait_for_command_appear()
+                self.logger.debug("after _wait_for_command_appear")
+                self.logger.debug("before _send_attack_command")
                 self._send_attack_command()
+                self.logger.debug("after _send_attack_command")
 
                 # Check speed
                 if self.config.status.should_check_speed and self._detect_ursaluna_preemptive_attack():
@@ -58,13 +64,14 @@ class HuntUrsalunaBloodmoon(Command):
 
                 # Check status
                 self._goto_status_screen()
-                achieved = self._check_ursaluna_status()
-                if achieved:
-                    return
+                return
+                # achieved = self._check_ursaluna_status()
+                # if achieved:
+                #     return
 
-                restart_succeeded = self.utils.restart_sv()
-                if not restart_succeeded:
-                    return
+                # restart_succeeded = self.utils.restart_sv()
+                # if not restart_succeeded:
+                #     return
 
         finally:
             self.utils.stop_timer()
@@ -75,13 +82,31 @@ class HuntUrsalunaBloodmoon(Command):
         super().postprocess()
 
     def _send_repeat_a_until_battle_start(self):
-        while not self._detect_battle_started():
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegion(
+            x=(math.ceil(width * (2.8 / 10.0)), width * math.ceil(1 - (5.5 / 10.0))),
+            y=(math.ceil(height * (7.6 / 10.0)), height * math.ceil(1 - (1.8 / 10.0))),
+        )
+        template = self._template_path("voice.png")
+        threshold = self.config.template_matching.battle_started
+        while not self._detect_battle_started(capture_region=capture_region,
+                                              template_path=template,
+                                              threshold=threshold):
             self.controller.send_one_shot(buttons=[Button.A],
                                           duration=0.05)
             self.controller.wait(0.05)
 
     def _wait_for_command_appear(self):
-        while not self._detect_battle_command_appeared():
+        height, width, _ = self.camera.current_frame.shape
+        capture_region = CropRegion(
+            x=(math.ceil(width * (7.6 / 10.0)), math.ceil(width * (1.0 - (1.7 / 10.0)))),
+            y=(math.ceil(height * (8.2 / 10.0)), math.ceil(height * (1.0 - (0.2 / 10.0)))),
+        )
+        template_path = self._template_path("battle_command.png")
+        threshold = self.config.template_matching.command_appeared
+        while not self._detect_battle_command_appeared(capture_region=capture_region,
+                                                       template_path=template_path,
+                                                       threshold=threshold):
             self.controller.wait(0.5)
         self.controller.wait(1)
 
@@ -98,21 +123,23 @@ class HuntUrsalunaBloodmoon(Command):
         # 撃破後演出待機
         self.controller.wait(16.5)
 
-    def _detect_battle_started(self) -> bool:
-        height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegion(
-            x=(math.ceil(width * (2.8 / 10.0)), width - math.ceil(width * (5.5 / 10.0))),
-            y=(math.ceil(height * (7.6 / 10.0)), height - math.ceil(height * (1.8 / 10.0))),
-        )
+    def _detect_battle_started(self,
+                               capture_region: CropRegion,
+                               template_path: str,
+                               threshold: float) -> bool:
         image = self.camera.get_cropped_current_frame(region=capture_region)
         return self.image_processor.contains_template(image=image,
-                                                      template_path=self._template_path("voice.png"),
-                                                      threshold=self.config.template_matching.battle_started)
+                                                      template_path=template_path,
+                                                      threshold=threshold)
 
-    def _detect_battle_command_appeared(self) -> bool:
-        return self.image_processor.contains_template(image=self.camera.current_frame,
-                                                      template_path=self._template_path("battle_command.png"),
-                                                      threshold=self.config.template_matching.command_appeared)
+    def _detect_battle_command_appeared(self,
+                                        capture_region: CropRegion,
+                                        template_path: str,
+                                        threshold: float) -> bool:
+        image = self.camera.get_cropped_current_frame(region=capture_region)
+        return self.image_processor.contains_template(image=image,
+                                                      template_path=template_path,
+                                                      threshold=threshold)
 
     def _detect_ursaluna_preemptive_attack(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
@@ -123,7 +150,7 @@ class HuntUrsalunaBloodmoon(Command):
         image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.ursaluna_attacked_preemptive
         return self.image_processor.contains_template(image=image,
-                                                      template_path="ursaluna_attack.png",
+                                                      template_path=self._template_path("ursaluna_attack.png"),
                                                       threshold=threshold)
 
     def _catch_ursaluna(self):
@@ -158,6 +185,9 @@ class HuntUrsalunaBloodmoon(Command):
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(1)
         self.controller.send_one_shot(l_displacement=Displacement.RIGHT)
+        self.controller.wait(0.5)
+        if self.config.status.should_save_screenshot:
+            self.camera.save_capture()
 
     def _check_ursaluna_status(self) -> bool:
         return (self._check_ursaluna_attack_actual_value() and
@@ -172,7 +202,7 @@ class HuntUrsalunaBloodmoon(Command):
         image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
         return self.image_processor.contains_template(image=image,
-                                                      template_path="103.png",
+                                                      template_path=self._template_path("103.png"),
                                                       threshold=threshold)
 
     def _check_ursaluna_speed_actual_value(self) -> bool:
@@ -183,10 +213,10 @@ class HuntUrsalunaBloodmoon(Command):
         image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
         if self.config.status.speed_individual_value == 0:
-            template_path = "77.png"
+            template_file = "77.png"
         else:
-            template_path = "78.png"
-
+            template_file = "78.png"
+        template_path = self._template_path(template_file)
         return self.image_processor.contains_template(image=image,
                                                       template_path=template_path,
                                                       threshold=threshold)

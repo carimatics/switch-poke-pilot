@@ -114,6 +114,7 @@ class ImageProcessor:
         contains = max_val >= threshold
         if contains:
             self._logger.debug(f"ImageProcessor#contains_template: Template contains.")
+            self._logger.debug(f"ImageProcessor#contains_template: {template_path}")
         return contains
 
     def save_image(self,
