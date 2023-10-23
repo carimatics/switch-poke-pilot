@@ -90,7 +90,7 @@ class Camera:
         if not self.is_opened() or self.current_frame is None:
             return ""
 
-        _, encoded = cv2.imencode(".png", self.current_frame)
+        _, encoded = cv2.imencode(".jpg", self.current_frame)
         return base64.b64encode(encoded).decode("ascii")
 
     def get_cropped_current_frame(self,
