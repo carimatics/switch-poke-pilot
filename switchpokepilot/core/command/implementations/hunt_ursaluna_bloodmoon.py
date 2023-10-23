@@ -40,15 +40,9 @@ class HuntUrsalunaBloodmoon(Command):
                 self.utils.increment_attempts()
                 self._log_command_status()
 
-                self.logger.debug("before _send_repeat_a_until_battle_start")
                 self._send_repeat_a_until_battle_start()
-                self.logger.debug("after _send_repeat_a_until_battle_start")
-                self.logger.debug("before _wait_for_command_appear")
                 self._wait_for_command_appear()
-                self.logger.debug("after _wait_for_command_appear")
-                self.logger.debug("before _send_attack_command")
                 self._send_attack_command()
-                self.logger.debug("after _send_attack_command")
 
                 # Check speed
                 if self.config.status.should_check_speed and self._detect_ursaluna_preemptive_attack():
