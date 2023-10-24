@@ -25,61 +25,61 @@ class CropRegionUtils:
         CropRegionPreset.STATUS_H: {
             "x": {
                 "start": 7.1 / 10.0,
-                "end": 1.0 - (1.9 / 10.0)
+                "end": 8.1 / 10.0,
             },
             "y": {
                 "start": 1.7 / 10.0,
-                "end": 1.0 - (7.25 / 10.0)
+                "end": 2.75 / 10.0,
             },
         },
         CropRegionPreset.STATUS_A: {
             "x": {
                 "start": 8.32 / 10.0,
-                "end": 1.0 - (0.85 / 10.0)
+                "end": 9.15 / 10.0,
             },
             "y": {
                 "start": 3.0 / 10.0,
-                "end": 1.0 - (6.2 / 10.0)
+                "end": 3.8 / 10.0,
             },
         },
         CropRegionPreset.STATUS_B: {
             "x": {
                 "start": 8.32 / 10.0,
-                "end": 1.0 - (0.85 / 10.0)
+                "end": 9.15 / 10.0,
             },
             "y": {
                 "start": 4.8 / 10.0,
-                "end": 1.0 - (4.4 / 10.0)
+                "end": 5.6 / 10.0,
             },
         },
         CropRegionPreset.STATUS_C: {
             "x": {
                 "start": 6.1 / 10.0,
-                "end": 1.0 - (3.1 / 10.0)
+                "end": 6.9 / 10.0,
             },
             "y": {
                 "start": 3.0 / 10.0,
-                "end": 1.0 - (6.2 / 10.0)
+                "end": 3.8 / 10.0,
             },
         },
         CropRegionPreset.STATUS_D: {
             "x": {
                 "start": 6.1 / 10.0,
-                "end": 1.0 - (3.1 / 10.0)
+                "end": 6.9 / 10.0,
             },
             "y": {
                 "start": 4.8 / 10.0,
-                "end": 1.0 - (4.4 / 10.0)
+                "end": 5.6 / 10.0,
             },
         },
         CropRegionPreset.STATUS_S: {
             "x": {
                 "start": 7.2 / 10.0,
-                "end": 1.0 - (2.0 / 10.0)
+                "end": 8.0 / 10.0,
             },
             "y": {
                 "start": 5.6 / 10.0,
-                "end": 1.0 - (3.4 / 10.0)
+                "end": 6.6 / 10.0,
             },
         },
     }
