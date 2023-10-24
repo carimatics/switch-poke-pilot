@@ -185,11 +185,13 @@ class HuntUrsalunaBloodmoon(Command):
             self.camera.save_capture()
 
     def _check_ursaluna_status(self) -> bool:
-        # return (self._check_ursaluna_attack_actual_value() and
-        #         self._check_ursaluna_speed_actual_value() and
-        #         self._check_ursaluna_attack_individual_value())
-        return (self._check_ursaluna_speed_actual_value() and
-                self._check_ursaluna_attack_individual_value())
+        if self.config.status.should_check_speed:
+            return (self._check_ursaluna_attack_actual_value() and
+                    self._check_ursaluna_speed_actual_value() and
+                    self._check_ursaluna_attack_individual_value())
+        else:
+            return (self._check_ursaluna_attack_actual_value() and
+                    self._check_ursaluna_attack_individual_value())
 
     def _check_ursaluna_attack_actual_value(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
@@ -198,9 +200,13 @@ class HuntUrsalunaBloodmoon(Command):
                                                      width=width)
         image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
-        return self.image_processor.contains_template(image=image,
-                                                      template_path=self._template_path("103.png"),
-                                                      threshold=threshold)
+        contains_10 = self.image_processor.contains_template(image=image,
+                                                             template_path=self._template_path("10.png"),
+                                                             threshold=threshold)
+        contains_3 = self.image_processor.contains_template(image=image,
+                                                            template_path=self._template_path("3.png"),
+                                                            threshold=threshold)
+        return contains_10 and contains_3
 
     def _check_ursaluna_speed_actual_value(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
