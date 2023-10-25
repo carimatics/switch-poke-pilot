@@ -24,62 +24,62 @@ class CropRegionUtils:
     COEFFICIENTS = {
         CropRegionPreset.STATUS_H: {
             "x": {
-                "start": 7.1 / 10.0,
-                "end": 8.1 / 10.0,
+                "start": 0.71,
+                "end": 0.81,
             },
             "y": {
-                "start": 1.7 / 10.0,
-                "end": 2.75 / 10.0,
+                "start": 0.17,
+                "end": 0.275,
             },
         },
         CropRegionPreset.STATUS_A: {
             "x": {
-                "start": 8.32 / 10.0,
-                "end": 9.15 / 10.0,
+                "start": 0.832,
+                "end": 0.915,
             },
             "y": {
-                "start": 3.0 / 10.0,
-                "end": 3.8 / 10.0,
+                "start": 0.3,
+                "end": 0.38,
             },
         },
         CropRegionPreset.STATUS_B: {
             "x": {
-                "start": 8.32 / 10.0,
-                "end": 9.15 / 10.0,
+                "start": 0.832,
+                "end": 0.915,
             },
             "y": {
-                "start": 4.8 / 10.0,
-                "end": 5.6 / 10.0,
+                "start": 0.48,
+                "end": 0.56,
             },
         },
         CropRegionPreset.STATUS_C: {
             "x": {
-                "start": 6.1 / 10.0,
-                "end": 6.9 / 10.0,
+                "start": 0.61,
+                "end": 0.69,
             },
             "y": {
-                "start": 3.0 / 10.0,
-                "end": 3.8 / 10.0,
+                "start": 0.3,
+                "end": 0.38,
             },
         },
         CropRegionPreset.STATUS_D: {
             "x": {
-                "start": 6.1 / 10.0,
-                "end": 6.9 / 10.0,
+                "start": 0.61,
+                "end": 0.69,
             },
             "y": {
-                "start": 4.8 / 10.0,
-                "end": 5.6 / 10.0,
+                "start": 0.48,
+                "end": 0.56,
             },
         },
         CropRegionPreset.STATUS_S: {
             "x": {
-                "start": 7.2 / 10.0,
-                "end": 8.0 / 10.0,
+                "start": 0.72,
+                "end": 0.8,
             },
             "y": {
-                "start": 5.6 / 10.0,
-                "end": 6.6 / 10.0,
+                "start": 0.56,
+                "end": 0.66,
             },
         },
     }

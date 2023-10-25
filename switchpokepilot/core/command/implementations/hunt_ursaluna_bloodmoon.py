@@ -79,8 +79,8 @@ class HuntUrsalunaBloodmoon(Command):
     def _send_repeat_a_until_battle_start(self):
         height, width, _ = self.camera.current_frame.shape
         capture_region = CropRegion(
-            x=(math.ceil(width * (2.8 / 10.0)), width * math.ceil(1 - (5.5 / 10.0))),
-            y=(math.ceil(height * (7.6 / 10.0)), height * math.ceil(1 - (1.8 / 10.0))),
+            x=(math.ceil(width * 0.28), math.ceil(width * 0.45)),
+            y=(math.ceil(height * 0.76), math.ceil(height * 0.82)),
         )
         template = self._template_path("voice.png")
         threshold = self.config.template_matching.battle_started
@@ -94,8 +94,8 @@ class HuntUrsalunaBloodmoon(Command):
     def _wait_for_command_appear(self):
         height, width, _ = self.camera.current_frame.shape
         capture_region = CropRegion(
-            x=(math.ceil(width * (7.6 / 10.0)), math.ceil(width * (1.0 - (1.7 / 10.0)))),
-            y=(math.ceil(height * (8.2 / 10.0)), math.ceil(height * (1.0 - (0.2 / 10.0)))),
+            x=(math.ceil(width * 0.76), math.ceil(width * 0.83)),
+            y=(math.ceil(height * 0.82), math.ceil(height * 0.98)),
         )
         template_path = self._template_path("battle_command.png")
         threshold = self.config.template_matching.command_appeared
@@ -139,8 +139,8 @@ class HuntUrsalunaBloodmoon(Command):
     def _detect_ursaluna_preemptive_attack(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
         capture_region = CropRegion(
-            x=(math.ceil(width * (1.5 / 10.0)), width - math.ceil(width * (6.6 / 10.0))),
-            y=(math.ceil(height * (7.2 / 10.0)), height - math.ceil(height * (2.1 / 10.0))),
+            x=(math.ceil(width * 0.15), width - math.ceil(width * 0.66)),
+            y=(math.ceil(height * 0.72), height - math.ceil(height * 0.21)),
         )
         image = self.camera.get_cropped_current_frame(region=capture_region)
         threshold = self.config.template_matching.ursaluna_attacked_preemptive
