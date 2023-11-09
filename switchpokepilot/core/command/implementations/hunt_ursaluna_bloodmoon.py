@@ -187,11 +187,9 @@ class HuntUrsalunaBloodmoon(Command):
     def _check_ursaluna_status(self) -> bool:
         if self.config.status.should_check_speed:
             return (self._check_ursaluna_attack_actual_value() and
-                    self._check_ursaluna_speed_actual_value() and
-                    self._check_ursaluna_attack_individual_value())
+                    self._check_ursaluna_speed_actual_value())
         else:
-            return (self._check_ursaluna_attack_actual_value() and
-                    self._check_ursaluna_attack_individual_value())
+            return self._check_ursaluna_attack_actual_value()
 
     def _check_ursaluna_attack_actual_value(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
@@ -230,10 +228,6 @@ class HuntUrsalunaBloodmoon(Command):
                                                              template_path=template_path,
                                                              threshold=threshold)
         return contains_77 or contains_78
-
-    def _check_ursaluna_attack_individual_value(self) -> bool:
-        # TODO: ちゃんと実装する
-        return True
 
     def _log_command_status(self):
         elapsed = self.utils.elapsed_time
