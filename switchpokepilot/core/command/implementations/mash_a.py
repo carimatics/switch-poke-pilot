@@ -8,7 +8,7 @@ class MashA(Command):
     def process(self):
         while self.should_keep_running:
             self.controller.send_one_shot(buttons=[Button.A])
-            self.controller.wait(0.5)
+            self.wait(0.5)
             self.logger.debug(f"{MashA.NAME}: running...")
         self.logger.debug(f"{MashA.NAME}: stopping...")
         self.finish()

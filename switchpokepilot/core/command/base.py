@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from time import sleep, perf_counter
 
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.controller.controller import Controller
@@ -47,3 +48,23 @@ class Command:
     def finish(self):
         self.should_keep_running = False
         self.is_alive = False
+
+    def wait_cancelable(self, duration: float, check_interval: float):
+        if check_interval <= 0:
+            self.wait(duration)
+            return
+
+        elapsed_time = 0
+        while self.should_keep_running and elapsed_time < duration:
+            remaining_time = duration - elapsed_time
+            self.wait(min(remaining_time, check_interval))
+            elapsed_time += check_interval
+
+    @staticmethod
+    def wait(wait: float):
+        if float(wait) > 0.1:
+            sleep(wait)
+        else:
+            current_time = perf_counter()
+            while perf_counter() < current_time + wait:
+                pass

@@ -89,7 +89,7 @@ class HuntUrsalunaBloodmoon(Command):
                                               threshold=threshold):
             self.controller.send_one_shot(buttons=[Button.A],
                                           duration=0.05)
-            self.controller.wait(0.05)
+            self.wait(0.05)
 
     def _wait_for_command_appear(self):
         height, width, _ = self.camera.current_frame.shape
@@ -102,21 +102,21 @@ class HuntUrsalunaBloodmoon(Command):
         while not self._detect_battle_command_appeared(capture_region=capture_region,
                                                        template_path=template_path,
                                                        threshold=threshold):
-            self.controller.wait(0.5)
-        self.controller.wait(1)
+            self.wait(0.5)
+        self.wait(1)
 
     def _send_attack_command(self):
         self.controller.send_repeat(buttons=[Button.A],
                                     count=2,
                                     duration=0.05,
                                     interval=0.8)
-        self.controller.wait(1.7)
+        self.wait(1.7)
 
     def _wait_for_battle_finish(self):
         # ターン経過待機
-        self.controller.wait(36.5)
+        self.wait(36.5)
         # 撃破後演出待機
-        self.controller.wait(16.5)
+        self.wait(16.5)
 
     def _detect_battle_started(self,
                                capture_region: CropRegion,
@@ -152,7 +152,7 @@ class HuntUrsalunaBloodmoon(Command):
         # 捕まえるを選択
         self.controller.send_one_shot(buttons=[Button.A],
                                       duration=0.05)
-        self.controller.wait(0.6)
+        self.wait(0.6)
 
         displacement_for_select_ball = Displacement.RIGHT
         if self.config.ball_index_seek_direction == "Left":
@@ -167,20 +167,20 @@ class HuntUrsalunaBloodmoon(Command):
         self.controller.send_one_shot(buttons=[Button.A],
                                       duration=0.05)
         # 演出待機
-        self.controller.wait(20)
+        self.wait(20)
 
     def _skip_pokedex(self):
         if not self.config.pokedex_registered:
             self.controller.send_one_shot(buttons=[Button.A],
                                           duration=0.05)
-            self.controller.wait(1.05)
+            self.wait(1.05)
 
     def _goto_status_screen(self):
         self.controller.send_one_shot(l_displacement=Displacement.DOWN)
         self.controller.send_one_shot(buttons=[Button.A])
-        self.controller.wait(1)
+        self.wait(1)
         self.controller.send_one_shot(l_displacement=Displacement.RIGHT)
-        self.controller.wait(0.5)
+        self.wait(0.5)
         if self.config.status.should_save_screenshot:
             self.camera.save_capture()
 
