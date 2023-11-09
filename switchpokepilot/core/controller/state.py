@@ -58,6 +58,10 @@ class ControllerState:
         self.l_stick.reset()
         self.r_stick.reset()
 
+    def consume_stick_displacement(self):
+        self.l_stick.consume()
+        self.r_stick.consume()
+
     def reset_hat(self):
         self.hat = Hat.CENTER
 

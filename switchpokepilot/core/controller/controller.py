@@ -36,9 +36,7 @@ class Controller:
     def send(self):
         state_line = ControllerStateSerializer.serialize(self._state)
         self._serial.write_line(state_line)
-
-    def neutral_stick(self):
-        self._state.reset_stick_displacement()
+        self._state.consume_stick_displacement()
 
     def send_hold(self,
                   buttons: list[Button] | None = None,
@@ -65,7 +63,7 @@ class Controller:
                        l_displacement=l_displacement,
                        r_displacement=r_displacement,
                        hat=hat)
-        self.wait(duration)
+        self._wait(duration)
         self.send_reset()
 
     def send_repeat(self,
@@ -90,10 +88,10 @@ class Controller:
             if skip_last_interval and i >= count - 1:
                 break
 
-            self.wait(interval)
+            self._wait(interval)
 
     @staticmethod
-    def wait(wait: float):
+    def _wait(wait: float):
         if float(wait) > 0.1:
             sleep(wait)
         else:

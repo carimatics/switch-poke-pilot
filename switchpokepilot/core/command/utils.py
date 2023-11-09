@@ -139,7 +139,7 @@ class CommandUtils:
 
     def goto_home(self):
         self.controller.send_one_shot(buttons=[Button.HOME])
-        self.controller.wait(1)
+        self.command.wait(1)
 
     def restart_sv(self) -> bool:
         self.goto_home()
@@ -148,10 +148,10 @@ class CommandUtils:
             # Shutdown Soft
             self.controller.send_one_shot(buttons=[Button.X],
                                           duration=0.05)
-            self.controller.wait(0.5)
+            self.command.wait(0.5)
             self.controller.send_one_shot(buttons=[Button.A],
                                           duration=0.05)
-            self.controller.wait(3.0)
+            self.command.wait(3.0)
 
             # Restart
             self.controller.send_repeat(buttons=[Button.A],
@@ -160,22 +160,22 @@ class CommandUtils:
                                         interval=0.5)
 
             while not self.detect_game_freak_logo():
-                self.controller.wait(0.1)
+                self.command.wait(0.1)
 
             # 検出したら7秒待機してAボタン
-            self.controller.wait(7)
+            self.command.wait(7)
             self.controller.send_repeat(buttons=[Button.A],
                                         count=5,
                                         duration=0.05,
                                         interval=0.5)
 
             # フィールドで動けるようになるまで待機
-            self.controller.wait(18)
+            self.command.wait(18)
 
             if self.detect_error():
                 self.controller.send_one_shot(buttons=[Button.A],
                                               duration=0.05)
-                self.controller.wait(3.0)
+                self.command.wait(3.0)
             else:
                 return not self.detect_error_required_switch_reboot()
 
@@ -218,7 +218,7 @@ class CommandUtils:
         self.controller.send_repeat(l_displacement=Displacement.RIGHT,
                                     count=5)
         self.controller.send_one_shot(buttons=[Button.A])
-        self.controller.wait(1.5)
+        self.command.wait(1.5)
 
         if self.should_exit:
             return
@@ -226,9 +226,9 @@ class CommandUtils:
         # Goto System
         self.controller.send_one_shot(l_displacement=Displacement.BOTTOM,
                                       duration=2)
-        self.controller.wait(0.3)
+        self.command.wait(0.3)
         self.controller.send_one_shot(buttons=[Button.A])
-        self.controller.wait(0.2)
+        self.command.wait(0.2)
 
         if self.should_exit:
             return
@@ -236,18 +236,18 @@ class CommandUtils:
         # Goto Date and Time
         self.controller.send_one_shot(l_displacement=Displacement.BOTTOM,
                                       duration=0.7)
-        self.controller.wait(0.2)
+        self.command.wait(0.2)
         self.controller.send_one_shot(buttons=[Button.A])
-        self.controller.wait(0.2)
+        self.command.wait(0.2)
 
         if self.should_exit:
             return
 
         if with_reset:
             self.controller.send_one_shot(buttons=[Button.A])
-            self.controller.wait(0.2)
+            self.command.wait(0.2)
             self.controller.send_one_shot(buttons=[Button.A])
-            self.controller.wait(0.2)
+            self.command.wait(0.2)
 
         if self.should_exit:
             return
@@ -255,7 +255,7 @@ class CommandUtils:
         # Toggle auto clock
         if toggle_auto:
             self.controller.send_one_shot(buttons=[Button.A])
-            self.controller.wait(0.2)
+            self.command.wait(0.2)
 
         if self.should_exit:
             return
@@ -264,7 +264,7 @@ class CommandUtils:
         self.controller.send_repeat(l_displacement=Displacement.BOTTOM,
                                     count=2)
         self.controller.send_one_shot(buttons=[Button.A])
-        self.controller.wait(0.2)
+        self.command.wait(0.2)
 
         if self.should_exit:
             return
