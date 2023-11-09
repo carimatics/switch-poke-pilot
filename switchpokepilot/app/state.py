@@ -1,10 +1,10 @@
 from abc import ABCMeta, abstractmethod
 
+from switchpokepilot.app.logger import AppLogger
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.command.runner import CommandRunner
 from switchpokepilot.core.controller.controller import Controller
 from switchpokepilot.core.image.processor import ImageProcessor
-from switchpokepilot.core.logger import AppLogger
 
 
 class AppStateObserver(metaclass=ABCMeta):
@@ -24,7 +24,7 @@ class AppState:
         self._image_processor = ImageProcessor(logger=self._logger)
 
         # for manipulate game
-        self._controller: Controller = Controller(logger=self._logger)
+        self._controller: Controller = Controller()
         self._command_runner: CommandRunner = CommandRunner()
 
     @property

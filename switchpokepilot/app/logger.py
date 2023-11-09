@@ -1,27 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
+from switchpokepilot.core.logger.logger import Logger
+
 
 class LoggerObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_log(self, message):
-        raise NotImplementedError
-
-
-class Logger(metaclass=ABCMeta):
-    @abstractmethod
-    def debug(self, message):
-        raise NotImplementedError
-
-    @abstractmethod
-    def info(self, message):
-        raise NotImplementedError
-
-    @abstractmethod
-    def warn(self, message):
-        raise NotImplementedError
-
-    @abstractmethod
-    def error(self, message):
         raise NotImplementedError
 
 

@@ -1,9 +1,9 @@
 import flet as ft
 
+from switchpokepilot.app.state import AppState
 from switchpokepilot.app.ui.dropdown import Dropdown
 from switchpokepilot.app.ui.game_screen import GameScreen
 from switchpokepilot.core.camera import Camera
-from switchpokepilot.core.state import AppState
 from switchpokepilot.core.utils.device import get_devices
 
 

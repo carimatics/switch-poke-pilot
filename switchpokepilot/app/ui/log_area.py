@@ -2,7 +2,7 @@ import datetime
 
 import flet as ft
 
-from switchpokepilot.core.logger import AppLogger, LoggerObserver
+from switchpokepilot.app.logger import AppLogger, LoggerObserver
 
 
 class LogArea(ft.Container, LoggerObserver):

@@ -4,10 +4,8 @@ from enum import Enum, auto
 from switchpokepilot import reload_config
 from switchpokepilot.core.camera import CropRegion
 from switchpokepilot.core.command.base import Command
-from switchpokepilot.core.controller.controller import (
-    Button,
-    StickDisplacementPreset as Displacement,
-)
+from switchpokepilot.core.controller.button import Button
+from switchpokepilot.core.controller.stick import StickDisplacementPreset as Displacement
 from switchpokepilot.core.timer import Timer
 
 
@@ -216,7 +214,7 @@ class CommandUtils:
             return
 
         # Goto System Settings
-        self.controller.send_one_shot(l_displacement=Displacement.DOWN)
+        self.controller.send_one_shot(l_displacement=Displacement.BOTTOM)
         self.controller.send_repeat(l_displacement=Displacement.RIGHT,
                                     count=5)
         self.controller.send_one_shot(buttons=[Button.A])
@@ -226,7 +224,7 @@ class CommandUtils:
             return
 
         # Goto System
-        self.controller.send_one_shot(l_displacement=Displacement.DOWN,
+        self.controller.send_one_shot(l_displacement=Displacement.BOTTOM,
                                       duration=2)
         self.controller.wait(0.3)
         self.controller.send_one_shot(buttons=[Button.A])
@@ -236,7 +234,7 @@ class CommandUtils:
             return
 
         # Goto Date and Time
-        self.controller.send_one_shot(l_displacement=Displacement.DOWN,
+        self.controller.send_one_shot(l_displacement=Displacement.BOTTOM,
                                       duration=0.7)
         self.controller.wait(0.2)
         self.controller.send_one_shot(buttons=[Button.A])
@@ -263,7 +261,7 @@ class CommandUtils:
             return
 
         # Goto Current Date and Time
-        self.controller.send_repeat(l_displacement=Displacement.DOWN,
+        self.controller.send_repeat(l_displacement=Displacement.BOTTOM,
                                     count=2)
         self.controller.send_one_shot(buttons=[Button.A])
         self.controller.wait(0.2)
@@ -273,10 +271,10 @@ class CommandUtils:
 
         def change(diff: int):
             if diff < 0:
-                self.controller.send_repeat(l_displacement=Displacement.DOWN,
+                self.controller.send_repeat(l_displacement=Displacement.BOTTOM,
                                             count=-diff)
             else:
-                self.controller.send_repeat(l_displacement=Displacement.UP,
+                self.controller.send_repeat(l_displacement=Displacement.TOP,
                                             count=diff)
             self.controller.send_one_shot(l_displacement=Displacement.RIGHT)
 

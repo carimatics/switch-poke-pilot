@@ -8,8 +8,9 @@ from switchpokepilot import config
 from switchpokepilot.core.camera import CropRegion
 from switchpokepilot.core.command.base import Command, CommandInitParams
 from switchpokepilot.core.command.utils import CommandUtils, CropRegionUtils, CropRegionPreset
-from switchpokepilot.core.controller.controller import Button, StickDisplacementPreset as Displacement
-from switchpokepilot.core.logger import Logger
+from switchpokepilot.core.controller.button import Button
+from switchpokepilot.core.controller.stick import StickDisplacementPreset as Displacement
+from switchpokepilot.core.logger.logger import Logger
 
 CONFIG_BASE_SECTION = "command.hunt_ursaluna_bloodmoon"
 
@@ -176,7 +177,7 @@ class HuntUrsalunaBloodmoon(Command):
             self.wait(1.05)
 
     def _goto_status_screen(self):
-        self.controller.send_one_shot(l_displacement=Displacement.DOWN)
+        self.controller.send_one_shot(l_displacement=Displacement.BOTTOM)
         self.controller.send_one_shot(buttons=[Button.A])
         self.wait(1)
         self.controller.send_one_shot(l_displacement=Displacement.RIGHT)

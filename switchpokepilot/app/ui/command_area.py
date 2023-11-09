@@ -1,10 +1,10 @@
 import flet as ft
 
+from switchpokepilot.app.state import AppState
 from switchpokepilot.app.ui.button import Button
 from switchpokepilot.app.ui.dropdown import Dropdown
 from switchpokepilot.core.command.base import CommandInitParams, Command
 from switchpokepilot.core.command.implementations import command_classes
-from switchpokepilot.core.state import AppState
 
 
 class CommandArea(ft.UserControl):

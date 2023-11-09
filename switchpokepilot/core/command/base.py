@@ -4,7 +4,7 @@ from time import sleep, perf_counter
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.controller.controller import Controller
 from switchpokepilot.core.image.processor import ImageProcessor
-from switchpokepilot.core.logger import Logger
+from switchpokepilot.core.logger.logger import Logger
 
 
 @dataclass

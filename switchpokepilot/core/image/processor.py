@@ -4,7 +4,7 @@ import typing
 
 import cv2
 
-from switchpokepilot.core.logger import Logger
+from switchpokepilot.core.logger.logger import Logger
 from switchpokepilot.core.utils.directories import get_dir, DirectoryKind
 
 

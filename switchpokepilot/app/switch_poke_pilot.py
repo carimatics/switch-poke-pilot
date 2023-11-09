@@ -2,12 +2,12 @@ from dataclasses import dataclass
 
 import flet as ft
 
+from switchpokepilot.app.state import AppState, AppStateObserver
 from switchpokepilot.app.ui.appbar import AppBar
 from switchpokepilot.app.ui.capture_area import CaptureArea
 from switchpokepilot.app.ui.command_area import CommandArea
 from switchpokepilot.app.ui.log_area import LogArea
 from switchpokepilot.core.camera import Camera
-from switchpokepilot.core.state import AppState, AppStateObserver
 from switchpokepilot.core.utils.device import get_devices
 
 NAME = "SwitchPokePilot"

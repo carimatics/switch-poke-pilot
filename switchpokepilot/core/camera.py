@@ -3,7 +3,7 @@ import base64
 import cv2
 
 from switchpokepilot.core.image.processor import ImageProcessor
-from switchpokepilot.core.logger import Logger
+from switchpokepilot.core.logger.logger import Logger
 from switchpokepilot.core.utils.env import is_packed
 from switchpokepilot.core.utils.os import is_windows
 
