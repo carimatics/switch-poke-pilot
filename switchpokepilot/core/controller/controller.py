@@ -102,7 +102,7 @@ class StickDisplacementPreset:
     UP = StickDisplacement(angle=90)
     UP_RIGHT = StickDisplacement(angle=45)
     RIGHT = StickDisplacement(angle=0)
-    DOWN_LIGHT = StickDisplacement(angle=-45)
+    DOWN_RIGHT = StickDisplacement(angle=-45)
     DOWN = StickDisplacement(angle=-90)
     DOWN_LEFT = StickDisplacement(angle=-135)
     LEFT = StickDisplacement(angle=-180)
