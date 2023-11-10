@@ -1,8 +1,10 @@
 import base64
+from typing import Optional
 
 import cv2
 
-from switchpokepilot.core.image.processor import ImageProcessor
+from switchpokepilot.core.image.image import Image
+from switchpokepilot.core.image.region import ImageRegion
 from switchpokepilot.core.logger.logger import Logger
 from switchpokepilot.core.utils.env import is_packed
 from switchpokepilot.core.utils.os import is_windows
@@ -23,7 +25,6 @@ class CropRegion:
 class Camera:
     def __init__(self,
                  capture_size: tuple[int, int],
-                 image_processor: ImageProcessor,
                  logger: Logger):
         self._id: int = 0
         self._name: str = "Default"
@@ -33,7 +34,6 @@ class Camera:
         self.capture_size = capture_size
 
         self._logger = logger
-        self._image_processor = image_processor
 
     @property
     def id(self) -> int:
@@ -93,32 +93,27 @@ class Camera:
         _, encoded = cv2.imencode(".jpg", self.current_frame)
         return base64.b64encode(encoded).decode("ascii")
 
-    def get_cropped_current_frame(self,
-                                  region: CropRegion | None = None):
+    def get_current_frame(self,
+                          region: Optional[ImageRegion] = None):
         current_frame = self.current_frame
         if current_frame is None:
             self._logger.debug("current_frame is None")
             return None
 
-        height, width, _ = current_frame.shape
         if region is not None:
-            return current_frame[
-                   region.y[0]:region.y[1],
-                   region.x[0]:region.x[1],
-                   ]
-
-        return current_frame
+            return Image(current_frame).crop(region=region)
+        return Image(current_frame)
 
     def save_capture(self,
-                     file_name: str | None = None,
-                     crop_region: CropRegion | None = None):
-        image = self.get_cropped_current_frame(region=crop_region)
+                     file_path: str | None = None,
+                     region: Optional[ImageRegion] = None):
+        image = self.get_current_frame(region=region)
         if image is None:
             self._logger.info(f"Capture skipped: image is None")
             return
 
         try:
-            self._image_processor.save_image(image=image, file_name=file_name)
+            image.save(file_path=file_path)
         except Exception as e:
             self._logger.error(f"Capture failed: {e}")
 

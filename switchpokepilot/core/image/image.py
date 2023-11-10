@@ -20,19 +20,19 @@ class Image:
         return self._mat.shape[0]
 
     @staticmethod
-    def from_file(file_name: str, use_gray_scale: bool) -> 'Image':
+    def from_file(file_path: str, use_gray_scale: bool = True) -> 'Image':
         if use_gray_scale:
             flags = cv2.IMREAD_GRAYSCALE
         else:
             flags = cv2.IMREAD_COLOR
-        return Image(cv2.imread(filename=file_name, flags=flags))
+        return Image(cv2.imread(filename=file_path, flags=flags))
 
-    def save(self, file_name: str) -> bool:
-        ext = os.path.splitext(file_name)[1]
+    def save(self, file_path: str) -> bool:
+        ext = os.path.splitext(file_path)[1]
         result, n = cv2.imencode(ext, self._mat)
 
         if result:
-            with open(file_name, mode="w+b") as f:
+            with open(file_path, mode="w+b") as f:
                 n.tofile(f)
         return result
 
