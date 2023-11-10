@@ -101,7 +101,7 @@ class Camera:
             return None
 
         if region is not None:
-            return Image(current_frame).crop(region=region)
+            return Image(current_frame).roi(region=region)
         return Image(current_frame)
 
     def save_capture(self,

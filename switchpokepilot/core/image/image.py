@@ -36,7 +36,7 @@ class Image:
                 n.tofile(f)
         return result
 
-    def crop(self, region: ImageRegion) -> 'Image':
+    def roi(self, region: ImageRegion) -> 'Image':
         height, width, _ = self._mat.shape
         x0, x1 = math.ceil(width * region.x[0]), math.ceil(width * region.x[1])
         y0, y1 = math.ceil(height * region.y[0]), math.ceil(height * region.y[1])
