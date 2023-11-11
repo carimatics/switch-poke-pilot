@@ -79,12 +79,11 @@ class Camera:
             self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.capture_size[0])
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.capture_size[1])
 
-    def read_frame(self):
+    def update_frame(self):
         if not self.is_opened():
-            return cv2.mat_wrapper.Mat(arr=[])
+            return
 
         _, self.current_frame = self.camera.read()
-        return self.current_frame
 
     def encoded_current_frame_base64(self):
         if not self.is_opened() or self.current_frame is None:

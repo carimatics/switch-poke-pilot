@@ -50,7 +50,7 @@ class GameScreen(ft.UserControl, AppStateObserver):
 
     def _loop_update_screen(self):
         while self.camera.is_opened():
-            self.camera.read_frame()
+            self.camera.update_frame()
             encoded = self.camera.encoded_current_frame_base64()
             if encoded == "":
                 self.screen.src = DISABLED_IMAGE
