@@ -1,15 +1,15 @@
 import datetime
-import math
 from configparser import ConfigParser
 from dataclasses import dataclass
 from distutils.util import strtobool
 
 from switchpokepilot import config
-from switchpokepilot.core.camera import CropRegion
 from switchpokepilot.core.command.base import Command, CommandInitParams
 from switchpokepilot.core.command.utils import CommandUtils, CropRegionUtils, CropRegionPreset
 from switchpokepilot.core.controller.button import Button
 from switchpokepilot.core.controller.stick import StickDisplacementPreset as Displacement
+from switchpokepilot.core.image.image import Image
+from switchpokepilot.core.image.region import ImageRegion
 from switchpokepilot.core.logger.logger import Logger
 
 CONFIG_BASE_SECTION = "command.hunt_ursaluna_bloodmoon"
@@ -79,10 +79,7 @@ class HuntUrsalunaBloodmoon(Command):
 
     def _send_repeat_a_until_battle_start(self):
         height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegion(
-            x=(math.ceil(width * 0.28), math.ceil(width * 0.45)),
-            y=(math.ceil(height * 0.76), math.ceil(height * 0.82)),
-        )
+        capture_region = ImageRegion(x=(0.28, 0.45), y=(0.76, 0.82))
         template = self._template_path("voice.png")
         threshold = self.config.template_matching.battle_started
         while not self._detect_battle_started(capture_region=capture_region,
@@ -94,10 +91,7 @@ class HuntUrsalunaBloodmoon(Command):
 
     def _wait_for_command_appear(self):
         height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegion(
-            x=(math.ceil(width * 0.76), math.ceil(width * 0.83)),
-            y=(math.ceil(height * 0.82), math.ceil(height * 0.98)),
-        )
+        capture_region = ImageRegion(x=(0.76, 0.83), y=(0.82, 0.98))
         template_path = self._template_path("battle_command.png")
         threshold = self.config.template_matching.command_appeared
         while not self._detect_battle_command_appeared(capture_region=capture_region,
@@ -120,34 +114,28 @@ class HuntUrsalunaBloodmoon(Command):
         self.wait(16.5)
 
     def _detect_battle_started(self,
-                               capture_region: CropRegion,
+                               capture_region: ImageRegion,
                                template_path: str,
                                threshold: float) -> bool:
-        image = self.camera.get_cropped_current_frame(region=capture_region)
-        return self.image_processor.contains_template(image=image,
-                                                      template_path=template_path,
-                                                      threshold=threshold)
+        image = self.camera.get_current_frame(region=capture_region)
+        template = Image.from_file(template_path)
+        return image.contains(other=template, threshold=threshold)
 
     def _detect_battle_command_appeared(self,
-                                        capture_region: CropRegion,
+                                        capture_region: ImageRegion,
                                         template_path: str,
                                         threshold: float) -> bool:
-        image = self.camera.get_cropped_current_frame(region=capture_region)
-        return self.image_processor.contains_template(image=image,
-                                                      template_path=template_path,
-                                                      threshold=threshold)
+        image = self.camera.get_current_frame(region=capture_region)
+        template = Image.from_file(template_path)
+        return image.contains(other=template, threshold=threshold)
 
     def _detect_ursaluna_preemptive_attack(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegion(
-            x=(math.ceil(width * 0.15), width - math.ceil(width * 0.66)),
-            y=(math.ceil(height * 0.72), height - math.ceil(height * 0.21)),
-        )
-        image = self.camera.get_cropped_current_frame(region=capture_region)
+        capture_region = ImageRegion(x=(0.15, 0.34), y=(0.72, 0.79))
+        image = self.camera.get_current_frame(region=capture_region)
         threshold = self.config.template_matching.ursaluna_attacked_preemptive
-        return self.image_processor.contains_template(image=image,
-                                                      template_path=self._template_path("ursaluna_attack.png"),
-                                                      threshold=threshold)
+        template = Image.from_file(self._template_path("ursaluna_attack.png"))
+        return image.contains(other=template, threshold=threshold)
 
     def _catch_ursaluna(self):
         # 捕まえるを選択
@@ -194,40 +182,30 @@ class HuntUrsalunaBloodmoon(Command):
 
     def _check_ursaluna_attack_actual_value(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegionUtils.calc_region(key=CropRegionPreset.STATUS_A,
-                                                     height=height,
-                                                     width=width)
-        image = self.camera.get_cropped_current_frame(region=capture_region)
+        capture_region = CropRegionUtils.calc_region(key=CropRegionPreset.STATUS_A)
+        image = self.camera.get_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
-        contains_10 = self.image_processor.contains_template(image=image,
-                                                             template_path=self._template_path("10.png"),
-                                                             threshold=threshold)
-        contains_3 = self.image_processor.contains_template(image=image,
-                                                            template_path=self._template_path("3.png"),
-                                                            threshold=threshold)
+        contains_10 = image.contains(other=Image.from_file(self._template_path("10.png")), threshold=threshold)
+        contains_3 = image.contains(other=Image.from_file(self._template_path("3.png")), threshold=threshold)
         return contains_10 and contains_3
 
     def _check_ursaluna_speed_actual_value(self) -> bool:
         height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegionUtils.calc_region(key=CropRegionPreset.STATUS_S,
-                                                     height=height,
-                                                     width=width)
-        image = self.camera.get_cropped_current_frame(region=capture_region)
+        capture_region = CropRegionUtils.calc_region(key=CropRegionPreset.STATUS_S)
+        image = self.camera.get_current_frame(region=capture_region)
         threshold = self.config.template_matching.actual_value
 
         template_file = "77.png"
         template_path = self._template_path(template_file)
-        contains_77 = self.image_processor.contains_template(image=image,
-                                                             template_path=template_path,
-                                                             threshold=threshold)
+        template = Image.from_file(template_path)
+        contains_77 = image.contains(other=template, threshold=threshold)
         if self.config.status.speed_individual_value == 0:
             return contains_77
 
         template_file = "78.png"
         template_path = self._template_path(template_file)
-        contains_78 = self.image_processor.contains_template(image=image,
-                                                             template_path=template_path,
-                                                             threshold=threshold)
+        template = Image.from_file(template_path)
+        contains_78 = image.contains(other=template, threshold=threshold)
         return contains_77 or contains_78
 
     def _log_command_status(self):

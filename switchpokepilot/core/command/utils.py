@@ -1,11 +1,11 @@
-import math
 from enum import Enum, auto
 
 from switchpokepilot import reload_config
-from switchpokepilot.core.camera import CropRegion
 from switchpokepilot.core.command.base import Command
 from switchpokepilot.core.controller.button import Button
 from switchpokepilot.core.controller.stick import StickDisplacementPreset as Displacement
+from switchpokepilot.core.image.image import Image
+from switchpokepilot.core.image.region import ImageRegion
 from switchpokepilot.core.timer import Timer
 
 
@@ -83,11 +83,11 @@ class CropRegionUtils:
     }
 
     @staticmethod
-    def calc_region(key: CropRegionPreset, height: int, width: int) -> CropRegion:
+    def calc_region(key: CropRegionPreset) -> ImageRegion:
         coefficients = CropRegionUtils.COEFFICIENTS[key]
-        return CropRegion(
-            x=(math.ceil(width * coefficients["x"]["start"]), math.ceil(width * coefficients["x"]["end"])),
-            y=(math.ceil(height * coefficients["y"]["start"]), math.ceil(height * coefficients["y"]["end"]))
+        return ImageRegion(
+            x=(coefficients["x"]["start"], coefficients["x"]["end"]),
+            y=(coefficients["y"]["start"], coefficients["y"]["end"])
         )
 
 
@@ -104,10 +104,6 @@ class CommandUtils:
     @property
     def camera(self):
         return self.command.camera
-
-    @property
-    def image_processor(self):
-        return self.command.image_processor
 
     @property
     def should_exit(self):
@@ -181,24 +177,20 @@ class CommandUtils:
 
     def detect_game_freak_logo(self):
         height, width, _ = self.camera.current_frame.shape
-        capture_region = CropRegion(
-            x=(math.ceil(width * (1.8 / 10.0)), math.ceil(width * (1.0 - (7.7 / 10.0)))),
-            y=(math.ceil(height * (4.4 / 10.0)), math.ceil(height * (1.0 - (4.2 / 10.0)))),
-        )
-        image = self.camera.get_cropped_current_frame(region=capture_region)
-        return self.image_processor.contains_template(image=image,
-                                                      template_path="game_freak_logo.png",
-                                                      threshold=0.8)
+        capture_region = ImageRegion(x=(0.18, 0.23), y=(0.44, 0.58))
+        current_frame = self.camera.get_current_frame(region=capture_region)
+        template = Image.from_file("game_freak_logo.png")
+        return current_frame.contains(other=template, threshold=0.8)
 
     def detect_error(self) -> bool:
-        return self.image_processor.contains_template(image=self.camera.current_frame,
-                                                      template_path="error.png",
-                                                      threshold=0.8)
+        current_frame = self.camera.get_current_frame()
+        template = Image.from_file("error.png")
+        return current_frame.contains(other=template, threshold=0.8)
 
     def detect_error_required_switch_reboot(self) -> bool:
-        return self.image_processor.contains_template(image=self.camera.current_frame,
-                                                      template_path="error_required_switch_reboot.png",
-                                                      threshold=0.8)
+        current_frame = self.camera.get_current_frame()
+        template = Image.from_file("error_required_switch_reboot.png")
+        return current_frame.contains(other=template, threshold=0.8)
 
     def time_leap(self,
                   years: int = 0,

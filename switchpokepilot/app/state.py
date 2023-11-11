@@ -4,7 +4,6 @@ from switchpokepilot.app.logger import AppLogger
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.command.runner import CommandRunner
 from switchpokepilot.core.controller.controller import Controller
-from switchpokepilot.core.image.processor import ImageProcessor
 
 
 class AppStateObserver(metaclass=ABCMeta):
@@ -21,7 +20,6 @@ class AppState:
         # for image processing
         self._capture_size: tuple[int, int] = (1280, 720)
         self._camera: Camera | None = None
-        self._image_processor = ImageProcessor(logger=self._logger)
 
         # for manipulate game
         self._controller: Controller = Controller()
@@ -47,10 +45,6 @@ class AppState:
     def camera(self, new_value: Camera):
         self._camera = new_value
         self._notify()
-
-    @property
-    def image_processor(self):
-        return self._image_processor
 
     @property
     def controller(self):
