@@ -11,12 +11,12 @@ class Config:
 
     def read(self, relative_path: Optional[str] = None):
         if relative_path is None:
-            absolute_path = path.abspath(path.join(self._get_user_directory(), "config.json"))
+            absolute_path = path.abspath(path.join(self.get_user_directory(), "config.json"))
         else:
-            absolute_path = path.abspath(path.join(self._get_user_directory(), relative_path, "config.json"))
+            absolute_path = path.abspath(path.join(self.get_user_directory(), relative_path, "config.json"))
         return self._read_json_file(absolute_path)
 
-    def _get_user_directory(self):
+    def get_user_directory(self):
         if not path.exists(_user_config_file_path):
             raise FileNotFoundError(f"User config file not found: {_user_config_file_path}")
         user_directory = self._read_json_file(_user_config_file_path)['userDirectory']

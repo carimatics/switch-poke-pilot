@@ -8,6 +8,8 @@ from switchpokepilot.app.ui.capture_area import CaptureArea
 from switchpokepilot.app.ui.command_area import CommandArea
 from switchpokepilot.app.ui.log_area import LogArea
 from switchpokepilot.core.camera import Camera
+from switchpokepilot.core.config.config import Config
+from switchpokepilot.core.path.path import Path
 from switchpokepilot.core.utils.device import get_devices
 
 NAME = "SwitchPokePilot"
@@ -33,6 +35,8 @@ class SwitchPokePilotApp(AppStateObserver):
         self.version = Version(major=VERSION["major"],
                                minor=VERSION["minor"],
                                patch=VERSION["patch"])
+        self.config = Config()
+        self.path = Path(self.config)
         self.state = AppState()
         self.page: ft.Page | None = None
         self.content: ft.Control | None = None
