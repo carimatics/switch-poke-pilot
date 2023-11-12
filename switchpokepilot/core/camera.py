@@ -104,7 +104,7 @@ class Camera:
         return Image(current_frame)
 
     def save_capture(self,
-                     file_path: str | None = None,
+                     file_path: str,
                      region: Optional[ImageRegion] = None):
         image = self.get_current_frame(region=region)
         if image is None:
