@@ -102,7 +102,7 @@ class HuntUrsalunaBloodmoon(Command):
 
     def _send_attack_command(self):
         self.controller.send_repeat(buttons=[Button.A],
-                                    count=2,
+                                    times=2,
                                     duration=0.05,
                                     interval=0.8)
         self.wait(1.7)
@@ -149,7 +149,7 @@ class HuntUrsalunaBloodmoon(Command):
 
         # ボールを選択して投げる
         self.controller.send_repeat(l_displacement=displacement_for_select_ball,
-                                    count=self.config.ball_index,
+                                    times=self.config.ball_index,
                                     duration=0.05,
                                     interval=0.3,
                                     skip_last_interval=False)
