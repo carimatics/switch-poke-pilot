@@ -1,2 +1,0 @@
-class NotSupportedOS(Exception):
-    pass
