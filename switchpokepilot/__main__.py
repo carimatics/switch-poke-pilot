@@ -6,5 +6,5 @@ if __name__ == '__main__':
     app = SwitchPokePilotApp()
     ft.app(
         target=app.main,
-        assets_dir=app.path.user_directory(),
+        assets_dir=app.state.path.user_directory(),
     )

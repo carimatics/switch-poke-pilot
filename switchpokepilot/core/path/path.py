@@ -33,7 +33,7 @@ class Path:
         if cache and self._assets_path is not None:
             return self._assets_path
         else:
-            relational_path = self.user_config(cache=cache)["templates"]
+            relational_path = self.user_config(cache=cache)["directories"]["templates"]
             self._assets_path = path.join(self.user_directory(cache=cache), relational_path)
             return self._assets_path
 
@@ -41,7 +41,7 @@ class Path:
         if cache and self._captures_path is not None:
             return self._captures_path
         else:
-            relational_path = self.user_config(cache=cache)["captures"]
+            relational_path = self.user_config(cache=cache)["directories"]["captures"]
             self._captures_path = path.join(self.user_directory(cache=cache), relational_path)
             return self._captures_path
 
@@ -49,7 +49,7 @@ class Path:
         if cache and self._commands_path is not None:
             return self._commands_path
         else:
-            relational_path = self.user_config(cache=cache)["commands"]
+            relational_path = self.user_config(cache=cache)["directories"]["commands"]
             self._commands_path = path.join(self.user_directory(cache=cache), relational_path)
             return self._commands_path
 

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from switchpokepilot.app.ui.button import Button
+from switchpokepilot.core.controller.button import Button
 from switchpokepilot.core.controller.controller import Controller
 from switchpokepilot.core.controller.hat import Hat
 from switchpokepilot.core.controller.stick import StickDisplacement, StickDisplacementPreset
@@ -71,7 +71,7 @@ class CommandControllerAPI:
                       l_stick: Optional[StickDisplacement] = None,
                       r_stick: Optional[StickDisplacement] = None,
                       hat: Optional[Hat] = None,
-                      duration: Optional[float] = None):
+                      duration: float = 0.1):
         self._controller.send_one_shot(buttons=buttons,
                                        l_displacement=l_stick,
                                        r_displacement=r_stick,
@@ -83,10 +83,10 @@ class CommandControllerAPI:
                     l_stick: Optional[StickDisplacement] = None,
                     r_stick: Optional[StickDisplacement] = None,
                     hat: Optional[Hat] = None,
-                    times: Optional[int] = None,
-                    interval: Optional[float] = None,
-                    duration: Optional[float] = None,
-                    skip_last_interval: Optional[bool] = None):
+                    times: int = 1,
+                    interval: float = 0.1,
+                    duration: float = 0.1,
+                    skip_last_interval: bool = True):
         self._controller.send_repeat(buttons=buttons,
                                      l_displacement=l_stick,
                                      r_displacement=r_stick,

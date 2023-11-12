@@ -3,7 +3,9 @@ from abc import ABCMeta, abstractmethod
 from switchpokepilot.app.logger import AppLogger
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.command.runner import CommandRunner
+from switchpokepilot.core.config.config import Config
 from switchpokepilot.core.controller.controller import Controller
+from switchpokepilot.core.path.path import Path
 
 
 class AppStateObserver(metaclass=ABCMeta):
@@ -24,6 +26,9 @@ class AppState:
         # for manipulate game
         self._controller: Controller = Controller()
         self._command_runner: CommandRunner = CommandRunner()
+
+        self._config = Config()
+        self._path = Path(self._config)
 
     @property
     def logger(self):
@@ -53,6 +58,14 @@ class AppState:
     @property
     def command_runner(self):
         return self._command_runner
+
+    @property
+    def config(self):
+        return self._config
+
+    @property
+    def path(self):
+        return self._path
 
     def _notify(self):
         for observer in self._observers:

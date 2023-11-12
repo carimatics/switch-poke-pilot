@@ -1,12 +1,10 @@
 import threading
 from typing import Callable
 
-from switchpokepilot.core.command.base import Command
-
 
 class CommandRunner:
-    def __init__(self, command: Command | None = None):
-        self.command: Command | None = command
+    def __init__(self, command=None):
+        self.command = command
         self._thread: threading.Thread | None = None
         self._on_finish: Callable[[], None] | None = None
 
@@ -19,12 +17,15 @@ class CommandRunner:
         return command.is_alive
 
     def start(self, on_finish: Callable[[], None] | None = None):
+        if self.command is None:
+            raise RuntimeError("Command is not set")
+
         # prepare
         self._on_finish = on_finish
         self.command.preprocess()
 
         # start command on new thread
-        thread_name = f"{CommandRunner.__name__}:${self.command.process.__name__}:${self.command.NAME}"
+        thread_name = f"{CommandRunner.__name__}:${self.command.process.__name__}"
         self._thread = threading.Thread(target=self._process,
                                         name=thread_name,
                                         daemon=True)
