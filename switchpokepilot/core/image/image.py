@@ -45,10 +45,10 @@ class Image:
     def to_gray_scale(self) -> 'Image':
         return Image(cv2.cvtColor(self._mat, cv2.COLOR_BGR2GRAY))
 
-    def contains(self, other: 'Image', threshold: float) -> (bool, float):
+    def contains(self, other: 'Image', threshold: float) -> bool:
         result = cv2.matchTemplate(self._mat, other._mat, cv2.TM_CCOEFF_NORMED)
         _, max_val, _, _ = cv2.minMaxLoc(result)
-        return max_val >= threshold, max_val
+        return max_val >= threshold
 
-    def is_contained_in(self, other: 'Image', threshold: float) -> (bool, float):
+    def is_contained_in(self, other: 'Image', threshold: float) -> bool:
         return other.contains(self, threshold)
