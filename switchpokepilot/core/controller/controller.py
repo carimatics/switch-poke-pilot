@@ -67,7 +67,7 @@ class Controller:
         self.send_reset()
 
     def send_repeat(self,
-                    count: int = 1,
+                    times: int = 1,
                     buttons: list[Button] | None = None,
                     l_displacement: StickDisplacement | None = None,
                     r_displacement: StickDisplacement | None = None,
@@ -75,17 +75,17 @@ class Controller:
                     duration: float = 0.1,
                     interval: float = 0.1,
                     skip_last_interval: bool = True):
-        if count < 1:
+        if times < 1:
             return
 
-        for i in range(count):
+        for i in range(times):
             self.send_one_shot(buttons=buttons,
                                l_displacement=l_displacement,
                                r_displacement=r_displacement,
                                hat=hat,
                                duration=duration)
 
-            if skip_last_interval and i >= count - 1:
+            if skip_last_interval and i >= times - 1:
                 break
 
             self._wait(interval)
