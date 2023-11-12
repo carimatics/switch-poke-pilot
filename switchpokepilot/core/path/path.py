@@ -11,7 +11,7 @@ class Path:
 
         self._user_directory = None
         self._user_config = None
-        self._assets_path = None
+        self._templates_path = None
         self._captures_path = None
         self._commands_path = None
 
@@ -30,12 +30,12 @@ class Path:
             return self._user_config
 
     def templates(self, cache: bool = True) -> str:
-        if cache and self._assets_path is not None:
-            return self._assets_path
+        if cache and self._templates_path is not None:
+            return self._templates_path
         else:
             relational_path = self.user_config(cache=cache)["directories"]["templates"]
-            self._assets_path = path.join(self.user_directory(cache=cache), relational_path)
-            return self._assets_path
+            self._templates_path = path.join(self.user_directory(cache=cache), relational_path)
+            return self._templates_path
 
     def captures(self, cache: bool = True) -> str:
         if cache and self._captures_path is not None:

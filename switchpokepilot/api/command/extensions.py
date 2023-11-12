@@ -99,7 +99,7 @@ class CommandExtensionsAPI:
         # Wait for detect game freak logo
         logo_template = Image.from_file(self._path.template("game_freak_logo.png"))
         capture_region = ImageRegion(x=(0.18, 0.23), y=(0.44, 0.58))
-        while not logo_template.is_contained_in(self._camera.get_current_frame(capture_region), threshold=0.8):
+        while not self._camera.get_current_frame(capture_region).to_gray_scale().contains(logo_template, threshold=0.8):
             if self.should_exit:
                 return
             self.wait(0.1)
