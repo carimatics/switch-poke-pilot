@@ -21,7 +21,8 @@ class Timer:
     def stop(self):
         self._stop_time = self._get_current_time()
 
-    def calculate_elapsed_time(self) -> Optional[ElapsedTime]:
+    @property
+    def elapsed_time(self) -> Optional[ElapsedTime]:
         start_time = self._start_time
         stop_time = self._stop_time
 

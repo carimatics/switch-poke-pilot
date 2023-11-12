@@ -111,7 +111,7 @@ class CommandUtils:
 
     @property
     def elapsed_time(self):
-        return self.timer.calculate_elapsed_time()
+        return self.timer.elapsed_time
 
     @staticmethod
     def reload_config():
@@ -128,7 +128,7 @@ class CommandUtils:
 
     def get_recognition(self, buttons: list[Button]):
         self.controller.send_repeat(buttons=buttons,
-                                    count=3,
+                                    times=3,
                                     duration=0.05,
                                     interval=0.8,
                                     skip_last_interval=False)
@@ -151,7 +151,7 @@ class CommandUtils:
 
             # Restart
             self.controller.send_repeat(buttons=[Button.A],
-                                        count=5,
+                                        times=5,
                                         duration=0.05,
                                         interval=0.5)
 
@@ -161,7 +161,7 @@ class CommandUtils:
             # 検出したら7秒待機してAボタン
             self.command.wait(7)
             self.controller.send_repeat(buttons=[Button.A],
-                                        count=5,
+                                        times=5,
                                         duration=0.05,
                                         interval=0.5)
 
@@ -208,7 +208,7 @@ class CommandUtils:
         # Goto System Settings
         self.controller.send_one_shot(l_displacement=Displacement.BOTTOM)
         self.controller.send_repeat(l_displacement=Displacement.RIGHT,
-                                    count=5)
+                                    times=5)
         self.controller.send_one_shot(buttons=[Button.A])
         self.command.wait(1.5)
 
@@ -254,7 +254,7 @@ class CommandUtils:
 
         # Goto Current Date and Time
         self.controller.send_repeat(l_displacement=Displacement.BOTTOM,
-                                    count=2)
+                                    times=2)
         self.controller.send_one_shot(buttons=[Button.A])
         self.command.wait(0.2)
 
@@ -264,10 +264,10 @@ class CommandUtils:
         def change(diff: int):
             if diff < 0:
                 self.controller.send_repeat(l_displacement=Displacement.BOTTOM,
-                                            count=-diff)
+                                            times=-diff)
             else:
                 self.controller.send_repeat(l_displacement=Displacement.TOP,
-                                            count=diff)
+                                            times=diff)
             self.controller.send_one_shot(l_displacement=Displacement.RIGHT)
 
         # Change datetime
