@@ -35,7 +35,7 @@ class CommandRunner:
         try:
             command.process()
         finally:
-            command.finish()
+            command.stop()
 
             on_finish = self._on_finish
             if on_finish is not None:
@@ -48,7 +48,7 @@ class CommandRunner:
     def stop(self):
         command = self.command
         if command is not None:
-            command.postprocess()
+            command.stop()
 
         thread = self._thread
         try:
