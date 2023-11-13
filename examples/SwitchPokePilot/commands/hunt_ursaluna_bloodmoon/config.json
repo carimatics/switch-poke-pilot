@@ -1,0 +1,117 @@
+{
+  "name": "ガチグマ(アカツキ)厳選",
+  "generation": 9,
+  "description": "ガチグマ(アカツキ)のA0~1、S0~1厳選ができるコマンドです。",
+  "catch": {
+    "ballIndex": 3,
+    "ballIndexSeekDirection": "left",
+    "pokedexRegistered": true
+  },
+  "checkStatus": {
+    "shouldCheckSpeed": true,
+    "shouldCheckStatus": true,
+    "shouldSaveScreencapture": true,
+    "attackIndividualValue": 1,
+    "speedIndividualValue": 0
+  },
+  "templates": {
+    "77": {
+      "path": "77.png",
+      "captureRegion": {
+        "x": [
+          0.72,
+          0.8
+        ],
+        "y": [
+          0.56,
+          0.66
+        ]
+      },
+      "threshold": 0.9
+    },
+    "78": {
+      "path": "78.png",
+      "captureRegion": {
+        "x": [
+          0.72,
+          0.8
+        ],
+        "y": [
+          0.56,
+          0.66
+        ]
+      },
+      "threshold": 0.9
+    },
+    "103": {
+      "path": "103.png",
+      "captureRegion": {
+        "x": [
+          0.832,
+          0.915
+        ],
+        "y": [
+          0.3,
+          0.38
+        ]
+      },
+      "threshold": 0.9
+    },
+    "battleCommandAppeared": {
+      "path": "battle_command.png",
+      "captureRegion": {
+        "x": [
+          0.76,
+          0.83
+        ],
+        "y": [
+          0.82,
+          0.98
+        ]
+      },
+      "threshold": 0.81
+    },
+    "catch": {
+      "path": "catch.png",
+      "captureRegion": {
+        "x": [
+          0.5,
+          1.0
+        ],
+        "y": [
+          0.5,
+          1.0
+        ]
+      },
+      "threshold": 0.81
+    },
+    "ursalunaPreemptiveAttacked": {
+      "path": "ursaluna_attack.png",
+      "captureRegion": {
+        "x": [
+          0.15,
+          0.34
+        ],
+        "y": [
+          0.72,
+          0.89
+        ]
+      },
+      "threshold": 0.81
+    },
+    "battleStarted": {
+      "path": "voice.png",
+      "captureRegion": {
+        "x": [
+          0.28,
+          0.45
+        ],
+        "y": [
+          0.76,
+          0.82
+        ]
+      },
+      "threshold": 0.81
+    }
+  }
+}
