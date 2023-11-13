@@ -6,8 +6,7 @@ run:
 
 regenerate-pyinstaller-spec:
 	flet pack switchpokepilot/__main__.py \
-	  --name SwitchPokePilot \
-	  --add-data "assets:assets"
+	  --name SwitchPokePilot
 
 pack:
 	pyinstaller ./SwitchPokePilot.spec --noconfirm --clean
