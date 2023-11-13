@@ -11,7 +11,7 @@ Switch Poke Pilotは[Poke-Controller-Modified](https://github.com/Moi-poke/Poke-
 v1.0.0に到達するまでは後方互換性が保たれない可能性があります。
 
 現状MacOSでしか動きません。
-Windowsには今年中に対応予定です。
+Windowsには今年中に対応する予定です。
 
 ## ドキュメント
 
