@@ -1,9 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-added_data = [
-    ('assets', 'assets'),
-    ('config.ini', '.'),
-]
+added_data = []
 
 a = Analysis(
     ['switchpokepilot/__main__.py'],
