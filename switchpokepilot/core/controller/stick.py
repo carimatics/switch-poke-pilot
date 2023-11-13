@@ -1,4 +1,5 @@
 import math
+from typing import Optional
 
 STICK_DISPLACEMENT_RANGE = {
     "min": 0,
@@ -40,7 +41,7 @@ class StickDisplacement:
 
 class Stick:
     def __init__(self,
-                 displacement: StickDisplacement | None = None):
+                 displacement: Optional[StickDisplacement] = None):
         if displacement is None:
             center = STICK_DISPLACEMENT_RANGE["center"]
             self.x, self.y = center, center
