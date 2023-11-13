@@ -12,8 +12,8 @@ class ElapsedTime:
 
 class Timer:
     def __init__(self):
-        self._start_time: float = -1
-        self._stop_time: float = -1
+        self._start_time: Optional[float] = None
+        self._stop_time: Optional[float] = None
 
     def start(self):
         self._start_time = self._get_current_time()
@@ -26,10 +26,10 @@ class Timer:
         start_time = self._start_time
         stop_time = self._stop_time
 
-        if start_time <= 0:
+        if start_time is None:
             return None
 
-        if start_time > stop_time:
+        if stop_time is None or stop_time < start_time:
             end_time = self._get_current_time()
         else:
             end_time = stop_time
