@@ -5,7 +5,7 @@ import flet as ft
 from switchpokepilot.app.state import AppState, AppStateObserver
 from switchpokepilot.core.camera import Camera
 
-DISABLED_IMAGE = "/images/disabled.png"
+DISABLED_IMAGE = "/images/no_image_available.png"
 
 
 class GameScreen(ft.UserControl, AppStateObserver):
