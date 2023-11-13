@@ -1,5 +1,5 @@
 import threading
-from typing import Callable
+from typing import Callable, Optional
 
 
 class CommandRunner:
@@ -16,7 +16,7 @@ class CommandRunner:
 
         return command.is_alive
 
-    def start(self, on_finish: Callable[[], None] | None = None):
+    def start(self, on_finish: Optional[Callable[[], None]] = None):
         if self.command is None:
             raise RuntimeError("Command is not set")
 
