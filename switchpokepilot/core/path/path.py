@@ -9,11 +9,11 @@ class Path:
     def __init__(self, config: Config):
         self._config = config
 
-        self._user_directory = None
-        self._user_config = None
-        self._templates_path = None
-        self._captures_path = None
-        self._commands_path = None
+        self._user_directory: Optional[str] = None
+        self._user_config: Optional[str] = None
+        self._templates_path: Optional[str] = None
+        self._captures_path: Optional[str] = None
+        self._commands_path: Optional[str] = None
 
     def user_directory(self, cache: bool = True) -> str:
         if cache and self._user_directory is not None:
@@ -67,7 +67,7 @@ class Path:
         return path.join(self.captures(cache=cache), normalized)
 
     @staticmethod
-    def _normalize_file_name(name: str | None = None) -> str:
+    def _normalize_file_name(name: Optional[str] = None) -> str:
         if name is None or name == "":
             now = datetime.now()
             return f"{now.strftime("%Y-%m-%d_%H-%M-%S-%f")}.png"
