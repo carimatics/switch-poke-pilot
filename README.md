@@ -10,7 +10,7 @@ Switch Poke Pilotは[Poke-Controller-Modified](https://github.com/Moi-poke/Poke-
 また、このツールは鋭意開発中です。  
 v1.0.0に到達するまでは後方互換性が保たれない可能性があります。
 
-現状MacOSでしか動きません。
+現状macOSでしか動きません。
 Windowsには今年中に対応する予定です。
 
 ## ドキュメント
