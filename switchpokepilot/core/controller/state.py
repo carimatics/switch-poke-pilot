@@ -1,3 +1,5 @@
+from typing import Optional
+
 from switchpokepilot.core.controller.button import Button
 from switchpokepilot.core.controller.hat import Hat
 from switchpokepilot.core.controller.stick import STICK_DISPLACEMENT_RANGE, Stick, StickDisplacement
@@ -29,10 +31,10 @@ class ControllerState:
         self.r_stick.changed = r_stick_changed
 
     def set(self,
-            buttons: list[Button] | None = None,
-            l_displacement: StickDisplacement | None = None,
-            r_displacement: StickDisplacement | None = None,
-            hat: Hat | None = None):
+            buttons: Optional[list[Button]] = None,
+            l_displacement: Optional[StickDisplacement] = None,
+            r_displacement: Optional[StickDisplacement] = None,
+            hat: Optional[Hat] = None):
         if buttons is not None:
             for button in buttons:
                 self.buttons |= button
@@ -46,7 +48,7 @@ class ControllerState:
             self.hat = hat
 
     def unset(self,
-              buttons: list[Button] | None = None):
+              buttons: Optional[list[Button]] = None):
         if buttons is not None:
             for button in buttons:
                 self.buttons &= ~button
