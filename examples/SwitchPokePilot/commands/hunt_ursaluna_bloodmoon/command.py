@@ -1,3 +1,6 @@
+# このコマンドは以下の実装を参考に作成しました。
+# https://github.com/Syumiru/Poke-Controller-Modified-PGM/blob/0dd26257521ebfe0f4fcc5fc2b8bc018e269beac/Commands/PythonCommands/ImageProcessingOnly/SV_A0_A0S0GACHIGUMA.py
+
 class Command:
     def __init__(self, api):
         self.api = api
