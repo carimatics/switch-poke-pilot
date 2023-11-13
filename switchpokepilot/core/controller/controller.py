@@ -1,5 +1,6 @@
 import time
 from time import sleep
+from typing import Optional
 
 from switchpokepilot.core.controller.button import Button
 from switchpokepilot.core.controller.hat import Hat
@@ -21,10 +22,10 @@ class Controller:
         self._serial.close()
 
     def set(self,
-            buttons: list[Button] | None = None,
-            l_displacement: StickDisplacement | None = None,
-            r_displacement: StickDisplacement | None = None,
-            hat: Hat | None = None):
+            buttons: Optional[list[Button]] = None,
+            l_displacement: Optional[StickDisplacement] = None,
+            r_displacement: Optional[StickDisplacement] = None,
+            hat: Optional[Hat] = None):
         self._state.set(buttons=buttons,
                         l_displacement=l_displacement,
                         r_displacement=r_displacement,
@@ -39,10 +40,10 @@ class Controller:
         self._state.consume_stick_displacement()
 
     def send_hold(self,
-                  buttons: list[Button] | None = None,
-                  l_displacement: StickDisplacement | None = None,
-                  r_displacement: StickDisplacement | None = None,
-                  hat: Hat | None = None):
+                  buttons: Optional[list[Button]] = None,
+                  l_displacement: Optional[StickDisplacement] = None,
+                  r_displacement: Optional[StickDisplacement] = None,
+                  hat: Optional[Hat] = None):
         self.set(buttons=buttons,
                  l_displacement=l_displacement,
                  r_displacement=r_displacement,
@@ -54,10 +55,10 @@ class Controller:
         self.send()
 
     def send_one_shot(self,
-                      buttons: list[Button] | None = None,
-                      l_displacement: StickDisplacement | None = None,
-                      r_displacement: StickDisplacement | None = None,
-                      hat: Hat | None = None,
+                      buttons: Optional[list[Button]] = None,
+                      l_displacement: Optional[StickDisplacement] = None,
+                      r_displacement: Optional[StickDisplacement] = None,
+                      hat: Optional[Hat] = None,
                       duration=0.1):
         self.send_hold(buttons=buttons,
                        l_displacement=l_displacement,
@@ -68,10 +69,10 @@ class Controller:
 
     def send_repeat(self,
                     times: int = 1,
-                    buttons: list[Button] | None = None,
-                    l_displacement: StickDisplacement | None = None,
-                    r_displacement: StickDisplacement | None = None,
-                    hat: Hat | None = None,
+                    buttons: Optional[list[Button]] = None,
+                    l_displacement: Optional[StickDisplacement] = None,
+                    r_displacement: Optional[StickDisplacement] = None,
+                    hat: Optional[Hat] = None,
                     duration: float = 0.1,
                     interval: float = 0.1,
                     skip_last_interval: bool = True):
