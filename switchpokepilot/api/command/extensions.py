@@ -123,8 +123,8 @@ class CommandExtensionsAPI:
                   days: int = 0,
                   hours: int = 0,
                   minutes: int = 0,
-                  toggle_auto=False,
-                  with_reset=False):
+                  toggle_auto: bool = False,
+                  with_reset: bool = False):
         self.goto_home()
         if self.should_exit:
             return
