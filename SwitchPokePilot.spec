@@ -23,6 +23,7 @@ exe = EXE(
     a.datas,
     [],
     name='SwitchPokePilot',
+    icon='assets\icon\icon.ico',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -39,6 +40,7 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='SwitchPokePilot.app',
+    icon='assets/icon/icon.icns',
     bundle_identifier=None,
     version='0.1.0',
     info_plist={
