@@ -13,8 +13,9 @@ def _get_devices_macos():
 
 
 def _get_device_windows():
-    # TODO: ちゃんとデバイスのリストを取得する
-    return [{'name': 'Default', 'id': 0}]
+    # XXX: ちゃんとデバイスのリストを取得する
+    #      とりあえず現状は10個までのカメラに対応
+    return [{'name': f"Camera {i}", 'id': i} for i in range(10)]
 
 
 def get_devices() -> list[dict[str, str | int]]:
