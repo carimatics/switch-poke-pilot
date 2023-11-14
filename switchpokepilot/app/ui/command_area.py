@@ -69,6 +69,16 @@ class CommandArea(ft.UserControl):
         return command_class(api=api)
 
     def build(self):
+        if len(self._command_info) >= self._selected_command_index + 1:
+            default_command_value = self._command_info[self._selected_command_index]["name"]
+        else:
+            default_command_value = "Command not found"
+
+        if len(self._port_info) >= self._selected_port_index + 1:
+            default_port_value = self._port_info[self._selected_port_index].name
+        else:
+            default_port_value = "Port not found"
+
         self._start_button = Button("Start",
                                     on_click=self._on_start_click,
                                     visible=True)
@@ -83,12 +93,12 @@ class CommandArea(ft.UserControl):
                         controls=[
                             Dropdown(label="Command",
                                      options=[info["config"]["name"] for info in self._command_info],
-                                     value=self._command_info[self._selected_command_index]["name"],
+                                     value=default_command_value,
                                      on_change=self._on_command_change,
                                      width=200),
                             Dropdown(label="PortInfo",
                                      options=[info.name for info in self._port_info],
-                                     value=self._port_info[self._selected_port_index].name,
+                                     value=default_port_value,
                                      on_change=self._on_port_change,
                                      width=100),
                         ],
