@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+version = '0.1.6'
 added_data = []
 
 a = Analysis(
@@ -42,7 +43,7 @@ app = BUNDLE(
     name='SwitchPokePilot.app',
     icon='assets/icon/icon.icns',
     bundle_identifier=None,
-    version='0.1.0',
+    version=version,
     info_plist={
         'NSCameraUsageDescription': 'This app requires camera to capture your switch game screen',
         'NSMicrophoneUsageDescription': 'This app requires microphone to capture your switch game screen',
