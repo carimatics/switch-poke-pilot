@@ -22,15 +22,12 @@ class CommandArea(ft.UserControl):
         self._selected_command_index = 0
         self._start_button: Button | None = None
         self._stop_button: Button | None = None
+        self._port_info = SerialPort.get_serial_ports()
+        self._selected_port_index = 0
 
     @property
     def runner(self):
         return self.app_state.command_runner
-
-    def did_mount(self):
-        super().did_mount()
-        port_info = SerialPort.get_serial_ports()[0]
-        self.app_state.controller.open(port_info=port_info)
 
     def _update_buttons(self):
         self._start_button.visible = not self.runner.is_running
@@ -42,6 +39,8 @@ class CommandArea(ft.UserControl):
 
     def _on_start_click(self, button, e):
         self.runner.stop()
+        port_info = self._port_info[self._selected_port_index]
+        self.app_state.controller.open(port_info)
         self.runner.command = self._create_selected_command()
         self.runner.start(on_finish=self._on_command_finish)
         self._update_buttons()
@@ -52,6 +51,9 @@ class CommandArea(ft.UserControl):
 
     def _on_command_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
         self._selected_command_index = index
+
+    def _on_port_change(self, dropdown: Dropdown, e: ft.ControlEvent, index: int):
+        self._selected_port_index = index
 
     def _create_selected_command(self):
         info = self._command_info[self._selected_command_index]
@@ -77,11 +79,21 @@ class CommandArea(ft.UserControl):
         self.contents = ft.Container(
             ft.Column(
                 controls=[
-                    Dropdown(label="Command",
-                             options=[info["config"]["name"] for info in self._command_info],
-                             value=self._command_info[self._selected_command_index]["name"],
-                             on_change=self._on_command_change,
-                             width=200),
+                    ft.Row(
+                        controls=[
+                            Dropdown(label="Command",
+                                     options=[info["config"]["name"] for info in self._command_info],
+                                     value=self._command_info[self._selected_command_index]["name"],
+                                     on_change=self._on_command_change,
+                                     width=200),
+                            Dropdown(label="PortInfo",
+                                     options=[info.name for info in self._port_info],
+                                     value=self._port_info[self._selected_port_index].name,
+                                     on_change=self._on_port_change,
+                                     width=100),
+                        ],
+                        width=1720,
+                    ),
                     ft.Row(
                         controls=[
                             self._start_button,
