@@ -10,11 +10,11 @@ from switchpokepilot.app.ui.log_area import LogArea
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.utils.device import get_devices
 
-NAME = "SwitchPokePilot"
+NAME = "Switch Poke Pilot"
 VERSION = {
     "major": 0,
     "minor": 1,
-    "patch": 0,
+    "patch": 1,
 }
 
 
