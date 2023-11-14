@@ -10,18 +10,6 @@ from switchpokepilot.core.utils.env import is_packed
 from switchpokepilot.core.utils.os import is_windows
 
 
-class InvalidRegionError(Exception):
-    pass
-
-
-class CropRegion:
-    def __init__(self, x: tuple[int, int], y: tuple[int, int]):
-        if x[0] >= x[1] or y[0] >= y[1]:
-            raise InvalidRegionError
-        self.x = x
-        self.y = y
-
-
 class Camera:
     def __init__(self,
                  capture_size: tuple[int, int],
