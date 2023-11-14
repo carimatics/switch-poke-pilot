@@ -87,7 +87,7 @@ jobs:
       - name: Zip app
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-Windows.zip SwitchPokePilot.app
+          args: zip -qq -r SwitchPokePilot-macOS.zip SwitchPokePilot.app
 
       - name: Release binaries
         uses: softprops/action-gh-release@v1
