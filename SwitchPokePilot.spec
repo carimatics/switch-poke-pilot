@@ -39,7 +39,6 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='SwitchPokePilot.app',
-    icon='assets/icon/icon.icns',
     bundle_identifier=None,
     version='0.1.0',
     info_plist={
