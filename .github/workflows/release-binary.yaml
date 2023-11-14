@@ -26,16 +26,11 @@ jobs:
       - name: Build
         run: pyinstaller ./SwitchPokePilot.spec --noconfirm
 
-      - name: Zip binary
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r dist/SwitchPokePilot-Windows.zip dist/SwitchPokePilot.exe
-
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: SwitchPokePilot-Windows.zip
-          path: dist/SwitchPokePilot-Windows.zip
+          name: SwitchPokePilot.exe
+          path: dist/SwitchPokePilot.exe
 
   build-macos:
     name: Build macOS
@@ -58,16 +53,11 @@ jobs:
       - name: Build
         run: pyinstaller ./SwitchPokePilot.spec --noconfirm
 
-      - name: Zip binary
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r dist/SwitchPokePilot-macOS.zip dist/SwitchPokePilot.app
-
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: SwitchPokePilot-macOS.zip
-          path: dist/SwitchPokePilot-macOS.zip
+          name: SwitchPokePilot.app
+          path: dist/SwitchPokePilot.app
 
   release:
     needs: [ build-windows, build-macos ]
@@ -76,12 +66,22 @@ jobs:
       - name: Download Windows
         uses: actions/download-artifact@v3
         with:
-          name: SwitchPokePilot-Windows.zip
+          name: SwitchPokePilot.exe
 
       - name: Download macOS
         uses: actions/download-artifact@v3
         with:
-          name: SwitchPokePilot-macOS.zip
+          name: SwitchPokePilot.app
+
+      - name: Zip exe
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r dist/SwitchPokePilot-Windows.zip SwitchPokePilot.exe
+
+      - name: Zip app
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r dist/SwitchPokePilot-Windows.zip SwitchPokePilot.app
 
       - name: Release binaries
         uses: softprops/action-gh-release@v1
