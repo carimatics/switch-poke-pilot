@@ -16,7 +16,7 @@ class CommandLoader:
 
     def get_names(self) -> list[str]:
         return [name for name in os.listdir(self._path.commands())
-                if not name == ".DS_Store"]
+                if not name.startswith('.')]
 
     def get_info(self):
         return [{

@@ -26,5 +26,5 @@ class Config:
     def _read_json_file(path_name: Optional[str]):
         if not path.exists(path_name):
             raise FileNotFoundError(f"Config file not found: {path_name}")
-        with open(path_name) as config_file:
+        with open(path_name, encoding='utf-8') as config_file:
             return json.load(config_file)
