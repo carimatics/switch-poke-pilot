@@ -71,23 +71,23 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot.exe
-          path: SwitchPokePilot.exe
+          path: windows/SwitchPokePilot.exe
 
       - name: Download macOS
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot.app
-          path: SwitchPokePilot.app
+          path: macos/SwitchPokePilot.app
 
       - name: Zip exe
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-Windows.zip SwitchPokePilot.exe
+          args: zip -qq -r SwitchPokePilot-Windows.zip windows
 
       - name: Zip app
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-macOS.zip SwitchPokePilot.app
+          args: zip -qq -r SwitchPokePilot-macOS.zip macos
 
       - name: Release binaries
         uses: softprops/action-gh-release@v1
