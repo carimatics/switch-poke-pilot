@@ -10,10 +10,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python 3.12
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
@@ -37,10 +37,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python 3.12
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
@@ -67,21 +67,23 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot.exe
+          path: SwitchPokePilot.exe
 
       - name: Download macOS
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot.app
+          path: SwitchPokePilot.app
 
       - name: Zip exe
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r dist/SwitchPokePilot-Windows.zip SwitchPokePilot.exe
+          args: zip -qq -r SwitchPokePilot-Windows.zip SwitchPokePilot.exe
 
       - name: Zip app
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r dist/SwitchPokePilot-Windows.zip SwitchPokePilot.app
+          args: zip -qq -r SwitchPokePilot-Windows.zip SwitchPokePilot.app
 
       - name: Release binaries
         uses: softprops/action-gh-release@v1
