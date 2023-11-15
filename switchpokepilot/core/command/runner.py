@@ -5,8 +5,8 @@ from typing import Callable, Optional
 class CommandRunner:
     def __init__(self, command=None):
         self.command = command
-        self._thread: threading.Thread | None = None
-        self._on_finish: Callable[[], None] | None = None
+        self._thread: Optional[threading.Thread] = None
+        self._on_finish: Optional[Callable[[], None]] = None
 
     @property
     def is_running(self):

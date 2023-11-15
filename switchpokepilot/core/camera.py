@@ -17,8 +17,8 @@ class Camera:
         self._id: int = 0
         self._name: str = "Default"
 
-        self.current_frame: cv2.typing.MatLike | None = None
-        self.camera: cv2.VideoCapture | None = None
+        self.current_frame: Optional[cv2.typing.MatLike] = None
+        self.camera: Optional[cv2.VideoCapture] = None
         self.capture_size = capture_size
 
         self._logger = logger
