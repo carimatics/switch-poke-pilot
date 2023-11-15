@@ -7,16 +7,14 @@ class Command:
         self.button = self.api.controller.button
         self.stick = self.api.controller.stick
 
+        self.config = None
+
         self.should_keep_running = False
         self.is_alive = False
 
         self.templates = {}
         self.capture_regions = {}
         self.thresholds = {}
-
-    @property
-    def should_exit(self):
-        return not self.should_keep_running
 
     def process(self):
         try:
@@ -32,54 +30,38 @@ class Command:
             while self.should_keep_running:
                 self.api.extensions.attempt()
                 self.log_info()
-                if self.should_exit:
-                    return
 
                 # Mash A
                 self.send_repeat_a_until_battle_start()
-                if self.should_exit:
-                    return
 
                 # Battle
                 self.wait_for_command_appear()
-                if self.should_exit:
-                    return
                 self.send_attack_command()
-                if self.should_exit:
-                    return
 
                 # Check Speed
                 if self.detect_preemptive_attack():
                     self.api.extensions.restart_sv()
-                    if self.should_exit:
-                        return
                     continue
-                else:
-                    if not self.wait_for_battle_finish():
-                        self.api.extensions.restart_sv()
-                        continue
-                    if self.should_exit:
-                        return
+
+                if not self.wait_for_battle_finish():
+                    self.api.extensions.restart_sv()
+                    continue
 
                 # Catch
                 self.catch()
-                if self.should_exit:
-                    return
                 self.skip_pokedex()
-                if self.should_exit:
-                    return
 
                 # Check status
                 self.goto_status_screen()
-                if self.should_exit:
-                    return
                 if self.check_status():
                     self.api.logger.info("目的の個体を捕獲しました。")
                     self.log_info()
                     return
                 self.api.extensions.restart_sv()
+
         except Exception as e:
             self.api.logger.error(f"{e}")
+
         finally:
             self.api.logger.info("終了します。")
             self.api.timer.stop()
@@ -96,6 +78,8 @@ class Command:
 
             self.thresholds[name] = config["threshold"]
 
+        self.check_should_keep_running()
+
     def send_repeat_a_until_battle_start(self):
         template_name = "battleStarted"
         template = self.templates[template_name]
@@ -103,6 +87,7 @@ class Command:
         while self.should_keep_running and not self.capture(template_name).contains(template, threshold):
             self.api.controller.send_one_shot(buttons=[self.button.A], duration=0.05)
             self.wait(0.05)
+        self.check_should_keep_running()
 
     def wait_for_command_appear(self):
         template_name = "battleCommandAppeared"
@@ -111,6 +96,7 @@ class Command:
         while self.should_keep_running and not self.capture(template_name).contains(template, threshold):
             self.wait(0.5)
         self.wait(1)
+        self.check_should_keep_running()
 
     def send_attack_command(self):
         self.api.controller.send_repeat(buttons=[self.button.A],
@@ -118,6 +104,7 @@ class Command:
                                         duration=0.05,
                                         interval=1.0)
         self.wait(1.7)
+        self.check_should_keep_running()
 
     def detect_preemptive_attack(self):
         template_name = "ursalunaPreemptiveAttacked"
@@ -131,12 +118,14 @@ class Command:
         threshold = self.thresholds[template_name]
 
         wait_count = 0
-        while not self.capture(template_name).contains(template, threshold):
+        while self.should_keep_running and not self.capture(template_name).contains(template, threshold):
             self.wait(1.0)
             wait_count += 1
             if wait_count >= 60:
                 # 60秒待っても終わらない場合は終了
                 return False
+
+        self.check_should_keep_running()
         return True
 
     def catch(self):
@@ -144,7 +133,7 @@ class Command:
                                           duration=0.05)
         self.wait(0.6)
 
-        # Select ball
+        # Select and throw ball
         ball_index = self.config["catch"]["ballIndex"]
         if self.config["catch"]["ballIndexSeekDirection"] == "right":
             seek_direction = self.stick.RIGHT
@@ -158,11 +147,13 @@ class Command:
         self.api.controller.send_one_shot(buttons=[self.button.A], duration=0.05)
 
         self.wait(20)
+        self.check_should_keep_running()
 
     def skip_pokedex(self):
         if not self.config["catch"]["pokedexRegistered"]:
             self.api.controller.send_one_shot(buttons=[self.button.A], duration=0.05)
             self.wait(1.05)
+        self.check_should_keep_running()
 
     def goto_status_screen(self):
         self.api.controller.send_one_shot(l_stick=self.stick.BOTTOM)
@@ -172,17 +163,20 @@ class Command:
         self.wait(0.5)
         if self.config["checkStatus"]["shouldSaveScreencapture"]:
             self.api.video.capture()
+        self.check_should_keep_running()
 
     def check_status(self):
-        return self.check_attack() and self.check_speed()
+        achieved = self.check_attack() and self.check_speed()
+        self.check_should_keep_running()
+        return achieved
 
     def check_attack(self):
         template_name = "103"
         template = self.templates[template_name]
         threshold = self.thresholds[template_name]
-        achieved = self.capture(template_name).contains(template, threshold)
-        self.api.logger.info(f"攻撃(103): {achieved}")
-        return achieved
+        contains_103 = self.capture(template_name).contains(template, threshold)
+        self.api.logger.info(f"攻撃(103): {contains_103}")
+        return contains_103
 
     def check_speed(self):
         if not self.config["checkStatus"]["shouldCheckSpeed"]:
@@ -207,7 +201,8 @@ class Command:
         return contains_77 or contains_78
 
     def capture(self, name: str):
-        return self.api.video.get_current_frame().roi(region=self.capture_regions[name]).to_gray_scale()
+        capture_region = self.capture_regions[name]
+        return self.api.video.get_current_frame(region=capture_region).to_gray_scale()
 
     def log_info(self):
         elapsed_time = self.api.timer.elapsed_time
@@ -216,6 +211,10 @@ class Command:
 
     def wait(self, duration: float):
         self.api.extensions.wait(duration)
+
+    def check_should_keep_running(self):
+        if not self.should_keep_running:
+            raise Exception("コマンドが中断されました")
 
     def preprocess(self):
         self.should_keep_running = True
