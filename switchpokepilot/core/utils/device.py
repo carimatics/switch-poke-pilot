@@ -1,7 +1,12 @@
 import json
 import subprocess
 
-from switchpokepilot.core.utils.os import is_macos, is_windows
+from switchpokepilot.core.utils.os import is_macos, is_windows, is_linux
+
+
+def _get_devices_default():
+    # 適当にid 0から9までのカメラを返しておく
+    return [{'name': f"Camera {i}", 'id': i} for i in range(10)]
 
 
 def _get_devices_macos():
@@ -12,16 +17,22 @@ def _get_devices_macos():
     return [{'name': device['_name'], 'id': i} for i, device in enumerate(res_dict)]
 
 
-def _get_device_windows():
+def _get_devices_windows():
     # XXX: ちゃんとデバイスのリストを取得する
-    #      とりあえず現状は10個までのカメラに対応
-    return [{'name': f"Camera {i}", 'id': i} for i in range(10)]
+    return _get_devices_default()
+
+
+def _get_devices_linux():
+    # XXX: ちゃんとデバイスのリストを取得する
+    return _get_devices_default()
 
 
 def get_devices() -> list[dict[str, str | int]]:
     if is_macos():
         return _get_devices_macos()
     if is_windows():
-        return _get_device_windows()
+        return _get_devices_windows()
+    if is_linux():
+        return _get_devices_linux()
     else:
-        return []
+        return _get_devices_default()
