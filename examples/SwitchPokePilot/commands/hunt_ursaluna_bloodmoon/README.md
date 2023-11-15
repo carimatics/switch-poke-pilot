@@ -39,7 +39,7 @@
         - false: 未登録
 - checkStatus
     - shouldCheckSpeed: 素早さ個体値を確認するか
-    - shouldCheckStatus: ステータスを確認するか
+    - shouldSaveScreencapture: ステータス確認時にスクリーンショットを撮影するか
     - speedIndividualValue: 目標のガチグマ(アカツキ)の素早さ個体値
         - 0: S0のガチグマを厳選する
         - 1: S1のガチグマを厳選する
