@@ -26,7 +26,8 @@
 
 ## 設定ファイルの準備
 
-このREADME.mdと同じディレクトリにあるconfig.jsonを編集します。
+このREADME.mdと同じディレクトリにあるconfig.jsonを編集します。  
+(文字コードはUTF-8で編集してください)
 
 - catch
     - ballIndex: 投げるボールを選択する時に、左右のボタンを何回押すか
