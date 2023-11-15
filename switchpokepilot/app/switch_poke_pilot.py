@@ -8,7 +8,6 @@ from switchpokepilot.app.ui.capture_area import CaptureArea
 from switchpokepilot.app.ui.command_area import CommandArea
 from switchpokepilot.app.ui.log_area import LogArea
 from switchpokepilot.core.camera import Camera
-from switchpokepilot.core.utils.device import get_devices
 
 NAME = "Switch Poke Pilot"
 VERSION = {
@@ -40,7 +39,7 @@ class SwitchPokePilotApp(AppStateObserver):
     def create_default_camera(self):
         camera = Camera(capture_size=self.state.capture_size,
                         logger=self.state.logger)
-        camera_info = get_devices()[0]
+        camera_info = Camera.get_devices()[0]
         camera.id = camera_info['id']
         camera.name = camera_info['name']
         return camera

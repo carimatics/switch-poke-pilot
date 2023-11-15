@@ -4,7 +4,6 @@ from switchpokepilot.app.state import AppState
 from switchpokepilot.app.ui.dropdown import Dropdown
 from switchpokepilot.app.ui.game_screen import GameScreen
 from switchpokepilot.core.camera import Camera
-from switchpokepilot.core.utils.device import get_devices
 
 
 class CaptureArea(ft.UserControl):
@@ -16,7 +15,7 @@ class CaptureArea(ft.UserControl):
         self.contents: ft.Control | None = None
 
         self.active_camera: Camera | None = self.app_state.camera
-        self.devices = get_devices()
+        self.devices = Camera.get_devices()
 
     @property
     def _camera_options(self):

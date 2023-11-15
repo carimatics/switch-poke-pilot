@@ -6,6 +6,7 @@ import cv2
 from switchpokepilot.core.image.image import Image
 from switchpokepilot.core.image.region import ImageRegion
 from switchpokepilot.core.logger.logger import Logger
+from switchpokepilot.core.utils.device import get_camera_devices
 from switchpokepilot.core.utils.env import is_packed
 from switchpokepilot.core.utils.os import is_windows
 
@@ -38,6 +39,10 @@ class Camera:
     @name.setter
     def name(self, new_value: str):
         self._name = new_value
+
+    @staticmethod
+    def get_devices():
+        return get_camera_devices()
 
     def is_opened(self):
         return self.camera is not None and self.camera.isOpened()
