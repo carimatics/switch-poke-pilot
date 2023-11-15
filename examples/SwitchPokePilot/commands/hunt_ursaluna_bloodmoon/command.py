@@ -1,6 +1,17 @@
 # このコマンドは以下の実装を参考に作成しました。
 # https://github.com/Syumiru/Poke-Controller-Modified-PGM/blob/0dd26257521ebfe0f4fcc5fc2b8bc018e269beac/Commands/PythonCommands/ImageProcessingOnly/SV_A0_A0S0GACHIGUMA.py
 
+def check_should_keep_running(f):
+    def wrapper(*args):
+        self = args[0]
+        result = f(*args)
+        if not self.should_keep_running:
+            raise Exception("コマンドが中断されました")
+        return result
+
+    return wrapper
+
+
 class Command:
     def __init__(self, api):
         self.api = api
@@ -63,10 +74,12 @@ class Command:
             self.api.logger.error(f"{e}")
 
         finally:
+            self.log_info()
             self.api.logger.info("終了します。")
             self.api.timer.stop()
             self.postprocess()
 
+    @check_should_keep_running
     def load_templates(self):
         for name in self.config["templates"]:
             config = self.config["templates"][name]
@@ -78,8 +91,7 @@ class Command:
 
             self.thresholds[name] = config["threshold"]
 
-        self.check_should_keep_running()
-
+    @check_should_keep_running
     def send_repeat_a_until_battle_start(self):
         template_name = "battleStarted"
         template = self.templates[template_name]
@@ -87,8 +99,8 @@ class Command:
         while self.should_keep_running and not self.capture(template_name).contains(template, threshold):
             self.api.controller.send_one_shot(buttons=[self.button.A], duration=0.05)
             self.wait(0.05)
-        self.check_should_keep_running()
 
+    @check_should_keep_running
     def wait_for_command_appear(self):
         template_name = "battleCommandAppeared"
         template = self.templates[template_name]
@@ -96,22 +108,23 @@ class Command:
         while self.should_keep_running and not self.capture(template_name).contains(template, threshold):
             self.wait(0.5)
         self.wait(1)
-        self.check_should_keep_running()
 
+    @check_should_keep_running
     def send_attack_command(self):
         self.api.controller.send_repeat(buttons=[self.button.A],
                                         times=2,
                                         duration=0.05,
                                         interval=1.0)
         self.wait(1.7)
-        self.check_should_keep_running()
 
+    @check_should_keep_running
     def detect_preemptive_attack(self):
         template_name = "ursalunaPreemptiveAttacked"
         template = self.templates[template_name]
         threshold = self.thresholds[template_name]
         return self.capture(template_name).contains(template, threshold)
 
+    @check_should_keep_running
     def wait_for_battle_finish(self) -> bool:
         template_name = "catch"
         template = self.templates[template_name]
@@ -124,10 +137,9 @@ class Command:
             if wait_count >= 60:
                 # 60秒待っても終わらない場合は終了
                 return False
-
-        self.check_should_keep_running()
         return True
 
+    @check_should_keep_running
     def catch(self):
         self.api.controller.send_one_shot(buttons=[self.button.A],
                                           duration=0.05)
@@ -146,15 +158,16 @@ class Command:
                                         skip_last_interval=False)
         self.api.controller.send_one_shot(buttons=[self.button.A], duration=0.05)
 
+        # 演出待機
         self.wait(20)
-        self.check_should_keep_running()
 
+    @check_should_keep_running
     def skip_pokedex(self):
         if not self.config["catch"]["pokedexRegistered"]:
             self.api.controller.send_one_shot(buttons=[self.button.A], duration=0.05)
             self.wait(1.05)
-        self.check_should_keep_running()
 
+    @check_should_keep_running
     def goto_status_screen(self):
         self.api.controller.send_one_shot(l_stick=self.stick.BOTTOM)
         self.api.controller.send_one_shot(buttons=[self.button.A])
@@ -163,13 +176,12 @@ class Command:
         self.wait(0.5)
         if self.config["checkStatus"]["shouldSaveScreencapture"]:
             self.api.video.capture()
-        self.check_should_keep_running()
 
+    @check_should_keep_running
     def check_status(self):
-        achieved = self.check_attack() and self.check_speed()
-        self.check_should_keep_running()
-        return achieved
+        return self.check_attack() and self.check_speed()
 
+    @check_should_keep_running
     def check_attack(self):
         template_name = "103"
         template = self.templates[template_name]
@@ -178,6 +190,7 @@ class Command:
         self.api.logger.info(f"攻撃(103): {contains_103}")
         return contains_103
 
+    @check_should_keep_running
     def check_speed(self):
         if not self.config["checkStatus"]["shouldCheckSpeed"]:
             return True
@@ -200,21 +213,20 @@ class Command:
 
         return contains_77 or contains_78
 
+    @check_should_keep_running
     def capture(self, name: str):
         capture_region = self.capture_regions[name]
         return self.api.video.get_current_frame(region=capture_region).to_gray_scale()
 
+    @check_should_keep_running
     def log_info(self):
         elapsed_time = self.api.timer.elapsed_time
         self.api.logger.info(f"経過時間: {elapsed_time.hours}時間{elapsed_time.minutes}分{elapsed_time.seconds}秒")
         self.api.logger.info(f"実行回数: {self.api.extensions.attempt_count}")
 
+    @check_should_keep_running
     def wait(self, duration: float):
         self.api.extensions.wait(duration)
-
-    def check_should_keep_running(self):
-        if not self.should_keep_running:
-            raise Exception("コマンドが中断されました")
 
     def preprocess(self):
         self.should_keep_running = True
