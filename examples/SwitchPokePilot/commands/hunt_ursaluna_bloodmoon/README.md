@@ -39,7 +39,9 @@
 - checkStatus
     - shouldCheckSpeed: 素早さ個体値を確認するか
     - shouldCheckStatus: ステータスを確認するか
-    - speedIndividualValue: 0 or 1
+  - speedIndividualValue: 目標のガチグマ(アカツキ)の素早さ個体値
+      - 0: S0のガチグマを厳選する
+      - 1: S1のガチグマを厳選する
 
 ## コマンドの実行
 
