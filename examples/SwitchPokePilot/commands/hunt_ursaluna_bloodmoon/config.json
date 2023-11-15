@@ -9,9 +9,7 @@
   },
   "checkStatus": {
     "shouldCheckSpeed": true,
-    "shouldCheckStatus": true,
     "shouldSaveScreencapture": true,
-    "attackIndividualValue": 1,
     "speedIndividualValue": 0
   },
   "templates": {
