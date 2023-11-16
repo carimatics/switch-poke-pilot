@@ -1,6 +1,11 @@
-flet>=0.11.0
-pyinstaller>=6.0.0
+# Core
 opencv-python>=4.8.1
 numpy>=1.26.0
 pyserial>=3.5
 pydantic>=2.4.2
+
+# UI
+flet>=0.12.1
+
+# Packaging
+pyinstaller>=6.0.0
