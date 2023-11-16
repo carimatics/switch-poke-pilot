@@ -21,7 +21,7 @@ class Config:
             if is_macos():
                 return path.abspath(path.join(sys.executable, "..", "..", "..", "..", "SwitchPokePilot"))
             else:
-                return path.dirname(sys.executable)
+                return path.join(path.dirname(sys.executable), "SwitchPokePilot")
         else:
             return path.dirname(path.abspath(__file__))
 
