@@ -36,12 +36,6 @@ jobs:
           name: SwitchPokePilot.exe
           path: dist/SwitchPokePilot.exe
 
-      - name: Upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: SwitchPokePilot
-          path: examples/SwitchPokePilot
-
   build-macos:
     name: Build macOS
     runs-on: macos-latest
@@ -73,39 +67,36 @@ jobs:
     needs: [ build-windows, build-macos ]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download Windows
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot.exe
-          path: windows/SwitchPokePilot.exe
+          path: dist/windows/SwitchPokePilot.exe
 
       - name: Download macOS
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot.app
-          path: macos/SwitchPokePilot.app
-
-      - name: Download user directory
-        uses: actions/download-artifact@v3
-        with:
-          name: SwitchPokePilot
-          path: SwitchPokePilot
+          path: dist/macos/SwitchPokePilot.app
 
       - name: Copy user directory (Windows)
-        run: cp -R SwitchPokePilot windows
+        run: cp -R examples/SwitchPokePilot dist/windows
 
       - name: Copy user directory (macOS)
-        run: cp -R SwitchPokePilot macos
+        run: cp -R examples/SwitchPokePilot dist/macos
 
       - name: Zip exe
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-Windows.zip windows
+          args: zip -qq -r SwitchPokePilot-Windows.zip dist/windows
 
       - name: Zip app
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-macOS.zip macos
+          args: zip -qq -r SwitchPokePilot-macOS.zip dist/macos
 
       - name: Release binaries
         uses: softprops/action-gh-release@v1
