@@ -23,7 +23,8 @@ class Config:
             else:
                 return path.join(path.dirname(sys.executable), "SwitchPokePilot")
         else:
-            return path.dirname(path.abspath(__file__))
+            return path.abspath(
+                path.join(path.abspath(__file__), "..", "..", "..", "..", "examples", "SwitchPokePilot"))
 
     @staticmethod
     def _read_json_file(path_name: Optional[str]):
