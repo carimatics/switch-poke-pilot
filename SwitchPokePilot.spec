@@ -1,6 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-version = '0.1.16'
+version = '0.2.0'
 added_data = []
 
 a = Analysis(

@@ -12,8 +12,8 @@ from switchpokepilot.core.camera import Camera
 NAME = "Switch Poke Pilot"
 VERSION = {
     "major": 0,
-    "minor": 1,
-    "patch": 16,
+    "minor": 2,
+    "patch": 0,
 }
 
 
