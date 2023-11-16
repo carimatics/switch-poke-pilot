@@ -36,6 +36,12 @@ jobs:
           name: SwitchPokePilot.exe
           path: dist/SwitchPokePilot.exe
 
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: SwitchPokePilot
+          path: examples/SwitchPokePilot
+
   build-macos:
     name: Build macOS
     runs-on: macos-latest
@@ -78,6 +84,18 @@ jobs:
         with:
           name: SwitchPokePilot.app
           path: macos/SwitchPokePilot.app
+
+      - name: Download user directory (Windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: SwitchPokePilot
+          path: macos/SwitchPokePilot
+
+      - name: Download user directory (macOS)
+        uses: actions/download-artifact@v3
+        with:
+          name: SwitchPokePilot
+          path: windows/SwitchPokePilot
 
       - name: Zip exe
         uses: montudor/action-zip@v1
