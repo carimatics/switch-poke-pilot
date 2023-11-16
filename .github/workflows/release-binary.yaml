@@ -85,17 +85,17 @@ jobs:
           name: SwitchPokePilot.app
           path: macos/SwitchPokePilot.app
 
-      - name: Download user directory (Windows)
+      - name: Download user directory
         uses: actions/download-artifact@v3
         with:
           name: SwitchPokePilot
-          path: macos/SwitchPokePilot
+          path: SwitchPokePilot
 
-      - name: Download user directory (macOS)
-        uses: actions/download-artifact@v3
-        with:
-          name: SwitchPokePilot
-          path: windows/SwitchPokePilot
+      - name: Copy user directory (Windows)
+        run: cp -r SwitchPokePilot windows
+
+      - name: Copy user directory (macOS)
+        run: cp -r SwitchPokePilot macos
 
       - name: Zip exe
         uses: montudor/action-zip@v1
