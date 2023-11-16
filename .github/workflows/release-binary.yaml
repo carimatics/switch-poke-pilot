@@ -92,10 +92,10 @@ jobs:
           path: SwitchPokePilot
 
       - name: Copy user directory (Windows)
-        run: cp -r SwitchPokePilot windows
+        run: cp -R SwitchPokePilot windows
 
       - name: Copy user directory (macOS)
-        run: cp -r SwitchPokePilot macos
+        run: cp -R SwitchPokePilot macos
 
       - name: Zip exe
         uses: montudor/action-zip@v1
