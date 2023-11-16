@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: SwitchPokePilot.exe
-          path: dist/SwitchPokePilot.exe
+          path: dist/SwitchPokePilot.exe/SwitchPokePilot.exe
 
   build-macos:
     name: Build macOS
