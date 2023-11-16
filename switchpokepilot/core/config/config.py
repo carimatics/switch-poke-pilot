@@ -1,8 +1,10 @@
 import json
+import sys
 from os import path
 from typing import Optional
 
-_user_config_file_path = path.expanduser("~/SwitchPokePilot.config.json")
+from switchpokepilot.core.utils.env import is_packed
+from switchpokepilot.core.utils.os import is_macos
 
 
 class Config:
@@ -10,17 +12,18 @@ class Config:
         return self.read(path.join("commands", name))
 
     def read(self, relative_path: Optional[str] = None):
-        if relative_path is None:
-            absolute_path = path.abspath(path.join(self.get_user_directory(), "config.json"))
-        else:
-            absolute_path = path.abspath(path.join(self.get_user_directory(), relative_path, "config.json"))
+        absolute_path = path.join(self.get_user_directory(), relative_path, "config.json")
         return self._read_json_file(absolute_path)
 
-    def get_user_directory(self):
-        if not path.exists(_user_config_file_path):
-            raise FileNotFoundError(f"User config file not found: {_user_config_file_path}")
-        user_directory = self._read_json_file(_user_config_file_path)['userDirectory']
-        return path.abspath(path.expanduser(user_directory))
+    @staticmethod
+    def get_user_directory():
+        if is_packed():
+            if is_macos():
+                return path.abspath(path.join(sys.executable, "..", "..", "..", "..", "SwitchPokePilot"))
+            else:
+                return path.dirname(sys.executable)
+        else:
+            return path.dirname(path.abspath(__file__))
 
     @staticmethod
     def _read_json_file(path_name: Optional[str]):

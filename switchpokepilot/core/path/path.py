@@ -1,6 +1,6 @@
 from datetime import datetime
 from os import path
-from typing import Optional, Any
+from typing import Optional
 
 from switchpokepilot.core.config.config import Config
 
@@ -10,7 +10,6 @@ class Path:
         self._config = config
 
         self._user_directory: Optional[str] = None
-        self._user_config: Optional[str] = None
         self._templates_path: Optional[str] = None
         self._captures_path: Optional[str] = None
         self._commands_path: Optional[str] = None
@@ -22,35 +21,25 @@ class Path:
             self._user_directory = self._config.get_user_directory()
             return self._user_directory
 
-    def user_config(self, cache: bool = True) -> Any:
-        if cache and self._user_config is not None:
-            return self._user_config
-        else:
-            self._user_config = self._config.read()
-            return self._user_config
-
     def templates(self, cache: bool = True) -> str:
         if cache and self._templates_path is not None:
             return self._templates_path
         else:
-            relational_path = self.user_config(cache=cache)["directories"]["templates"]
-            self._templates_path = path.join(self.user_directory(cache=cache), relational_path)
+            self._templates_path = path.join(self.user_directory(cache=cache), "templates")
             return self._templates_path
 
     def captures(self, cache: bool = True) -> str:
         if cache and self._captures_path is not None:
             return self._captures_path
         else:
-            relational_path = self.user_config(cache=cache)["directories"]["captures"]
-            self._captures_path = path.join(self.user_directory(cache=cache), relational_path)
+            self._captures_path = path.join(self.user_directory(cache=cache), "captures")
             return self._captures_path
 
     def commands(self, cache: bool = True) -> str:
         if cache and self._commands_path is not None:
             return self._commands_path
         else:
-            relational_path = self.user_config(cache=cache)["directories"]["commands"]
-            self._commands_path = path.join(self.user_directory(cache=cache), relational_path)
+            self._commands_path = path.join(self.user_directory(cache=cache), "commands")
             return self._commands_path
 
     def command(self, name: str, cache: bool = True) -> str:
