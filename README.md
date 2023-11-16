@@ -14,7 +14,7 @@ macOS、Windowsで動作します。
 
 ## ドキュメント
 
-[Wiki](https://github.com/carimatics/SwitchPokePilot/wiki)に詳しい情報を記載しています。
+[Wiki](https://github.com/carimatics/SwitchPokePilot/wiki)に詳しい情報を記載しています。  
 このツールを利用する場合、[ユーザーガイド](https://github.com/carimatics/switch-poke-pilot/wiki/ユーザーガイド)
 には目を通しておくことをおすすめします。
 
