@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: SwitchPokePilot.exe
-          path: dist/SwitchPokePilot.exe/SwitchPokePilot.exe
+          path: dist/SwitchPokePilot.exe
 
   build-macos:
     name: Build macOS
@@ -82,21 +82,27 @@ jobs:
           name: SwitchPokePilot.app
           path: dist/macos/SwitchPokePilot.app
 
-      - name: Copy user directory (Windows)
-        run: cp -R examples/SwitchPokePilot dist/windows
+      - name: Prepare directory for Windows
+        run: |
+          mkdir windows
+          cp dist/windows/SwitchPokePilot.exe/SwitchPokePilot.exe windows
+          cp -R examples/SwitchPokePilot windows
 
-      - name: Copy user directory (macOS)
-        run: cp -R examples/SwitchPokePilot dist/macos
+      - name: Prepare directory for macOS
+        run: |
+          mkdir macos
+          cp dist/macos/SwitchPokePilot.app macos
+          cp -R examples/SwitchPokePilot macos
 
       - name: Zip exe
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-Windows.zip dist/windows
+          args: zip -qq -r SwitchPokePilot-Windows.zip windows
 
       - name: Zip app
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r SwitchPokePilot-macOS.zip dist/macos
+          args: zip -qq -r SwitchPokePilot-macOS.zip macos
 
       - name: Release binaries
         uses: softprops/action-gh-release@v1
