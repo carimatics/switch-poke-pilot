@@ -91,7 +91,7 @@ jobs:
       - name: Prepare directory for macOS
         run: |
           mkdir macos
-          cp dist/macos/SwitchPokePilot.app macos
+          cp -R dist/macos/SwitchPokePilot.app macos
           cp -R examples/SwitchPokePilot macos
 
       - name: Zip exe
