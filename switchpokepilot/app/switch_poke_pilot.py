@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 import flet as ft
 
 from switchpokepilot.app.state import AppState, AppStateObserver
@@ -7,6 +5,7 @@ from switchpokepilot.app.ui.appbar import AppBar
 from switchpokepilot.app.ui.capture_area import CaptureArea
 from switchpokepilot.app.ui.command_area import CommandArea
 from switchpokepilot.app.ui.log_area import LogArea
+from switchpokepilot.app.version import Version
 from switchpokepilot.core.camera import Camera
 
 NAME = "Switch Poke Pilot"
@@ -15,16 +14,6 @@ VERSION = {
     "minor": 2,
     "patch": 1,
 }
-
-
-@dataclass
-class Version:
-    major: int
-    minor: int
-    patch: int
-
-    def __str__(self):
-        return f"v{self.major}.{self.minor}.{self.patch}"
 
 
 class SwitchPokePilotApp(AppStateObserver):
