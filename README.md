@@ -3,6 +3,8 @@
 Nintendo Switchのポケモンの操作を自動化するためのツールです。  
 厳密にはポケモンだけでなく、それ以外のゲームも自動化することができます。
 
+Windows、macOSで動作します。
+
 Switch Poke Pilotは[Poke-Controller-Modified](https://github.com/Moi-poke/Poke-Controller-Modified)
 を参考に作られています。  
 すべてのコードを新規に実装し直していますが、どうしても似ている部分はあると思います。
@@ -11,8 +13,6 @@ Switch Poke Pilotは[Poke-Controller-Modified](https://github.com/Moi-poke/Poke-
 v1.0.0に到達するまでは後方互換性が保たれない可能性があります。  
 v1.0.0までに実現したいことに関しては[ロードマップ](https://github.com/carimatics/switch-poke-pilot/wiki/ロードマップ)
 をご覧ください。
-
-Windows、macOSで動作します。
 
 ## ドキュメント
 
