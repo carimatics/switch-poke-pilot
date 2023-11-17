@@ -1,14 +1,14 @@
+import sys
 from datetime import datetime
 from os import path
 from typing import Optional
 
-from switchpokepilot.core.config.config import Config
+from switchpokepilot.core.utils.env import is_packed
+from switchpokepilot.core.utils.os import is_macos
 
 
 class Path:
-    def __init__(self, config: Config):
-        self._config = config
-
+    def __init__(self):
         self._user_directory: Optional[str] = None
         self._templates_path: Optional[str] = None
         self._captures_path: Optional[str] = None
@@ -18,7 +18,7 @@ class Path:
         if cache and self._user_directory is not None:
             return self._user_directory
         else:
-            self._user_directory = self._config.get_user_directory()
+            self._user_directory = self._get_user_directory()
             return self._user_directory
 
     def templates(self, cache: bool = True) -> str:
@@ -54,6 +54,17 @@ class Path:
     def capture(self, name: Optional[str] = None, cache: bool = True) -> str:
         normalized = self._normalize_file_name(name)
         return path.join(self.captures(cache=cache), normalized)
+
+    @staticmethod
+    def _get_user_directory():
+        if is_packed():
+            if is_macos():
+                return path.abspath(path.join(sys.executable, "..", "..", "..", "..", "SwitchPokePilot"))
+            else:
+                return path.join(path.dirname(sys.executable), "SwitchPokePilot")
+        else:
+            return path.abspath(
+                path.join(path.abspath(__file__), "..", "..", "..", "..", "examples", "SwitchPokePilot"))
 
     @staticmethod
     def _normalize_file_name(name: Optional[str] = None) -> str:

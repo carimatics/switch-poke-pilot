@@ -7,9 +7,9 @@ from switchpokepilot.core.path.path import Path
 
 
 class CommandLoader:
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, path: Path):
         self._config = config
-        self._path = Path(config)
+        self._path = path
 
     def load(self, name: str) -> Type[Any]:
         return self._get_class(name)

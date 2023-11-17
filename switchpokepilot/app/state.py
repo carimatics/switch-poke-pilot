@@ -27,8 +27,8 @@ class AppState:
         self._controller: Controller = Controller()
         self._command_runner: CommandRunner = CommandRunner()
 
-        self._config = Config()
-        self._path = Path(self._config)
+        self._path = Path()
+        self._config = Config(self._path)
 
     @property
     def logger(self):

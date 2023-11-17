@@ -17,7 +17,8 @@ class CommandArea(ft.UserControl):
         self.app_state = app_state
 
         # for command
-        self._command_loader = CommandLoader(config=self.app_state.config)
+        self._command_loader = CommandLoader(config=self.app_state.config,
+                                             path=self.app_state.path)
         self._command_info = self._command_loader.get_info()
         self._selected_command_index = 0
         self._start_button: Button | None = None
