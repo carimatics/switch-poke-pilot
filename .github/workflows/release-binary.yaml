@@ -38,7 +38,7 @@ jobs:
 
   build-macos:
     name: Build macOS
-    runs-on: macos-latest
+    runs-on: macos-latest-xlarge
     steps:
       - name: Checkout
         uses: actions/checkout@v4
