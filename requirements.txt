@@ -4,8 +4,12 @@ numpy>=1.26.0
 pyserial>=3.5
 pydantic>=2.4.2
 
+# Controller Input Handling
+pygame>=2.5.2
+reactivex>=4.0.4
+
 # UI
-flet>=0.12.1
+flet>=0.13.0
 
 # Packaging
 pyinstaller>=6.0.0
