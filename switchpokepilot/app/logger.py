@@ -5,7 +5,7 @@ from switchpokepilot.core.logger.logger import Logger
 
 class LoggerObserver(metaclass=ABCMeta):
     @abstractmethod
-    def on_log(self, message):
+    def on_log(self, message: str):
         raise NotImplementedError
 
 
@@ -46,4 +46,7 @@ class AppLogger(Logger):
         self._observers.append(observer)
 
     def delete_observer(self, observer: LoggerObserver):
-        self._observers.remove(observer)
+        try:
+            self._observers.remove(observer)
+        finally:
+            pass
