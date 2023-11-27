@@ -48,10 +48,13 @@ class ControllerState:
             self.hat = hat
 
     def unset(self,
-              buttons: Optional[list[Button]] = None):
+              buttons: Optional[list[Button]] = None,
+              hat: bool = False):
         if buttons is not None:
             for button in buttons:
                 self.buttons &= ~button
+        if hat:
+            self.hat = Hat.CENTER
 
     def reset_buttons(self):
         self.buttons = 0

@@ -15,11 +15,18 @@ class Controller:
         self._state = ControllerState()
         self._serial = SerialPort()
 
+    @property
+    def is_open(self) -> bool:
+        return self._serial.is_open
+
     def open(self, port_info: SerialPortInfo):
         self._serial.open(port_info, baud_rate=9600)
 
     def close(self):
         self._serial.close()
+
+    def set_state(self, state: ControllerState):
+        self._state = state
 
     def set(self,
             buttons: Optional[list[Button]] = None,
@@ -30,6 +37,12 @@ class Controller:
                         l_displacement=l_displacement,
                         r_displacement=r_displacement,
                         hat=hat)
+
+    def unset(self,
+              buttons: Optional[list[Button]] = None,
+              hat: bool = False):
+        self._state.unset(buttons=buttons,
+                          hat=hat)
 
     def reset(self):
         self._state.reset()
