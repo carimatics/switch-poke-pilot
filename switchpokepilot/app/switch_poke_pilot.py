@@ -1,66 +1,79 @@
+import multiprocessing
+from typing import Optional, Any
+
 import flet as ft
 
-from switchpokepilot.app.state import AppState, AppStateObserver
-from switchpokepilot.app.ui.appbar import AppBar
-from switchpokepilot.app.ui.capture_area import CaptureArea
-from switchpokepilot.app.ui.command_area import CommandArea
-from switchpokepilot.app.ui.log_area import LogArea
-from switchpokepilot.app.version import Version
-from switchpokepilot.core.camera import Camera
-
-NAME = "Switch Poke Pilot"
-VERSION = {
-    "major": 0,
-    "minor": 2,
-    "patch": 1,
-}
+from switchpokepilot.app.info import get_app_info
+from switchpokepilot.app.main_window import MainWindow
+from switchpokepilot.app.ui.theme import get_app_theme
+from switchpokepilot.core.path.path import Path
 
 
-class SwitchPokePilotApp(AppStateObserver):
+def _open_main_window_app():
+    window = MainWindow()
+    path = Path()
+    ft.app(
+        port=0,
+        target=window.main,
+        assets_dir=path.user_directory(),
+    )
+
+
+class SwitchPokePilotApp:
     def __init__(self):
-        self.version = Version(major=VERSION["major"],
-                               minor=VERSION["minor"],
-                               patch=VERSION["patch"])
-        self.state = AppState()
-        self.page: ft.Page | None = None
-        self.content: ft.Control | None = None
+        self._info = get_app_info()
+        self._page: Optional[ft.Page] = None
+        self._content: Optional[ft.Control] = None
+        self._buttons: list[ft.IconButton] = []
+        self._settings_window: Optional[ft.FletApp] = None
+        self._main_window_processes = []
 
-    def create_default_camera(self):
-        camera = Camera(capture_size=self.state.capture_size,
-                        logger=self.state.logger)
-        camera_info = Camera.get_devices()[0]
-        camera.id = camera_info['id']
-        camera.name = camera_info['name']
-        return camera
+    async def main(self, page: ft.Page):
+        self._page = page
 
-    def main(self, page: ft.Page):
-        self.state.camera = self.create_default_camera()
-        self.state.add_observer(self)
+        page.title = f"{self._info.version}"
+        page.theme = get_app_theme()
+        page.theme_mode = ft.ThemeMode.DARK
+        page.vertical_alignment = ft.MainAxisAlignment.CENTER
+        page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+        page.window_width = 225
+        page.window_height = 150
+        page.window_resizable = False
 
-        self.page = page
+        self._content = ft.Row(controls=self._buttons,
+                               spacing=5,
+                               width=page.window_width,
+                               height=100,
+                               alignment=ft.MainAxisAlignment.CENTER,
+                               vertical_alignment=ft.CrossAxisAlignment.CENTER)
+        self._buttons.append(self._create_settings_window_button())
+        self._buttons.append(self._create_open_window_button())
+        await page.add_async(self._content)
 
-        self.page.title = f"{NAME} {self.version}"
-        self.page.vertical_alignment = ft.MainAxisAlignment.START
-        self.page.horizontal_alignment = ft.CrossAxisAlignment.START
+    async def _open_main_window(self, _event: ft.ControlEvent):
+        process = multiprocessing.Process(target=_open_main_window_app, args=())
+        self._main_window_processes.append(process)
+        process.start()
 
-        self.page.appbar = AppBar(page=page)
+    def _create_open_window_button(self):
+        return self._create_button(icon=ft.icons.ADD_BOX,
+                                   tooltip="Open new window",
+                                   on_click=self._open_main_window)
 
-        self.content = ft.Container(
-            content=ft.Row(
-                controls=[
-                    ft.Column(
-                        controls=[
-                            CaptureArea(app_state=self.state),
-                            CommandArea(app_state=self.state),
-                        ],
-                        width=1280,
-                    ),
-                    LogArea(self.state.logger),
-                ],
-            ),
-            alignment=ft.alignment.top_left,
-        )
-        page.add(self.content)
+    def _create_settings_window_button(self):
+        return self._create_button(icon=ft.icons.SETTINGS,
+                                   tooltip="Open settings window",
+                                   on_click=self._open_main_window)
 
-    def on_app_state_update(self, subject: AppState) -> None:
-        self.state.logger.debug("SwitchPokePilotApp: on_app_state_update")
+    @staticmethod
+    def _create_button(icon: str, tooltip: str, on_click: Any):
+        return ft.IconButton(icon=icon,
+                             on_click=on_click,
+                             tooltip=tooltip,
+                             icon_color=ft.colors.ON_SURFACE,
+                             icon_size=100,
+                             width=100,
+                             height=100,
+                             style=ft.ButtonStyle(
+                                 padding=0,
+                             ))
