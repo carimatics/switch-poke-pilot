@@ -1,22 +1,10 @@
-import multiprocessing
 from typing import Optional, Any
 
 import flet as ft
 
 from switchpokepilot.app.info import get_app_info
-from switchpokepilot.app.main_window import MainWindow
+from switchpokepilot.app.mainwindow.process import MainWindowProcessPool
 from switchpokepilot.app.ui.theme import get_app_theme
-from switchpokepilot.core.path.path import Path
-
-
-def _open_main_window_app():
-    window = MainWindow()
-    path = Path()
-    ft.app(
-        port=0,
-        target=window.main,
-        assets_dir=path.user_directory(),
-    )
 
 
 class SwitchPokePilotApp:
@@ -26,7 +14,7 @@ class SwitchPokePilotApp:
         self._content: Optional[ft.Control] = None
         self._buttons: list[ft.IconButton] = []
         self._settings_window: Optional[ft.FletApp] = None
-        self._main_window_processes = []
+        self._main_window_pool: MainWindowProcessPool = MainWindowProcessPool()
 
     async def main(self, page: ft.Page):
         self._page = page
@@ -51,9 +39,7 @@ class SwitchPokePilotApp:
         await page.add_async(self._content)
 
     async def _open_main_window(self, _event: ft.ControlEvent):
-        process = multiprocessing.Process(target=_open_main_window_app, args=())
-        self._main_window_processes.append(process)
-        process.start()
+        self._main_window_pool.start_new_process()
 
     def _create_open_window_button(self):
         return self._create_button(icon=ft.icons.ADD_BOX,
