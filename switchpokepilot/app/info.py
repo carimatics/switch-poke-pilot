@@ -24,7 +24,7 @@ class AppInfo:
     version: Version
 
 
-def get_app_info():
+def get_app_info() -> AppInfo:
     return AppInfo(name=_NAME,
                    version=Version(major=_VERSION["major"],
                                    minor=_VERSION["minor"],
