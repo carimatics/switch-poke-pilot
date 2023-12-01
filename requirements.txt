@@ -9,7 +9,7 @@ pygame>=2.5.2
 reactivex>=4.0.4
 
 # UI
-flet>=0.13.0
+flet>=0.14.0
 
 # Packaging
 pyinstaller>=6.0.0
