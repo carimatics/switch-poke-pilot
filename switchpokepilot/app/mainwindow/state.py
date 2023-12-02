@@ -4,6 +4,7 @@ from typing import Optional
 
 from switchpokepilot.app.mainwindow.logger import MainWindowLogger
 from switchpokepilot.core.camera import Camera
+from switchpokepilot.core.config.config import Config
 from switchpokepilot.core.logger.logger import Logger
 from switchpokepilot.core.path.path import Path
 
@@ -21,6 +22,7 @@ class MainWindowState:
 
         self._logger: Logger = MainWindowLogger()
         self._path: Path = Path()
+        self._config: Config = Config(path=self._path)
 
         self._camera: Optional[Camera] = None
 
@@ -31,6 +33,10 @@ class MainWindowState:
     @property
     def path(self):
         return self._path
+
+    @property
+    def config(self):
+        return self._config
 
     @property
     def camera(self):

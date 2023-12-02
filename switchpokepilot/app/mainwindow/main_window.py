@@ -42,7 +42,7 @@ class MainWindow(MainWindowStateObserver):
         page.appbar = self._build_appbar()
 
         self._tools_area = ToolsArea(window_state=self._state,
-                                     width=page.width,
+                                     width=self._tools_area_width,
                                      height=page.height - self._appbar_height)
         self._game_screen = ft.Container(content=GameScreen(window_state=self._state),
                                          width=page.width - self._tools_area_width,
@@ -97,7 +97,6 @@ class MainWindow(MainWindowStateObserver):
         self._state.logger.info("Game screen clicked")
         self._expanded = not self._expanded
         self._tools_area.visible = self._expanded
-        self._tools_area.disabled = self._expanded
         self._on_resize()
 
     def _on_screenshot_click(self, _event: ft.ControlEvent):
@@ -110,4 +109,4 @@ class MainWindow(MainWindowStateObserver):
             self._state.logger.debug("Camera not available")
 
     def _on_settings_click(self, _event: ft.ControlEvent):
-        self._state.logger.debug(f"Settings clicked")
+        self._state.logger.debug("Settings clicked")

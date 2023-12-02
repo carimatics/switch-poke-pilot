@@ -3,6 +3,7 @@ from typing import Optional
 import flet as ft
 
 from switchpokepilot.app.mainwindow.state import MainWindowState
+from switchpokepilot.app.mainwindow.ui.command_area import CommandArea
 from switchpokepilot.app.mainwindow.ui.log_area import LogArea
 
 
@@ -28,7 +29,10 @@ class ToolsArea(ft.UserControl):
                                    width=self.width,
                                    height=self.height - self._indicators_height)),
             ft.Tab(icon=ft.icons.NAVIGATION,
-                   text="Commands"),
+                   text="Commands",
+                   content=CommandArea(window_state=self._window_state,
+                                       width=self.width,
+                                       height=self.height - self._indicators_height)),
         ]
         self._area = ft.Tabs(selected_index=0,
                              width=self.width,
