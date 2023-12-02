@@ -34,7 +34,8 @@ class LogArea(ft.UserControl, MainWindowLoggerObserver):
         self._window_state.logger.remove_observer(self)
 
     def build(self):
-        self._text = ft.Text(f"Start: {datetime.now()}")
+        self._text = ft.Text(f"Start: {datetime.now()}",
+                             selectable=True)
         self._column = ft.Column(
             width=self.width,
             height=self.height,
