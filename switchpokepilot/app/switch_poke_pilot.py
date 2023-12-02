@@ -16,7 +16,7 @@ class SwitchPokePilotApp:
         self._settings_window: Optional[ft.FletApp] = None
         self._main_window_pool: MainWindowProcessPool = MainWindowProcessPool()
 
-    async def main(self, page: ft.Page):
+    def main(self, page: ft.Page):
         self._page = page
 
         page.title = f"{self._info.version}"
@@ -36,20 +36,20 @@ class SwitchPokePilotApp:
                                vertical_alignment=ft.CrossAxisAlignment.CENTER)
         self._buttons.append(self._create_settings_window_button())
         self._buttons.append(self._create_open_window_button())
-        await page.add_async(self._content)
+        page.add(self._content)
+        self._main_window_pool.start_new_process()
 
-    async def _open_main_window(self, _event: ft.ControlEvent):
+    def _open_main_window(self, _event: ft.ControlEvent):
         self._main_window_pool.start_new_process()
 
     def _create_open_window_button(self):
         return self._create_button(icon=ft.icons.ADD_BOX,
-                                   tooltip="Open new window",
+                                   tooltip="Open new main window",
                                    on_click=self._open_main_window)
 
     def _create_settings_window_button(self):
         return self._create_button(icon=ft.icons.SETTINGS,
-                                   tooltip="Open settings window",
-                                   on_click=self._open_main_window)
+                                   tooltip="Open settings window")
 
     @staticmethod
     def _create_button(icon: str, tooltip: str, on_click: Any):
