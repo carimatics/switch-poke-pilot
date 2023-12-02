@@ -46,11 +46,11 @@ class LogArea(ft.UserControl, MainWindowLoggerObserver):
                                      alignment=ft.alignment.top_left)
         return self._content
 
-    def add_log(self, message):
+    def on_log(self, message):
+        self._add_log(message)
+
+    def _add_log(self, message):
         if len(self._text.value) > 50000:
             self._text.value = f"{self._text.value[-10000:]}\n{message}"
         else:
             self._text.value = f"{self._text.value}\n{message}"
-
-    def on_log(self, message):
-        self.add_log(message)
