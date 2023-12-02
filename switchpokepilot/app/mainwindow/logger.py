@@ -17,30 +17,22 @@ class MainWindowLogger(Logger):
     def debug(self, message):
         if self.disabled:
             return
-
-        for observer in self._observers:
-            observer.on_log(f"[DEBUG] {message}")
+        self._notify(f"[DEBUG] {message}")
 
     def info(self, message):
         if self.disabled:
             return
-
-        for observer in self._observers:
-            observer.on_log(f"[INFO ] {message}")
+        self._notify(f"[INFO ] {message}")
 
     def warn(self, message):
         if self.disabled:
             return
-
-        for observer in self._observers:
-            observer.on_log(f"[WARN ] {message}")
+        self._notify(f"[WARN ] {message}")
 
     def error(self, message):
         if self.disabled:
             return
-
-        for observer in self._observers:
-            observer.on_log(f"[ERROR] {message}")
+        self._notify(f"[ERROR] {message}")
 
     def add_observer(self, observer: MainWindowLoggerObserver):
         self._observers.append(observer)
@@ -50,3 +42,7 @@ class MainWindowLogger(Logger):
             self._observers.remove(observer)
         finally:
             pass
+
+    def _notify(self, message: str):
+        for observer in self._observers:
+            observer.on_log(message)

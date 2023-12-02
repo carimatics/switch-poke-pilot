@@ -23,19 +23,17 @@ class ToolsArea(ft.UserControl):
     def build(self):
         self._tabs = [
             ft.Tab(icon=ft.icons.COMMENT,
+                   text="Log",
                    content=LogArea(window_state=self._window_state,
                                    width=self.width,
                                    height=self.height - self._indicators_height)),
-            ft.Tab(icon=ft.icons.VIDEOCAM),
-            ft.Tab(icon=ft.icons.NAVIGATION),
-            ft.Tab(icon=ft.icons.APP_REGISTRATION),
+            ft.Tab(icon=ft.icons.NAVIGATION,
+                   text="Commands"),
         ]
         self._area = ft.Tabs(selected_index=0,
                              width=self.width,
                              height=self.height,
-                             indicator_padding=ft.padding.all(0),
                              animation_duration=300,
-                             expand=True,
                              tabs=self._tabs)
         self._container = ft.Container(content=self._area,
                                        width=self.width,

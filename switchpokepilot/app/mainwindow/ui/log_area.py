@@ -12,8 +12,11 @@ class LogArea(ft.UserControl, MainWindowLoggerObserver):
                  window_state: MainWindowState,
                  width: int,
                  height: int):
-        super().__init__(width=width, height=height)
+        super().__init__(width=width,
+                         height=height,
+                         animate_size=True)
         self._window_state = window_state
+
         self._text: Optional[ft.Text] = None
         self._column: Optional[ft.Column] = None
         self._content: Optional[ft.Container] = None
@@ -46,11 +49,9 @@ class LogArea(ft.UserControl, MainWindowLoggerObserver):
                                      alignment=ft.alignment.top_left)
         return self._content
 
-    def on_log(self, message):
-        self._add_log(message)
-
-    def _add_log(self, message):
+    def on_log(self, message: str):
         if len(self._text.value) > 50000:
             self._text.value = f"{self._text.value[-10000:]}\n{message}"
         else:
             self._text.value = f"{self._text.value}\n{message}"
+        self._text.update()
