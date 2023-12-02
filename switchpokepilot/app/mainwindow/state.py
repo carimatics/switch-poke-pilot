@@ -2,7 +2,7 @@ import multiprocessing
 from abc import abstractmethod, ABCMeta
 from typing import Optional
 
-from switchpokepilot.app.logger import AppLogger
+from switchpokepilot.app.mainwindow.logger import MainWindowLogger
 from switchpokepilot.core.camera import Camera
 from switchpokepilot.core.logger.logger import Logger
 
@@ -18,7 +18,7 @@ class MainWindowState:
         self._observers: list[MainWindowStateObserver] = []
         self._queue = queue
 
-        self._logger: Logger = AppLogger()
+        self._logger: Logger = MainWindowLogger()
         self._camera: Optional[Camera] = None
 
     @property

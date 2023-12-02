@@ -39,9 +39,6 @@ class SwitchPokePilotApp:
         page.add(self._content)
         self._main_window_pool.start_new_process()
 
-    def _open_main_window(self, _event: ft.ControlEvent):
-        self._main_window_pool.start_new_process()
-
     def _create_open_window_button(self):
         return self._create_button(icon=ft.icons.ADD_BOX,
                                    tooltip="Open new main window",
@@ -49,7 +46,14 @@ class SwitchPokePilotApp:
 
     def _create_settings_window_button(self):
         return self._create_button(icon=ft.icons.SETTINGS,
-                                   tooltip="Open settings window")
+                                   tooltip="Open settings window",
+                                   on_click=self._open_settings_window)
+
+    def _open_main_window(self, _event: ft.ControlEvent):
+        self._main_window_pool.start_new_process()
+
+    def _open_settings_window(self, _event: ft.ControlEvent):
+        pass
 
     @staticmethod
     def _create_button(icon: str, tooltip: str, on_click: Any):
