@@ -15,17 +15,9 @@ class GameScreen(ft.UserControl, MainWindowStateObserver):
         self._is_alive: bool = True
         self._window_state = window_state
 
-        self.camera = self._window_state.camera
+        self._camera: Camera = self._window_state.camera
         self._screen: Optional[ft.Image] = None
         self._thread_update_loop: Optional[threading.Thread] = None
-
-    @property
-    def camera(self) -> Optional[Camera]:
-        return self._get_attr("camera")
-
-    @camera.setter
-    def camera(self, new_value: Camera, dirty=True):
-        self._set_attr("camera", new_value, dirty)
 
     def did_mount(self):
         self._window_state.add_observer(self)
@@ -41,16 +33,35 @@ class GameScreen(ft.UserControl, MainWindowStateObserver):
         return self._screen
 
     def on_main_window_state_update(self, subject: MainWindowState) -> None:
-        if self.camera != subject.camera:
-            self.camera = subject.camera
+        if self._camera != subject.camera:
             self._release_camera()
+            self._camera = subject.camera
             self._prepare_camera()
         self.update()
 
+    def _prepare_camera(self):
+        if self._camera is None:
+            return
+
+        if not self._camera.is_opened():
+            self._camera.open()
+
+        self._is_alive = True
+        self._thread_update_loop = threading.Thread(target=self._loop_update_screen,
+                                                    daemon=True)
+        self._thread_update_loop.start()
+
+    def _release_camera(self):
+        self._is_alive = False
+        if self._thread_update_loop is not None:
+            self._thread_update_loop.join()
+            self._thread_update_loop = None
+            self._camera.destroy()
+
     def _loop_update_screen(self):
-        while self._is_alive and self.camera is not None and self.camera.is_opened():
-            self.camera.update_frame()
-            encoded = self.camera.encoded_current_frame_base64()
+        while self._is_alive and self._camera is not None and self._camera.is_opened():
+            self._camera.update_frame()
+            encoded = self._camera.encoded_current_frame_base64()
             if encoded == "":
                 self._screen.src = DISABLED_IMAGE
                 self._screen.src_base64 = None
@@ -58,19 +69,3 @@ class GameScreen(ft.UserControl, MainWindowStateObserver):
                 self._screen.src = None
                 self._screen.src_base64 = encoded
             self.update()
-
-    def _prepare_camera(self):
-        if self.camera is None:
-            # FIXME
-            self.camera = Camera(capture_size=(1280, 720),
-                                 logger=self._window_state.logger)
-            self._window_state.camera = self.camera
-        self.camera.open()
-        self._thread_update_loop = threading.Thread(target=self._loop_update_screen,
-                                                    daemon=True)
-        self._thread_update_loop.start()
-
-    def _release_camera(self):
-        self._is_alive = False
-        self._thread_update_loop.join()
-        self._thread_update_loop = None

@@ -94,7 +94,6 @@ class MainWindow(MainWindowStateObserver):
         return appbar
 
     def _on_game_screen_click(self, _event: ft.ControlEvent):
-        self._state.logger.info("Game screen clicked")
         self._expanded = not self._expanded
         self._tools_area.visible = self._expanded
         self._on_resize()

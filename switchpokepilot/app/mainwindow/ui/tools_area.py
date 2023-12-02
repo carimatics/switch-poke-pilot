@@ -5,6 +5,7 @@ import flet as ft
 from switchpokepilot.app.mainwindow.state import MainWindowState
 from switchpokepilot.app.mainwindow.ui.command_area import CommandArea
 from switchpokepilot.app.mainwindow.ui.log_area import LogArea
+from switchpokepilot.app.mainwindow.ui.video_area import VideoArea
 
 
 class ToolsArea(ft.UserControl):
@@ -24,15 +25,17 @@ class ToolsArea(ft.UserControl):
     def build(self):
         self._tabs = [
             ft.Tab(icon=ft.icons.COMMENT,
-                   text="Log",
                    content=LogArea(window_state=self._window_state,
                                    width=self.width,
                                    height=self.height - self._indicators_height)),
             ft.Tab(icon=ft.icons.NAVIGATION,
-                   text="Commands",
                    content=CommandArea(window_state=self._window_state,
                                        width=self.width,
                                        height=self.height - self._indicators_height)),
+            ft.Tab(icon=ft.icons.VIDEOCAM,
+                   content=VideoArea(window_state=self._window_state,
+                                     width=self.width,
+                                     height=self.height - self._indicators_height)),
         ]
         self._area = ft.Tabs(selected_index=0,
                              width=self.width,
