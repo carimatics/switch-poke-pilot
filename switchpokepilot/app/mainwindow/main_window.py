@@ -86,9 +86,6 @@ class MainWindow(MainWindowStateObserver):
                                ft.IconButton(icon=ft.icons.CAMERA_ALT,
                                              tooltip="Take Screenshot",
                                              on_click=self._on_screenshot_click),
-                               ft.IconButton(icon=ft.icons.SETTINGS,
-                                             tooltip="Open Settings Modal",
-                                             on_click=self._on_settings_click),
                            ])
         appbar.bgcolor = ft.colors.SURFACE_VARIANT
         return appbar
@@ -106,6 +103,3 @@ class MainWindow(MainWindowStateObserver):
             self._state.logger.info(f"Capture saved: {file_path}")
         else:
             self._state.logger.debug("Camera not available")
-
-    def _on_settings_click(self, _event: ft.ControlEvent):
-        self._state.logger.debug("Settings clicked")

@@ -54,7 +54,7 @@ class Camera:
 
         if self.is_opened():
             self._logger.debug("Camera is already opened.")
-            self.destroy()
+            self.release()
 
         if is_windows():
             self.camera = cv2.VideoCapture(self.id, cv2.CAP_DSHOW)
@@ -109,7 +109,7 @@ class Camera:
         except Exception as e:
             self._logger.error(f"Capture failed: {e}")
 
-    def destroy(self):
+    def release(self):
         if self.is_opened():
             self.camera.release()
             self.camera = None

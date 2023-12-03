@@ -47,7 +47,9 @@ class GameScreen(ft.UserControl, MainWindowStateObserver):
             self._camera.open()
 
         self._is_alive = True
+        thread_name = f"{self.__class__.__name__}_{self._prepare_camera.__name__}_{id(self._camera)}"
         self._thread_update_loop = threading.Thread(target=self._loop_update_screen,
+                                                    name=thread_name,
                                                     daemon=True)
         self._thread_update_loop.start()
 
@@ -56,12 +58,13 @@ class GameScreen(ft.UserControl, MainWindowStateObserver):
         if self._thread_update_loop is not None:
             self._thread_update_loop.join()
             self._thread_update_loop = None
-            self._camera.destroy()
+            self._camera.release()
 
     def _loop_update_screen(self):
-        while self._is_alive and self._camera is not None and self._camera.is_opened():
-            self._camera.update_frame()
-            encoded = self._camera.encoded_current_frame_base64()
+        camera = self._camera
+        while self._is_alive and camera is not None and camera.is_opened():
+            camera.update_frame()
+            encoded = camera.encoded_current_frame_base64()
             if encoded == "":
                 self._screen.src = DISABLED_IMAGE
                 self._screen.src_base64 = None
