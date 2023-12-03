@@ -45,7 +45,7 @@ class AppLogger(Logger):
     def add_observer(self, observer: LoggerObserver):
         self._observers.append(observer)
 
-    def delete_observer(self, observer: LoggerObserver):
+    def remove_observer(self, observer: LoggerObserver):
         try:
             self._observers.remove(observer)
         finally:
