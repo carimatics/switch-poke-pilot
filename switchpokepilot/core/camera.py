@@ -2,11 +2,11 @@ import base64
 from typing import Optional
 
 import cv2
+import pygame.camera
 
 from switchpokepilot.core.image.image import Image
 from switchpokepilot.core.image.region import ImageRegion
 from switchpokepilot.core.logger.logger import Logger
-from switchpokepilot.core.utils.device import get_camera_devices
 from switchpokepilot.core.utils.env import is_packed
 from switchpokepilot.core.utils.os import is_windows
 
@@ -42,7 +42,8 @@ class Camera:
 
     @staticmethod
     def get_devices():
-        return get_camera_devices()
+        cameras = pygame.camera.list_cameras()
+        return [{'name': name, 'id': i} for i, name in enumerate(cameras)]
 
     def is_opened(self):
         return self._camera is not None and self._camera.isOpened()

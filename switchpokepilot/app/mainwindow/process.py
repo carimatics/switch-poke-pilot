@@ -3,12 +3,15 @@ from queue import Empty, Queue
 from typing import Optional
 
 import flet as ft
+import pygame.camera
 
 from switchpokepilot.app.mainwindow.main_window import MainWindow
 from switchpokepilot.core.path.path import Path
 
 
 def _open_main_window_app(queue: multiprocessing.Queue):
+    pygame.camera.init()
+
     window = MainWindow(queue=queue)
     path = Path()
     ft.app(
