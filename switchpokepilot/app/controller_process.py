@@ -126,7 +126,3 @@ def controller_process():
 
     finally:
         pygame.quit()
-
-
-if __name__ == '__main__':
-    controller_process()
