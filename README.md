@@ -1,5 +1,7 @@
 # Switch Poke Pilot
 
+![Screenshot](assets/images/screenshot.png)
+
 Nintendo Switchのポケモンの操作を自動化するためのツールです。  
 厳密にはポケモンだけでなく、それ以外のゲームも自動化することができます。
 
