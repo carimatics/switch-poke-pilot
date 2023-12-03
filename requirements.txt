@@ -1,11 +1,15 @@
 # Core
-opencv-python>=4.8.1
-numpy>=1.26.0
-pyserial>=3.5
-pydantic>=2.4.2
+opencv-python==4.8.1.78
+numpy==1.26.2
+pyserial==3.5
+pydantic==2.5.2
+
+# Controller Input Handling
+pygame==2.5.2
+reactivex==4.0.4
 
 # UI
-flet>=0.12.1
+flet==0.14.0
 
 # Packaging
-pyinstaller>=6.0.0
+pyinstaller==6.2.0

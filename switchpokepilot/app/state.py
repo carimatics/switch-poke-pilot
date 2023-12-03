@@ -50,7 +50,7 @@ class AppState:
     def camera(self, new_value: Camera):
         current_camera = self._camera
         if current_camera is not None:
-            current_camera.destroy()
+            current_camera.release()
 
         self._camera = new_value
         self._notify()

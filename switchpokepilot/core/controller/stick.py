@@ -44,10 +44,28 @@ class Stick:
                  displacement: Optional[StickDisplacement] = None):
         if displacement is None:
             center = STICK_DISPLACEMENT_RANGE["center"]
-            self.x, self.y = center, center
+            self._x, self._y = center, center
         else:
             self.set_displacement(displacement)
         self.changed = False
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, new_value: int):
+        self._x = new_value
+        self.changed = True
+
+    @property
+    def y(self):
+        return self._y
+
+    @y.setter
+    def y(self, new_value: int):
+        self._y = new_value
+        self.changed = True
 
     def consume(self):
         self.changed = False

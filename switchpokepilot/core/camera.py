@@ -19,7 +19,7 @@ class Camera:
         self._name: str = "Default"
 
         self.current_frame: Optional[cv2.typing.MatLike] = None
-        self.camera: Optional[cv2.VideoCapture] = None
+        self._camera: Optional[cv2.VideoCapture] = None
         self.capture_size = capture_size
 
         self._logger = logger
@@ -45,7 +45,7 @@ class Camera:
         return get_camera_devices()
 
     def is_opened(self):
-        return self.camera is not None and self.camera.isOpened()
+        return self._camera is not None and self._camera.isOpened()
 
     def open(self):
         if not is_packed():
@@ -54,12 +54,12 @@ class Camera:
 
         if self.is_opened():
             self._logger.debug("Camera is already opened.")
-            self.destroy()
+            self.release()
 
         if is_windows():
-            self.camera = cv2.VideoCapture(self.id, cv2.CAP_DSHOW)
+            self._camera = cv2.VideoCapture(self.id, cv2.CAP_DSHOW)
         else:
-            self.camera = cv2.VideoCapture(self.id)
+            self._camera = cv2.VideoCapture(self.id)
 
         if not self.is_opened():
             print(f"Camera {self.id} can't open.")
@@ -69,14 +69,14 @@ class Camera:
 
     def resize(self):
         if self.is_opened():
-            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.capture_size[0])
-            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.capture_size[1])
+            self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.capture_size[0])
+            self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.capture_size[1])
 
     def update_frame(self):
         if not self.is_opened():
             return
 
-        _, self.current_frame = self.camera.read()
+        _, self.current_frame = self._camera.read()
 
     def encoded_current_frame_base64(self):
         if not self.is_opened() or self.current_frame is None:
@@ -109,8 +109,8 @@ class Camera:
         except Exception as e:
             self._logger.error(f"Capture failed: {e}")
 
-    def destroy(self):
+    def release(self):
         if self.is_opened():
-            self.camera.release()
-            self.camera = None
+            self._camera.release()
+            self._camera = None
             self._logger.debug("Camera destroyed.")
