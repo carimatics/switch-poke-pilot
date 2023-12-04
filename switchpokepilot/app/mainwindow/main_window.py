@@ -29,6 +29,8 @@ class MainWindow(MainWindowStateObserver):
 
         page.title = f"{self._app_info.name} {self._app_info.version}"
         page.on_resize = self._on_resize
+        page.window_prevent_close = True
+        page.on_window_event = self._on_window_event
 
         # page theme
         page.theme = get_app_theme()
@@ -64,6 +66,16 @@ class MainWindow(MainWindowStateObserver):
         if self._state != subject:
             self._state = subject
 
+    def _build_appbar(self):
+        appbar = ft.AppBar(toolbar_height=self._appbar_height,
+                           actions=[
+                               ft.IconButton(icon=ft.icons.CAMERA_ALT,
+                                             tooltip="Take Screenshot",
+                                             on_click=self._on_screenshot_click),
+                           ])
+        appbar.bgcolor = ft.colors.SURFACE_VARIANT
+        return appbar
+
     def _on_resize(self, _event: Optional[ft.ControlEvent] = None):
         height = self._page.height - self._appbar_height
         if self._expanded:
@@ -80,15 +92,14 @@ class MainWindow(MainWindowStateObserver):
 
         self._page.update()
 
-    def _build_appbar(self):
-        appbar = ft.AppBar(toolbar_height=self._appbar_height,
-                           actions=[
-                               ft.IconButton(icon=ft.icons.CAMERA_ALT,
-                                             tooltip="Take Screenshot",
-                                             on_click=self._on_screenshot_click),
-                           ])
-        appbar.bgcolor = ft.colors.SURFACE_VARIANT
-        return appbar
+    def _on_window_event(self, event: ft.ControlEvent):
+        if event.data == 'close':
+            self._on_close()
+
+    def _on_close(self):
+        self._page.clean()
+        self._state.destruct()
+        self._page.window_destroy()
 
     def _on_game_screen_click(self, _event: ft.ControlEvent):
         self._expanded = not self._expanded
