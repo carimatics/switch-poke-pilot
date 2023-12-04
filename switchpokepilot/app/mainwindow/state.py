@@ -57,6 +57,10 @@ class MainWindowState:
         self._camera = new_value
         self._notify()
 
+    def destruct(self):
+        self._camera.release()
+        self._controller.close()
+
     def add_observer(self, observer: MainWindowStateObserver):
         self._observers.append(observer)
 

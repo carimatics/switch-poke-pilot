@@ -27,7 +27,8 @@ class SerialPort:
         ]
 
     def close(self):
-        self._serial.close()
+        if self.is_open:
+            self._serial.close()
 
     def open(self, info: SerialPortInfo, baud_rate: int):
         if self.is_open:
