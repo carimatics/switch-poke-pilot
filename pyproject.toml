@@ -11,7 +11,7 @@ dependencies = [
     "switch-pilot-core @ git+https://github.com/game-automation-tools/switch-pilot-core.git@main",
     "pygame == 2.5.2",
     "reactivex == 4.0.4",
-    "flet == 0.14.0",
+    "flet == 0.15.0",
     "pyinstaller == 6.2.0",
 ]
 
