@@ -1,0 +1,26 @@
+[project]
+name = "switch-poke-pilot"
+dynamic = ["version"]
+license = { file = "LICENSE" }
+authors = [
+    { name = "carimatics" },
+]
+requires-python = ">= 3.12"
+dependencies = [
+    "switch-controller-state @ git+https://github.com/game-automation-tools/switch-controller-state.git@main",
+    "switch-pilot-core @ git+https://github.com/game-automation-tools/switch-pilot-core.git@main",
+    "pygame == 2.5.2",
+    "reactivex == 4.0.4",
+    "flet == 0.14.0",
+    "pyinstaller == 6.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/carimatics/switch-poke-pilot.git"
+Repository = "https://github.com/carimatics/switch-poke-pilot.git"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["switchpokepilot"]
+exclude = ["assets"]
+namespaces = false

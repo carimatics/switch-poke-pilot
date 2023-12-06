@@ -1,12 +1,13 @@
 import multiprocessing
 from abc import abstractmethod, ABCMeta
 
+from switch_pilot_core.camera import Camera
+from switch_pilot_core.config import Config
+from switch_pilot_core.controller.controller import Controller
+from switch_pilot_core.logger.logger import Logger
+from switch_pilot_core.path.path import Path
+
 from switchpokepilot.app.mainwindow.logger import MainWindowLogger
-from switchpokepilot.core.camera import Camera
-from switchpokepilot.core.config.config import Config
-from switchpokepilot.core.controller.controller import Controller
-from switchpokepilot.core.logger.logger import Logger
-from switchpokepilot.core.path.path import Path
 
 
 class MainWindowStateObserver(metaclass=ABCMeta):

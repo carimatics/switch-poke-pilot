@@ -1,10 +1,10 @@
 from typing import Optional
 
 import flet as ft
+from switch_pilot_core.camera import Camera
 
 from switchpokepilot.app.mainwindow.state import MainWindowState
 from switchpokepilot.app.ui.dropdown import Dropdown
-from switchpokepilot.core.camera import Camera
 
 
 class VideoArea(ft.UserControl):

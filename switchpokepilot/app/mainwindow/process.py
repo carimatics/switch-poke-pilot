@@ -4,9 +4,9 @@ from typing import Optional
 
 import flet as ft
 import pygame.camera
+from switch_pilot_core.path.path import Path
 
 from switchpokepilot.app.mainwindow.main_window import MainWindow
-from switchpokepilot.core.path.path import Path
 
 
 def _open_main_window_app(queue: multiprocessing.Queue):

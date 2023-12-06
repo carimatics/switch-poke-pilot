@@ -1,14 +1,13 @@
 from typing import Optional
 
 import flet as ft
+from switch_pilot_core.command import CommandAPI
+from switch_pilot_core.command import CommandLoader, CommandRunner
+from switch_pilot_core.libs.serial import SerialPort
+from switch_pilot_core.timer import Timer
 
-from switchpokepilot.api.command.command import CommandAPI
 from switchpokepilot.app.mainwindow.state import MainWindowState
 from switchpokepilot.app.ui.dropdown import Dropdown
-from switchpokepilot.core.command.loader import CommandLoader
-from switchpokepilot.core.command.runner import CommandRunner
-from switchpokepilot.core.libs.serial import SerialPort
-from switchpokepilot.core.timer import Timer
 
 
 class CommandArea(ft.UserControl):

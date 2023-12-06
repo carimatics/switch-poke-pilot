@@ -1,5 +1,5 @@
 install:
-	pip install -r requirements.txt
+	pip install .
 
 run:
 	python -m switchpokepilot
@@ -10,3 +10,5 @@ regenerate-pyinstaller-spec:
 
 pack:
 	pyinstaller ./SwitchPokePilot.spec --noconfirm --clean
+	rm -f ./dist/SwitchPokePilot
+	cp -R ./examples/SwitchPokePilot ./dist/SwitchPokePilot

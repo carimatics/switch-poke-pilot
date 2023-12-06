@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from switchpokepilot.core.logger.logger import Logger
+from switch_pilot_core.logger.logger import Logger
 
 
 class LoggerObserver(metaclass=ABCMeta):

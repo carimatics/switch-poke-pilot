@@ -3,13 +3,9 @@ import math
 import pygame
 from reactivex import Subject
 from reactivex.operators import debounce
-
-from switchpokepilot.core.controller.button import Button
-from switchpokepilot.core.controller.controller import Controller
-from switchpokepilot.core.controller.hat import Hat
-from switchpokepilot.core.controller.state import ControllerState
-from switchpokepilot.core.controller.stick import STICK_DISPLACEMENT_RANGE
-from switchpokepilot.core.libs.serial import SerialPort
+from switch_controller_state import Button, Hat, ControllerState, StickDisplacementRange
+from switch_pilot_core.controller.controller import Controller
+from switch_pilot_core.libs.serial import SerialPort
 
 
 def controller_process():
@@ -29,7 +25,7 @@ def controller_process():
     controller.set_state(state)
 
     axis_dead_zone = 0.15
-    axis_center = STICK_DISPLACEMENT_RANGE["center"]
+    axis_center = StickDisplacementRange.CENTER
     axis_input = Subject()
     axis_input.pipe(
         debounce(0.03),
