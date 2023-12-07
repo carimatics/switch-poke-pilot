@@ -3,8 +3,7 @@ import math
 import pygame
 from reactivex import Subject
 from reactivex.operators import debounce
-from switch_controller_state import Button, Hat, ControllerState, StickDisplacementRange
-from switch_pilot_core.controller.controller import Controller
+from switch_pilot_core.controller import Button, Hat, ControllerState, StickDisplacementRange, Controller
 from switch_pilot_core.libs.serial import SerialPort
 
 

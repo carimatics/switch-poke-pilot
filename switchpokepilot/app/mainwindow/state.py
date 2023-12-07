@@ -3,9 +3,9 @@ from abc import abstractmethod, ABCMeta
 
 from switch_pilot_core.camera import Camera
 from switch_pilot_core.config import Config
-from switch_pilot_core.controller.controller import Controller
-from switch_pilot_core.logger.logger import Logger
-from switch_pilot_core.path.path import Path
+from switch_pilot_core.controller import Controller
+from switch_pilot_core.logger import Logger
+from switch_pilot_core.path import Path
 
 from switchpokepilot.app.mainwindow.logger import MainWindowLogger
 
