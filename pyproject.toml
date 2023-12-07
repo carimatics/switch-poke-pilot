@@ -7,8 +7,7 @@ authors = [
 ]
 requires-python = ">= 3.12"
 dependencies = [
-    "switch-controller-state @ git+https://github.com/game-automation-tools/switch-controller-state.git@main",
-    "switch-pilot-core @ git+https://github.com/game-automation-tools/switch-pilot-core.git@main",
+    "switch-pilot-core @ git+https://github.com/carimatics/switch-pilot-core.git@main",
     "pygame == 2.5.2",
     "reactivex == 4.0.4",
     "flet == 0.15.0",

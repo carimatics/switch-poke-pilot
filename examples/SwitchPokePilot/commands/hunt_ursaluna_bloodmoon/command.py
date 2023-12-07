@@ -1,8 +1,8 @@
 # このコマンドは以下の実装を参考に作成しました。
 # https://github.com/Syumiru/Poke-Controller-Modified-PGM/blob/0dd26257521ebfe0f4fcc5fc2b8bc018e269beac/Commands/PythonCommands/ImageProcessingOnly/SV_A0_A0S0GACHIGUMA.py
 
-from switch_controller_state import Button, StickDisplacementPreset
 from switch_pilot_core.command import BaseCommand, CommandAPI, check_should_keep_running
+from switch_pilot_core.controller import Button, StickDisplacementPreset
 
 
 class Command(BaseCommand):
