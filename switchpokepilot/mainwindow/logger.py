@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from switch_pilot_core.logger.logger import Logger
+from switch_pilot_core.logger import Logger
 
 
 class MainWindowLoggerObserver(metaclass=ABCMeta):

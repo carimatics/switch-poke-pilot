@@ -3,8 +3,8 @@ from typing import Optional
 
 import flet as ft
 
-from switchpokepilot.app.mainwindow.logger import MainWindowLoggerObserver
-from switchpokepilot.app.mainwindow.state import MainWindowState
+from switchpokepilot.mainwindow.logger import MainWindowLoggerObserver
+from switchpokepilot.mainwindow.state import MainWindowState
 
 
 class LogArea(ft.UserControl, MainWindowLoggerObserver):

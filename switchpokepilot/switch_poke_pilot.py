@@ -2,9 +2,9 @@ from typing import Optional, Any
 
 import flet as ft
 
-from switchpokepilot.app.info import get_app_info
-from switchpokepilot.app.mainwindow.process import MainWindowProcessPool
-from switchpokepilot.app.ui.theme import get_app_theme
+from switchpokepilot.info import get_app_info
+from switchpokepilot.mainwindow.process import MainWindowProcessPool
+from switchpokepilot.ui.theme import get_app_theme
 
 
 class SwitchPokePilotApp:

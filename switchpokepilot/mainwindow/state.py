@@ -7,7 +7,7 @@ from switch_pilot_core.controller import Controller
 from switch_pilot_core.logger import Logger
 from switch_pilot_core.path import Path
 
-from switchpokepilot.app.mainwindow.logger import MainWindowLogger
+from switchpokepilot.mainwindow.logger import MainWindowLogger
 
 
 class MainWindowStateObserver(metaclass=ABCMeta):

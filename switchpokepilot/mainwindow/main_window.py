@@ -3,11 +3,11 @@ from typing import Optional
 
 import flet as ft
 
-from switchpokepilot.app.info import get_app_info
-from switchpokepilot.app.mainwindow.state import MainWindowState, MainWindowStateObserver
-from switchpokepilot.app.mainwindow.ui.game_screen import GameScreen
-from switchpokepilot.app.mainwindow.ui.tools_area import ToolsArea
-from switchpokepilot.app.ui.theme import get_app_theme
+from switchpokepilot.info import get_app_info
+from switchpokepilot.mainwindow.state import MainWindowState, MainWindowStateObserver
+from switchpokepilot.mainwindow.ui.game_screen import GameScreen
+from switchpokepilot.mainwindow.ui.tools_area import ToolsArea
+from switchpokepilot.ui.theme import get_app_theme
 
 
 class MainWindow(MainWindowStateObserver):

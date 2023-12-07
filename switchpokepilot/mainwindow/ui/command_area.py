@@ -6,8 +6,8 @@ from switch_pilot_core.command import CommandLoader, CommandRunner
 from switch_pilot_core.libs.serial import SerialPort
 from switch_pilot_core.timer import Timer
 
-from switchpokepilot.app.mainwindow.state import MainWindowState
-from switchpokepilot.app.ui.dropdown import Dropdown
+from switchpokepilot.mainwindow.state import MainWindowState
+from switchpokepilot.ui.dropdown import Dropdown
 
 
 class CommandArea(ft.UserControl):

@@ -2,10 +2,10 @@ from typing import Optional
 
 import flet as ft
 
-from switchpokepilot.app.mainwindow.state import MainWindowState
-from switchpokepilot.app.mainwindow.ui.command_area import CommandArea
-from switchpokepilot.app.mainwindow.ui.log_area import LogArea
-from switchpokepilot.app.mainwindow.ui.video_area import VideoArea
+from switchpokepilot.mainwindow.state import MainWindowState
+from switchpokepilot.mainwindow.ui.command_area import CommandArea
+from switchpokepilot.mainwindow.ui.log_area import LogArea
+from switchpokepilot.mainwindow.ui.video_area import VideoArea
 
 
 class ToolsArea(ft.UserControl):

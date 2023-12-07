@@ -6,7 +6,7 @@ from switch_pilot_core.config import Config
 from switch_pilot_core.controller import Controller
 from switch_pilot_core.path import Path
 
-from switchpokepilot.app.logger import AppLogger
+from switchpokepilot.logger import AppLogger
 
 
 class AppStateObserver(metaclass=ABCMeta):

@@ -6,7 +6,7 @@ import flet as ft
 import pygame.camera
 from switch_pilot_core.path import Path
 
-from switchpokepilot.app.mainwindow.main_window import MainWindow
+from switchpokepilot.mainwindow.main_window import MainWindow
 
 
 def _open_main_window_app(queue: multiprocessing.Queue):

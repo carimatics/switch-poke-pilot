@@ -3,7 +3,7 @@ from multiprocessing import freeze_support
 import flet as ft
 from switch_pilot_core.path import Path
 
-from switchpokepilot.app.switch_poke_pilot import SwitchPokePilotApp
+from switchpokepilot.switch_poke_pilot import SwitchPokePilotApp
 
 if __name__ == '__main__':
     freeze_support()

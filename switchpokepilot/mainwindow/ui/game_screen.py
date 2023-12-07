@@ -4,7 +4,7 @@ from typing import Optional
 import flet as ft
 from switch_pilot_core.camera import Camera
 
-from switchpokepilot.app.mainwindow.state import MainWindowStateObserver, MainWindowState
+from switchpokepilot.mainwindow.state import MainWindowStateObserver, MainWindowState
 
 DISABLED_IMAGE = "/images/no_image_available.png"
 
