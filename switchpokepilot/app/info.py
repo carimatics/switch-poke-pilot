@@ -3,7 +3,7 @@ from dataclasses import dataclass
 _NAME = "Switch Poke Pilot"
 _VERSION = {
     "major": 0,
-    "minor": 3,
+    "minor": 4,
     "patch": 1,
 }
 
