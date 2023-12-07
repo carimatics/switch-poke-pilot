@@ -9,12 +9,7 @@ class Command(BaseCommand):
                 self.send_a()
                 self.wait(0.1)
 
-            elapsed_time = self.elapsed_time
-            self.logger.info(f"経過時間 {elapsed_time.hours}時間{elapsed_time.minutes}分{elapsed_time.seconds}秒")
-
         except CommandCancellationError:
             self.logger.info("コマンドがキャンセルされました。")
-
-        finally:
-            self.timer.stop()
-            self.postprocess()
+            elapsed_time = self.elapsed_time
+            self.logger.info(f"経過時間 {elapsed_time.hours}時間{elapsed_time.minutes}分{elapsed_time.seconds}秒")
