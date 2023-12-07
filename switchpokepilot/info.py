@@ -4,7 +4,7 @@ _NAME = "Switch Poke Pilot"
 _VERSION = {
     "major": 0,
     "minor": 4,
-    "patch": 1,
+    "patch": 2,
 }
 
 
